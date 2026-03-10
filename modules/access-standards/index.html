@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="page-title">Access Standards & GPS Framework | Grid Engineering Training</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+    <link rel="stylesheet" href="../../module-styles.css">
+</head>
+<body>
+    <div class="bg-container" id="bg-container"></div>
+    <div class="top-bar">
+        <div class="top-bar-left">
+            <a href='/'>&larr; Portal</a>
+            <span class="module-title-bar" id="module-title-bar">Loading...</span>
+        </div>
+        <div class="top-bar-right">
+            <span class="timer-pill" id="timer-display">0m 00s</span>
+            <span class="xp-pill" id="xp-display">0 XP</span>
+        </div>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+    <div class="section-nav" id="section-nav"></div>
+    <div class="content-wrap" id="content-wrap"></div>
+    <script>
+    window.MODULE_DATA = {
+        id: "access-standards",
+        title: "Access Standards & GPS Framework",
+        level: "entry",
+        xp: 600,
+        backgroundImage: "https://images.unsplash.com/photo-1581094794329-c8112a89af12?w=1920&q=90",
+        sections: [
+            {
+                title: "Access Standards & the GPS",
+                subtitle: "Understanding the three tiers of technical performance for generator connections",
+                content: [
+                    {
+                        type: "card",
+                        html: "<h2>Scenario: Your First GPS Review</h2><p>You have been handed a <strong>Generator Performance Standards (GPS)</strong> template for a proposed 200 MW wind farm connecting to the NEM via a 132 kV line. The NSP has asked you to populate the access standard levels for every clause in Schedule 5.2. Before you can fill in a single cell you need to understand what <strong>Automatic</strong>, <strong>Negotiated</strong> and <strong>Minimum Access Standards</strong> actually mean, how they interact, and what evidence AEMO will expect.</p><p>This module walks you through the framework from first principles, then gives you hands-on practice completing a GPS template.</p>"
+                    },
+                    {
+                        type: "card",
+                        html: "<h2>What Are Access Standards?</h2><p>The <strong>National Electricity Rules (NER)</strong>, specifically Chapter 5 Part 3A, define three tiers of technical performance that a connecting generator (or load, or MNSP) must meet at the <strong>connection point</strong>:</p><ul><li><strong>Automatic Access Standard (AAS)</strong> &mdash; The benchmark level. If your plant meets AAS for a given clause, the NSP and AEMO <em>must</em> accept it without negotiation. It represents best-practice performance.</li><li><strong>Negotiated Access Standard (NAS)</strong> &mdash; A level between AAS and MAS. You must demonstrate that meeting AAS would be impossible or would impose costs that are not <em>reasonably proportionate</em> to the system benefit. Both the NSP and AEMO must agree to the proposed NAS.</li><li><strong>Minimum Access Standard (MAS)</strong> &mdash; The absolute floor. No generating system may connect if it cannot meet MAS for every applicable clause. It defines the minimum acceptable performance to protect power system security.</li></ul>"
+                    },
+                    {
+                        type: "info",
+                        title: "Why Three Levels?",
+                        text: "The tiered system balances two competing objectives: <strong>power system security</strong> (higher standards are better for the grid) and <strong>cost efficiency</strong> (higher standards cost more for the project). The NAS negotiation process is the mechanism through which this balance is achieved on a case-by-case basis."
+                    },
+                    {
+                        type: "card",
+                        html: "<h2>The GPS Document</h2><p>A <strong>Generator Performance Standards</strong> document is a formal record of the technical performance levels agreed between the connecting party, the NSP, and AEMO. It covers every clause in NER Schedule 5.2 (for generators) or Schedule 5.3a (for loads/MNSPs).</p><h3>GPS Structure</h3><ul><li><strong>Cover page</strong> &mdash; Project name, connection point, plant capacity, NSP, AEMO reference number</li><li><strong>Clause-by-clause table</strong> &mdash; For each NER clause: the proposed access standard level (AAS/NAS/MAS), the specific numerical values or performance parameters, and supporting evidence</li><li><strong>Supporting studies</strong> &mdash; Power system studies (load flow, fault level, dynamic), OEM data sheets, compliance test procedures</li></ul><h3>Who Reviews It?</h3><p>The NSP (e.g., Transgrid, Powerlink, ElectraNet) reviews the GPS for compatibility with their network. <strong>AEMO</strong> assesses the GPS to ensure it does not adversely impact power system security. Both must agree before connection can proceed.</p>"
+                    },
+                    {
+                        type: "success",
+                        title: "AEMO's Role",
+                        text: "AEMO is the independent assessor. Under NER clause 5.3.4A, AEMO must advise whether the proposed performance standards are adequate. If a NAS is proposed, AEMO evaluates whether the AAS is genuinely not achievable and whether the proposed NAS is the highest level reasonably achievable."
+                    },
+                    {
+                        type: "html",
+                        html: "<div class=\"glass\"><h3>Key Clauses &mdash; AAS / NAS / MAS Overview</h3><table class=\"data-table\"><thead><tr><th>NER Clause</th><th>Topic</th><th>AAS</th><th>NAS Range</th><th>MAS</th></tr></thead><tbody><tr><td>S5.2.5.1</td><td>Reactive Power Capability</td><td>Full range 0.395 lead to 0.395 lag (power factor basis)</td><td>Reduced range agreed with NSP/AEMO</td><td>No reactive support required beyond unity PF</td></tr><tr><td>S5.2.5.2</td><td>Quality of Electricity</td><td>Emission limits per AS/NZS 61000</td><td>Relaxed limits if background allows</td><td>Must not exceed planning levels</td></tr><tr><td>S5.2.5.3</td><td>Response to Freq Disturbances</td><td>Continuous operation 47&ndash;52 Hz; full output 49.5&ndash;50.5 Hz</td><td>Narrower continuous range</td><td>Disconnect below 47 Hz only; ride-through 47&ndash;52 Hz for 2 min</td></tr><tr><td>S5.2.5.4</td><td>Response to Voltage Disturbances</td><td>Continuous 90&ndash;110% nom; ride-through per curve</td><td>Narrower ride-through envelope</td><td>Ride-through 80&ndash;110% for limited duration</td></tr><tr><td>S5.2.5.5</td><td>Fault Ride-Through (FRT)</td><td>Ride through zero-voltage for 450 ms; inject reactive current</td><td>Reduced duration / partial voltage</td><td>Ride through voltage &ge;15% for 450 ms</td></tr><tr><td>S5.2.5.7</td><td>Power System Stabiliser</td><td>PSS fitted and tuned per AEMO requirements</td><td>PSS with reduced performance</td><td>No PSS required (non-synchronous only)</td></tr><tr><td>S5.2.5.11</td><td>Frequency Control &mdash; raise/lower</td><td>Proportional response within 6 s</td><td>Slower or limited response band</td><td>No active frequency response required</td></tr><tr><td>S5.2.5.13</td><td>Protection Systems</td><td>Per AEMO and NSP protection requirements</td><td>Modified settings by agreement</td><td>Minimum protection coordination</td></tr></tbody></table></div>"
+                    }
+                ],
+                checks: [
+                    {
+                        question: "A 150 MW solar farm proposes to meet the Automatic Access Standard for every clause in Schedule 5.2. Which of the following is true?",
+                        options: [
+                            "The NSP and AEMO must still negotiate each clause individually",
+                            "The NSP and AEMO must accept the proposed standards without further negotiation",
+                            "The project must also demonstrate it cannot meet a higher standard",
+                            "AEMO has the discretion to reject the AAS and require a lower standard"
+                        ],
+                        correct: 1,
+                        correctFeedback: "Correct. The whole point of the AAS is that it represents the benchmark. If you meet it, no negotiation is required and the NSP/AEMO must accept it under the Rules.",
+                        incorrectFeedback: "Not quite. The Automatic Access Standard is the benchmark level. If you meet AAS, the NSP and AEMO must accept it without further negotiation. That is the defining feature of AAS."
+                    },
+                    {
+                        question: "What is the primary reason the NER defines three tiers of access standards rather than a single mandatory requirement?",
+                        options: [
+                            "To create more work for AEMO assessors",
+                            "To balance power system security against connection costs on a case-by-case basis",
+                            "To allow older generators to avoid compliance entirely",
+                            "To give NSPs complete discretion over what generators must achieve"
+                        ],
+                        correct: 1,
+                        correctFeedback: "Correct. The three-tier system exists specifically to balance system security (higher is better for the grid) against cost efficiency (higher costs more for the project). NAS negotiation is the mechanism for this balance.",
+                        incorrectFeedback: "The tiered system exists to balance two competing objectives: power system security and connection costs. Requiring AAS for everything might be gold-plated; allowing anything below MAS would compromise system security."
+                    }
+                ]
+            },
+            {
+                title: "Deep Dive into Access Standard Levels",
+                subtitle: "Detailed walkthrough of AAS, NAS, and MAS with clause-level requirements",
+                content: [
+                    {
+                        type: "card",
+                        html: "<h2>Automatic Access Standard (AAS) &mdash; The Benchmark</h2><p>The AAS represents what the NER considers <strong>best practice</strong> for a generating system connecting to the power system. Key characteristics:</p><ul><li><strong>Right of connection</strong> &mdash; If your plant meets AAS for a clause, the NSP and AEMO cannot refuse it. There is no negotiation step.</li><li><strong>Highest performance</strong> &mdash; AAS values are set to provide the best outcome for power system security and reliability.</li><li><strong>OEM alignment</strong> &mdash; Modern inverter platforms from tier-1 manufacturers (Vestas, Siemens Gamesa, Goldwind, Sungrow, etc.) are generally designed to meet AAS for most clauses out of the box, though site-specific conditions can still make it impractical.</li></ul><p>Think of AAS as the <em>default</em>. You start here and only step down to NAS if you have a genuine technical or economic reason.</p>"
+                    },
+                    {
+                        type: "card",
+                        html: "<h2>Negotiated Access Standard (NAS) &mdash; The Middle Ground</h2><p>NAS is where the real engineering happens. When you propose a NAS for any clause, you must provide:</p><ul><li><strong>Technical justification</strong> &mdash; Why AAS cannot be achieved (e.g., grid impedance too high, SCR too low, OEM limitation)</li><li><strong>Evidence of highest reasonably achievable level</strong> &mdash; You cannot just jump to MAS. You must propose the <em>highest</em> standard you can achieve between AAS and MAS.</li><li><strong>Cost-benefit analysis (if applicable)</strong> &mdash; Under NER clause 5.3.4A(d), costs of meeting AAS must not be <em>disproportionate</em> to the benefit to all those who generate, transport, and consume electricity in the NEM.</li></ul><h3>The \"Reasonably Proportionate\" Test</h3><p>This is a key concept. The NER does not require you to spend unlimited money to reach AAS. But you must demonstrate that the cost of the increment from your proposed NAS up to AAS is genuinely disproportionate to the system-wide benefit. AEMO considers:</p><ul><li>Capital cost of equipment upgrades (e.g., additional STATCOMs, larger inverter capacity)</li><li>Ongoing operational costs</li><li>The power system benefit of the higher standard at <em>this specific connection point</em></li><li>Whether other connecting parties in the area have been granted NAS at similar levels</li></ul>"
+                    },
+                    {
+                        type: "warning",
+                        title: "Common Trap: Jumping Straight to MAS",
+                        text: "Some proponents propose MAS for clauses without first attempting to achieve a higher NAS. AEMO will push back. You must demonstrate the highest standard reasonably achievable, not the lowest you can get away with. Always start at AAS and work down with evidence."
+                    },
+                    {
+                        type: "card",
+                        html: "<h2>Minimum Access Standard (MAS) &mdash; The Floor</h2><p>MAS is the absolute minimum performance a generating system must meet to connect. Key points:</p><ul><li><strong>Non-negotiable floor</strong> &mdash; You cannot connect if you fail to meet MAS for any applicable clause. There is no standard below MAS.</li><li><strong>System security baseline</strong> &mdash; MAS values are set to prevent a connecting generator from adversely impacting power system security.</li><li><strong>Last resort</strong> &mdash; MAS should only be proposed when both NAS and AAS are demonstrably not achievable.</li></ul>"
+                    },
+                    {
+                        type: "tech",
+                        title: "Registered vs Proposed Performance Standards",
+                        text: "A <strong>Proposed Performance Standard</strong> is what you submit in the GPS during the connection process. Once AEMO and the NSP agree and the plant is commissioned, the agreed levels become <strong>Registered Performance Standards</strong> recorded in AEMO's generation registration database. These registered standards are legally binding and auditable. If your plant is found to be operating below its registered standard, AEMO can issue a non-compliance notice."
+                    },
+                    {
+                        type: "html",
+                        html: "<div class=\"glass\"><h3>S5.2.5 Clause Detail &mdash; AAS, NAS, and MAS Requirements</h3><table class=\"data-table\"><thead><tr><th>Clause</th><th>Requirement</th><th>AAS Detail</th><th>MAS Detail</th></tr></thead><tbody><tr><td>S5.2.5.1</td><td>Reactive Power</td><td>0.395 leading to 0.395 lagging at connection point across full output range (equivalent to PF 0.93)</td><td>No mandatory reactive range; must not adversely affect voltage</td></tr><tr><td>S5.2.5.3</td><td>Frequency Response</td><td>Continuous operation 47&ndash;52 Hz; no output reduction 49.5&ndash;50.5 Hz; limited reduction outside this band per defined profile</td><td>Continuous operation 48&ndash;52 Hz; trip permitted below 47 Hz; ride-through 47&ndash;48 Hz for at least 2 minutes</td></tr><tr><td>S5.2.5.4</td><td>Voltage Disturbance</td><td>Continuous 90&ndash;110% of nominal; ride-through per voltage-time curve including overvoltage to 130% for 20 ms</td><td>Continuous 90&ndash;110%; limited ride-through for voltages below 90%</td></tr><tr><td>S5.2.5.5</td><td>Fault Ride-Through</td><td>Zero-voltage ride-through for 450 ms at connection point; active reactive current injection during fault; recovery within 100 ms of fault clearance</td><td>Ride through voltage dips to 15% of nominal for 450 ms; limited reactive current injection required</td></tr><tr><td>S5.2.5.7</td><td>Power System Stabiliser</td><td>PSS fitted and tuned per AEMO requirements for damping inter-area and local modes</td><td>No PSS required for non-synchronous plant; synchronous machines must have basic PSS</td></tr><tr><td>S5.2.5.11</td><td>Frequency Control</td><td>Raise and lower response proportional to frequency deviation within 6 seconds; sustained for at least 5 minutes</td><td>No mandatory active frequency response</td></tr><tr><td>S5.2.5.13</td><td>Protection</td><td>Protection system per AEMO and NSP requirements; must clear faults within required timeframes</td><td>Basic protection coordination; must not compromise power system protection</td></tr></tbody></table></div>"
+                    },
+                    {
+                        type: "mentor",
+                        title: "Mentor Tip: Read the Actual NER Text",
+                        text: "The tables in this module are summaries. For a real GPS submission, you must refer to the actual NER clause text, which contains precise numerical thresholds, voltage-time curves, and conditional logic. The current NER is available on AEMC's website. Always use the version in force at the date of your connection application."
+                    }
+                ],
+                checks: [
+                    {
+                        question: "A wind farm proposes a Negotiated Access Standard for S5.2.5.5 (Fault Ride-Through). Which of the following must the proponent demonstrate?",
+                        options: [
+                            "That the MAS is sufficient for this connection point",
+                            "That the AAS is not achievable or its cost is disproportionate to the system benefit, and the proposed NAS is the highest level reasonably achievable",
+                            "That at least one other generator in the same state has been granted NAS for the same clause",
+                            "That the NSP has agreed to waive the requirement entirely"
+                        ],
+                        correct: 1,
+                        correctFeedback: "Correct. For any NAS proposal, you must show that AAS cannot be met (or its cost is disproportionate) and that your proposed NAS is the highest standard you can reasonably achieve. Precedent from other projects is not sufficient on its own.",
+                        incorrectFeedback: "When proposing NAS, the Rules require you to demonstrate that AAS cannot be met or is disproportionately costly, and that your proposed level is the highest reasonably achievable. Simply citing MAS sufficiency or other projects is not enough."
+                    },
+                    {
+                        question: "What happens if a proposed generating system cannot meet the Minimum Access Standard for NER clause S5.2.5.3 (Response to Frequency Disturbances)?",
+                        options: [
+                            "AEMO can grant an exemption if the NSP agrees",
+                            "The generator can still connect but with operating restrictions",
+                            "The generator cannot connect to the NEM &mdash; MAS is the absolute floor",
+                            "The clause is waived for non-synchronous generators"
+                        ],
+                        correct: 2,
+                        correctFeedback: "Correct. MAS is the non-negotiable floor. If you cannot meet MAS for any applicable clause, you cannot connect. There is no mechanism under the NER to go below MAS.",
+                        incorrectFeedback: "MAS is the absolute floor. There is no exemption or waiver mechanism in the NER that allows connection below MAS for any applicable clause. The generator simply cannot connect until it can meet MAS."
+                    }
+                ]
+            },
+            {
+                title: "Practical Application",
+                subtitle: "Filling in a GPS template with worked examples and real negotiation scenarios",
+                content: [
+                    {
+                        type: "card",
+                        html: "<h2>Step-by-Step: Completing a GPS Template</h2><p>Here is the practical workflow for populating a GPS document for a new generating system connection:</p>"
+                    },
+                    {
+                        type: "html",
+                        html: "<div class=\"process-flow\"><div class=\"process-step\"><div class=\"step-number\">1</div><div class=\"step-title\">Gather Data</div><div class=\"step-desc\">Collect OEM data sheets, inverter capability curves, power system study results (fault levels, SCR, impedance), and NSP technical requirements</div></div><div class=\"process-step\"><div class=\"step-number\">2</div><div class=\"step-title\">Assess Each Clause</div><div class=\"step-desc\">For every S5.2 clause, compare your plant capability against the AAS. Document where AAS can be met and where it cannot</div></div><div class=\"process-step\"><div class=\"step-number\">3</div><div class=\"step-title\">Prepare NAS Justifications</div><div class=\"step-desc\">For each clause where AAS is not achievable, prepare technical evidence and cost analysis supporting the highest NAS you can offer</div></div><div class=\"process-step\"><div class=\"step-number\">4</div><div class=\"step-title\">Submit &amp; Negotiate</div><div class=\"step-desc\">Submit the GPS to the NSP and AEMO. Respond to Requests for Information (RFIs). Iterate until agreement is reached</div></div></div>"
+                    },
+                    {
+                        type: "card",
+                        html: "<h2>Worked Example 1: S5.2.5.5 &mdash; Fault Ride-Through</h2><h3>Scenario</h3><p>Your 200 MW wind farm uses Type-4 (full-converter) wind turbines. The OEM states the turbines can ride through a zero-voltage event for 450 ms and inject reactive current during the fault.</p><h3>AAS Requirement (S5.2.5.5)</h3><p>The generating system must remain in continuous uninterrupted operation during a fault that results in the voltage at the connection point being zero for up to 450 ms, and must provide reactive current injection proportional to the voltage depression during the fault.</p><h3>Assessment</h3><p>The OEM capability aligns with the AAS. However, you need to verify this through <strong>PSCAD or PSS/E dynamic simulation</strong> at the specific connection point, because:</p><ul><li>Network impedance affects voltage recovery time</li><li>Multiple turbines may interact during a fault (common-mode behaviour)</li><li>Protection system operating times affect actual fault duration</li></ul><h3>Recommendation</h3><p>Propose <strong>AAS</strong> for this clause. Support with dynamic simulation results showing zero-voltage ride-through and reactive current injection at the connection point. If simulations reveal issues (e.g., slower recovery due to weak grid), consider proposing NAS with the highest achievable ride-through voltage.</p>"
+                    },
+                    {
+                        type: "card",
+                        html: "<h2>Worked Example 2: S5.2.5.1 &mdash; Reactive Power Capability</h2><h3>Scenario</h3><p>The same 200 MW wind farm. The AAS requires reactive power capability equivalent to a power factor range of 0.93 leading to 0.93 lagging at the connection point across the full active power output range.</p><h3>The Challenge</h3><p>At the connection point (after the step-up transformer and transmission line), reactive losses consume some of the turbine reactive capability. Your power system studies show:</p><ul><li>At full output (200 MW), you can achieve 0.95 leading to 0.95 lagging at the connection point</li><li>At partial output (below 50 MW), the turbines can provide the full 0.93 range</li><li>To achieve 0.93 at full output, you would need an additional 40 Mvar STATCOM costing $12M</li></ul><h3>Recommendation</h3><p>Propose <strong>NAS</strong> for this clause. Justification: the plant achieves 0.95 PF range at the connection point at full output, which is the highest reasonably achievable without a disproportionate $12M STATCOM investment. Include:</p><ul><li>Reactive capability curves at the connection point from load flow studies</li><li>OEM data sheets showing turbine-level reactive capability</li><li>Cost estimate for the STATCOM required to reach AAS</li><li>Analysis of the system benefit of the additional reactive range at this specific connection point</li></ul>"
+                    },
+                    {
+                        type: "info",
+                        title: "Common GPS Negotiation Scenarios",
+                        text: "The most frequently negotiated clauses are: <strong>S5.2.5.1</strong> (reactive power &mdash; often limited by transformer and line losses), <strong>S5.2.5.5</strong> (fault ride-through &mdash; weak grid connections), <strong>S5.2.5.11</strong> (frequency control &mdash; variable renewable energy limitations), and <strong>S5.2.5.7</strong> (PSS &mdash; not applicable to all non-synchronous plant). Clauses like S5.2.5.13 (protection) are almost always agreed at AAS because protection coordination is non-negotiable for safety."
+                    },
+                    {
+                        type: "card",
+                        html: "<h2>GPS Assessment Timeline</h2><p>The typical timeline for a GPS from submission to agreement:</p><ul><li><strong>Week 0</strong> &mdash; Submit initial GPS to NSP</li><li><strong>Weeks 2&ndash;4</strong> &mdash; NSP preliminary review and questions</li><li><strong>Week 4</strong> &mdash; NSP forwards GPS to AEMO with their assessment</li><li><strong>Weeks 4&ndash;12</strong> &mdash; AEMO assessment period (NER allows up to 30 business days under clause 5.3.4A(c))</li><li><strong>Weeks 12&ndash;16</strong> &mdash; RFI responses, negotiation on NAS clauses</li><li><strong>Weeks 16&ndash;20</strong> &mdash; Revised GPS submission if required</li><li><strong>Week 20+</strong> &mdash; Final agreement (can be longer for complex or contentious projects)</li></ul><p><strong>Note:</strong> This timeline can vary significantly. Simple projects with mostly AAS compliance may be agreed within 8 weeks. Complex projects with multiple NAS clauses and weak grid issues can take 6+ months.</p>"
+                    },
+                    {
+                        type: "html",
+                        html: "<div class=\"glass\"><h3>GPS Submission Process Flow</h3><div class=\"process-flow\"><div class=\"process-step\"><div class=\"step-number\">1</div><div class=\"step-title\">Proponent Submits GPS</div><div class=\"step-desc\">Initial GPS sent to NSP with all clause proposals and supporting studies</div></div><div class=\"process-step\"><div class=\"step-number\">2</div><div class=\"step-title\">NSP Review</div><div class=\"step-desc\">NSP assesses network compatibility, protection coordination, and augmentation needs</div></div><div class=\"process-step\"><div class=\"step-number\">3</div><div class=\"step-title\">AEMO Assessment</div><div class=\"step-desc\">AEMO evaluates system security impact; issues RFIs for NAS justifications</div></div><div class=\"process-step\"><div class=\"step-number\">4</div><div class=\"step-title\">Negotiation</div><div class=\"step-desc\">Three-party negotiation on NAS clauses; may require additional studies</div></div><div class=\"process-step\"><div class=\"step-number\">5</div><div class=\"step-title\">Agreement</div><div class=\"step-desc\">All parties sign off; standards become Registered Performance Standards at commissioning</div></div></div></div>"
+                    }
+                ],
+                checks: [
+                    {
+                        question: "Your power system studies show the wind farm can achieve a power factor of 0.95 (not 0.93) at the connection point at full output. The STATCOM needed to reach 0.93 costs $12M. What access standard should you propose for S5.2.5.1?",
+                        options: [
+                            "AAS, because you should always aim for the highest standard",
+                            "MAS, because the STATCOM is too expensive",
+                            "NAS at 0.95 PF, with evidence that 0.93 is disproportionately costly relative to the system benefit",
+                            "Request an exemption from the clause entirely"
+                        ],
+                        correct: 2,
+                        correctFeedback: "Correct. You propose NAS at the highest level you can achieve (0.95 PF) with evidence that the cost of reaching AAS (0.93 PF via a $12M STATCOM) is disproportionate. You do not jump to MAS and you cannot get an exemption from Schedule 5.2 clauses.",
+                        incorrectFeedback: "The correct approach is to propose NAS at 0.95 PF (the highest you can achieve) with a cost-benefit analysis showing that the $12M STATCOM needed for AAS is disproportionate. You never jump straight to MAS, and exemptions from S5.2 clauses do not exist."
+                    },
+                    {
+                        question: "During AEMO's assessment of a GPS, they issue a Request for Information (RFI) asking for additional dynamic simulation results for the fault ride-through clause. What is the most appropriate response?",
+                        options: [
+                            "Refuse the RFI on the grounds that the OEM data sheet is sufficient evidence",
+                            "Provide the requested PSCAD/PSS-E simulation results showing plant behaviour during faults at the specific connection point",
+                            "Withdraw the NAS proposal and propose MAS instead to avoid further assessment",
+                            "Ask the NSP to overrule AEMO's request"
+                        ],
+                        correct: 1,
+                        correctFeedback: "Correct. AEMO RFIs are a normal part of the GPS process. You should provide the requested dynamic simulation results specific to this connection point. OEM data alone is not sufficient because it does not account for network conditions.",
+                        incorrectFeedback: "AEMO RFIs are standard practice during GPS assessment. The correct response is to provide the requested site-specific dynamic simulation results. OEM data sheets alone do not demonstrate performance at a particular connection point."
+                    }
+                ]
+            },
+            {
+                title: "Advanced Scenarios & Edge Cases",
+                subtitle: "Weak grids, hybrid projects, measurement points, and 2025 rule changes",
+                content: [
+                    {
+                        type: "card",
+                        html: "<h2>When AAS Is Technically Impossible</h2><h3>Weak Grid Connections (Low SCR)</h3><p>The <strong>Short Circuit Ratio (SCR)</strong> at the connection point is the ratio of system fault level to plant rated capacity. When SCR is low (typically below 3), meeting AAS for several clauses becomes physically impossible:</p><ul><li><strong>S5.2.5.5 (FRT)</strong> &mdash; In a weak grid, voltage recovery after a fault is slow. The plant may not be able to maintain zero-voltage ride-through because the post-fault voltage takes too long to recover, causing turbine/inverter protection to trip.</li><li><strong>S5.2.5.1 (Reactive Power)</strong> &mdash; Voltage sensitivity is high in weak grids. The plant may need to reserve reactive capacity for voltage regulation, reducing the range available for the GPS.</li><li><strong>S5.2.5.4 (Voltage Disturbance)</strong> &mdash; Voltage swings are larger and faster in weak grids, making continuous operation across the full voltage range more challenging.</li></ul><p>In these situations, NAS is not just permissible but expected. AEMO will assess the proposed NAS against what is achievable given the actual system conditions at the connection point.</p>"
+                    },
+                    {
+                        type: "warning",
+                        title: "Watch Out: System Strength Remediation",
+                        text: "Since the 2021 rule change, generators connecting in areas declared as having a <strong>system strength shortfall</strong> may need to fund a <strong>system strength remediation scheme (SSRS)</strong> under NER clause 5.3.4B. The cost of the SSRS can be significant and may change the cost-benefit analysis for NAS proposals. Factor this into your GPS strategy early."
+                    },
+                    {
+                        type: "card",
+                        html: "<h2>Multiple Generating Systems at One Connection Point</h2><p>When two or more generating systems connect at the same connection point (e.g., a solar farm and a BESS behind the same substation), the GPS requirements apply to the <strong>combined response</strong> at the connection point. This creates complexity:</p><ul><li>Each generating system has its own GPS, but AEMO assesses the aggregate performance</li><li>One system may compensate for another (e.g., BESS provides reactive support that solar cannot)</li><li>The proponent must demonstrate that the combined response meets the agreed standards under all operating conditions (including when one system is offline)</li></ul>"
+                    },
+                    {
+                        type: "card",
+                        html: "<h2>Hybrid Projects: Solar + BESS</h2><p>Hybrid projects are increasingly common and raise specific GPS questions:</p><h3>Which Standards Apply?</h3><ul><li>If the solar and BESS are registered as <strong>separate generating systems</strong>, each gets its own GPS and access standards are assessed independently.</li><li>If registered as a <strong>single integrated generating system</strong>, the GPS covers the combined plant, and the BESS can be used to meet standards that the solar alone cannot (e.g., frequency response, FRT support).</li></ul><h3>Strategic Considerations</h3><ul><li><strong>BESS can improve GPS outcomes</strong> &mdash; A BESS can provide fast reactive power, frequency response, and voltage support that helps the combined system meet AAS for clauses the solar component alone might only achieve NAS.</li><li><strong>Operating mode matters</strong> &mdash; The GPS must specify performance across all operating modes (solar only, BESS only, combined, charging, discharging).</li><li><strong>Degradation</strong> &mdash; Battery capacity degrades over time. The GPS must account for end-of-life performance, not just day-one capability.</li></ul>"
+                    },
+                    {
+                        type: "tech",
+                        title: "Connection Point vs Sending End Measurement",
+                        text: "The NER defines access standards at the <strong>connection point</strong> (the boundary between the NSP network and the connecting party's network). However, the generator's actual capability is measured at the <strong>sending end</strong> (generator terminals or inverter output). Losses in transformers, cables, and overhead lines between the sending end and the connection point affect the measured performance. Always perform studies at the connection point, not just the sending end."
+                    },
+                    {
+                        type: "card",
+                        html: "<h2>2025 Rule Changes Affecting Access Standards</h2><p>Several recent and upcoming NER amendments affect how access standards are applied:</p><h3>Grid-Forming Inverters</h3><p>AEMO's 2024 amendment proposal for <strong>grid-forming inverter standards</strong> introduces new requirements under S5.2.5 for inverter-based resources to provide voltage-forming capability. This is expected to become a new AAS requirement for large-scale connections in weak grid areas, with NAS available for plants that cannot achieve full grid-forming operation.</p><h3>Synchronous Condenser Requirements</h3><p>In some regions (particularly South Australia), the system strength framework may require connecting generators to fund or install <strong>synchronous condensers</strong>. The performance of these condensers is also subject to GPS requirements, adding another layer of complexity to the connection process.</p><h3>Fast Frequency Response (FFR)</h3><p>The FFR market launched in October 2023. While not directly a GPS requirement, AEMO is increasingly interested in fast frequency capability as part of GPS negotiations, particularly for BESS and hybrid projects that could provide both GPS compliance and FFR market services.</p>"
+                    },
+                    {
+                        type: "info",
+                        title: "NSP-Specific Interpretation Differences",
+                        text: "While the NER is national, NSPs interpret and apply the rules with some variation. For example: <strong>Transgrid (NSW)</strong> has specific protection coordination requirements that go beyond the NER minimum; <strong>Powerlink (QLD)</strong> has additional voltage regulation requirements in the far north; <strong>ElectraNet (SA)</strong> focuses heavily on system strength and inertia due to South Australia's grid characteristics. Always check the specific NSP's connection requirements document in addition to the NER."
+                    },
+                    {
+                        type: "mentor",
+                        title: "Mentor Tip: Engage Early",
+                        text: "Do not wait until the formal GPS submission to engage with AEMO. Most experienced connection engineers request a <strong>pre-application meeting</strong> with AEMO and the NSP to discuss likely GPS outcomes before investing in detailed studies. AEMO's Generator Performance Standards Guidelines document is also an essential reference for understanding their assessment approach."
+                    }
+                ],
+                checks: [
+                    {
+                        question: "A solar farm and BESS are registered as a single integrated generating system. The solar component alone can only achieve NAS for S5.2.5.5 (FRT), but the BESS can provide the additional ride-through support needed for AAS. What should the GPS propose?",
+                        options: [
+                            "NAS for the solar component and AAS for the BESS component, listed separately",
+                            "AAS for the integrated system, since the combined plant meets the standard, with evidence from dynamic simulations of the combined response",
+                            "MAS for both components to keep the assessment simple",
+                            "AAS, but only when the BESS is online; NAS when it is offline or depleted"
+                        ],
+                        correct: 1,
+                        correctFeedback: "Correct. Since they are registered as a single integrated generating system, the GPS covers the combined response at the connection point. If the combined system meets AAS, propose AAS with simulation evidence. However, you must also address performance under all operating scenarios (including BESS offline).",
+                        incorrectFeedback: "For a single integrated generating system, the GPS applies to the combined response at the connection point. If the combined plant meets AAS, you should propose AAS with dynamic simulation evidence. The GPS does not list component-level standards separately."
+                    },
+                    {
+                        question: "Why does a low Short Circuit Ratio (SCR) at the connection point make it difficult to meet the AAS for Fault Ride-Through (S5.2.5.5)?",
+                        options: [
+                            "Low SCR means the generator is too small to affect the network",
+                            "Low SCR means protection systems operate too slowly",
+                            "Low SCR means post-fault voltage recovery is slow, potentially causing inverter protection to trip before the voltage-time curve is satisfied",
+                            "Low SCR means the generator is exempt from FRT requirements"
+                        ],
+                        correct: 2,
+                        correctFeedback: "Correct. In a weak grid (low SCR), the system's ability to recover voltage after a fault is impaired. The post-fault voltage rise is slow, and the generator's inverter protection may trip before the voltage recovers enough to satisfy the AAS ride-through curve.",
+                        incorrectFeedback: "Low SCR indicates a weak grid where the power system struggles to recover voltage after a fault. This slow voltage recovery can cause inverter protection to trip before the AAS fault ride-through requirements are satisfied."
+                    }
+                ]
+            }
+        ],
+        assessment: [
+            {
+                question: "What does the Automatic Access Standard (AAS) represent in the NER framework?",
+                options: [
+                    "The minimum level required for connection",
+                    "A negotiable target that AEMO can adjust per project",
+                    "The benchmark level that, if met, must be accepted without negotiation",
+                    "A standard that only applies to synchronous generators"
+                ],
+                correct: 2
+            },
+            {
+                question: "Under which circumstance can a generator connect to the NEM at a level below the Minimum Access Standard (MAS)?",
+                options: [
+                    "If the NSP provides a written exemption",
+                    "If AEMO agrees that the clause is not applicable to the technology type",
+                    "Under no circumstance &mdash; MAS is the absolute floor for connection",
+                    "If the generator agrees to operate at reduced capacity"
+                ],
+                correct: 2
+            },
+            {
+                question: "NER clause S5.2.5.5 relates to which technical requirement?",
+                options: [
+                    "Reactive power capability at the connection point",
+                    "Fault ride-through performance during voltage disturbances",
+                    "Power system stabiliser tuning and settings",
+                    "Frequency response to system disturbances"
+                ],
+                correct: 1
+            },
+            {
+                question: "What is the GPS document?",
+                options: [
+                    "A satellite positioning system used for site surveys",
+                    "A formal record of the agreed technical performance levels between the connecting party, NSP, and AEMO",
+                    "An AEMO internal report on grid performance statistics",
+                    "A generator nameplate data sheet provided by the OEM"
+                ],
+                correct: 1
+            },
+            {
+                question: "When proposing a Negotiated Access Standard, what must the proponent demonstrate?",
+                options: [
+                    "That MAS is adequate for this connection point",
+                    "That at least three other generators have been granted NAS for the same clause",
+                    "That AAS is not achievable or its cost is disproportionate, and the proposed NAS is the highest level reasonably achievable",
+                    "That the NSP has already approved the proposed standard"
+                ],
+                correct: 2
+            },
+            {
+                question: "In a hybrid solar + BESS project registered as a single integrated generating system, how are GPS requirements assessed?",
+                options: [
+                    "Separately for each technology component",
+                    "Only for the larger component by rated capacity",
+                    "As a combined response at the connection point across all operating modes",
+                    "GPS requirements do not apply to BESS components"
+                ],
+                correct: 2
+            },
+            {
+                question: "What is the 'reasonably proportionate' test in the context of NAS negotiation?",
+                options: [
+                    "Whether the generator's capacity is proportionate to the network fault level",
+                    "Whether the cost of achieving AAS is disproportionate to the system-wide benefit of the higher standard",
+                    "Whether the generator's output is proportionate to the state's electricity demand",
+                    "Whether the NSP's network augmentation cost is proportionate to the connection fee"
+                ],
+                correct: 1
+            },
+            {
+                question: "Why is the connection point (not the sending end) the correct measurement location for access standard compliance?",
+                options: [
+                    "Because the sending end is inside the generator enclosure and inaccessible",
+                    "Because AEMO only monitors connection points, not individual generators",
+                    "Because losses in transformers, cables, and lines between the sending end and connection point affect actual performance delivered to the network",
+                    "Because the NER only applies to equipment owned by the NSP"
+                ],
+                correct: 2
+            },
+            {
+                question: "What impact does the 2024 grid-forming inverter amendment have on access standards?",
+                options: [
+                    "It removes the AAS requirement for all inverter-based resources",
+                    "It introduces new S5.2.5 requirements for voltage-forming capability, expected to become AAS for large connections in weak grid areas",
+                    "It requires all generators to install synchronous condensers",
+                    "It only affects generators connected after 2030"
+                ],
+                correct: 1
+            },
+            {
+                question: "A generator's power system studies show it can achieve a power factor range of 0.95 at the connection point at full output. The AAS requires 0.93. A STATCOM costing $12M would be needed to reach 0.93. What is the correct GPS approach?",
+                options: [
+                    "Propose AAS and absorb the $12M STATCOM cost",
+                    "Propose MAS to avoid the STATCOM entirely",
+                    "Propose NAS at 0.95 PF with a cost-benefit analysis demonstrating the STATCOM cost is disproportionate to the system benefit",
+                    "Request AEMO to change the AAS to 0.95 PF for this project"
+                ],
+                correct: 2
+            }
+        ]
+    };
+    </script>
+    <script src="../../training-engine.js"></script>
+    <script src="../../module-renderer.js"></script>
+</body>
+</html>

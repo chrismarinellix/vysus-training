@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="page-title">Grid Engineering Training Module</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --stockholm-neon: #00E3A9;
+            --malmo-green: #005454;
+            --barcelona-dusk: #3c1363;
+            --houston-pink: #f188f4;
+            --mumbai-magenta: #8e329c;
+            --hellerup-royal: #05275e;
+            --bath-sky: #4b81ef;
+            --orlando-red: #f92d63;
+            --trondheim-night: #1d1d1b;
+            --scandinavia-rock: #485559;
+            --bergen-rain: #dadada;
+            --oslo-snow: #f8f8f8;
+            --navy: #1a2744;
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+            color: white;
+            line-height: 1.7;
+            min-height: 100vh;
+            background: var(--navy);
+            overflow-x: hidden;
+        }
+
+        /* Background */
+        .bg-container {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
+        }
+        .bg-layer {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background-size: cover; background-position: center;
+            opacity: 0; transition: opacity 1.5s ease;
+        }
+        .bg-layer.active { opacity: 1; }
+        .bg-layer::after {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at center, rgba(26,39,68,0.6) 0%, rgba(26,39,68,0.92) 100%);
+        }
+
+        /* Top Bar */
+        .top-bar {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 9999;
+            background: rgba(26,39,68,0.85); backdrop-filter: blur(40px);
+            border-bottom: 1px solid rgba(0,227,169,0.15);
+            padding: 0.5rem 2rem; display: flex; align-items: center; justify-content: space-between;
+        }
+        .top-bar-left { display: flex; align-items: center; gap: 1rem; }
+        .top-bar-left a { color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.85rem; font-weight: 600; }
+        .top-bar-left a:hover { color: var(--stockholm-neon); }
+        .module-title-bar { font-size: 0.9rem; font-weight: 700; color: white; }
+        .top-bar-right { display: flex; align-items: center; gap: 1rem; }
+        .xp-pill {
+            background: rgba(0,227,169,0.15); border: 1px solid rgba(0,227,169,0.3);
+            border-radius: 20px; padding: 0.3rem 0.8rem; font-size: 0.8rem; font-weight: 700;
+            color: var(--stockholm-neon);
+        }
+        .timer-pill {
+            background: rgba(75,129,239,0.15); border: 1px solid rgba(75,129,239,0.3);
+            border-radius: 20px; padding: 0.3rem 0.8rem; font-size: 0.8rem; font-weight: 600;
+            color: var(--bath-sky);
+        }
+
+        /* Progress Bar */
+        .progress-track {
+            position: fixed; top: 48px; left: 0; right: 0; height: 4px; z-index: 9998;
+            background: rgba(255,255,255,0.05);
+        }
+        .progress-fill {
+            height: 100%; background: linear-gradient(90deg, var(--stockholm-neon), var(--bath-sky));
+            transition: width 0.6s ease; width: 0%;
+        }
+
+        /* Section Navigation */
+        .section-nav {
+            position: fixed; top: 56px; left: 0; right: 0; z-index: 9997;
+            background: rgba(26,39,68,0.8); backdrop-filter: blur(30px);
+            display: flex; justify-content: center; gap: 0.25rem; padding: 0.5rem 1rem;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .section-tab {
+            border: none; background: transparent; color: rgba(255,255,255,0.4);
+            font-size: 0.78rem; font-weight: 600; font-family: 'Inter', sans-serif;
+            padding: 0.5rem 1rem; border-radius: 20px; cursor: pointer;
+            transition: all 0.3s ease; white-space: nowrap;
+        }
+        .section-tab:hover { color: rgba(255,255,255,0.7); background: rgba(255,255,255,0.05); }
+        .section-tab.active {
+            background: linear-gradient(135deg, var(--stockholm-neon), var(--malmo-green));
+            color: white; box-shadow: 0 2px 12px rgba(0,227,169,0.4);
+        }
+        .section-tab.completed { color: var(--stockholm-neon); }
+        .section-tab.completed::after { content: ' ✓'; }
+        .section-tab.locked { opacity: 0.3; cursor: not-allowed; }
+
+        /* Content */
+        .content-wrap { padding: 7.5rem 2rem 4rem; max-width: 1200px; margin: 0 auto; }
+
+        .section-panel { display: none; animation: fadeUp 0.5s ease; }
+        .section-panel.active { display: block; }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Glass Cards */
+        .glass {
+            background: rgba(255,255,255,0.03); backdrop-filter: blur(60px) saturate(180%);
+            border-radius: 24px; border: 1px solid rgba(255,255,255,0.08);
+            padding: 2.5rem; margin-bottom: 2rem;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+        }
+        .glass:hover { border-color: rgba(0,227,169,0.15); }
+
+        .glass-hero {
+            text-align: center; padding: 3rem 2rem;
+            background: linear-gradient(135deg, rgba(0,227,169,0.08), rgba(75,129,239,0.08));
+        }
+        .glass-hero h1 {
+            font-size: 2.8rem; font-weight: 800; margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--stockholm-neon), white);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+        }
+        .glass-hero .tagline { font-size: 1.3rem; color: var(--stockholm-neon); font-weight: 300; margin-bottom: 0.5rem; }
+        .glass-hero .subtitle { font-size: 1rem; color: rgba(255,255,255,0.7); }
+
+        /* Content Typography */
+        h2 { font-size: 2rem; margin-bottom: 1.2rem; color: white; }
+        h3 { font-size: 1.5rem; margin: 1.5rem 0 0.8rem; color: var(--stockholm-neon); }
+        h4 { font-size: 1.2rem; margin: 1.2rem 0 0.6rem; color: var(--bath-sky); }
+        p { font-size: 1.05rem; color: rgba(255,255,255,0.9); margin-bottom: 1rem; line-height: 1.8; }
+        ul, ol { margin-left: 1.5rem; margin-bottom: 1.2rem; }
+        li { font-size: 1rem; color: rgba(255,255,255,0.9); margin-bottom: 0.5rem; line-height: 1.7; }
+        strong { color: var(--stockholm-neon); }
+
+        /* Info Boxes */
+        .box-info { background: rgba(75,129,239,0.12); border-left: 4px solid var(--bath-sky); border-radius: 12px; padding: 1.2rem; margin: 1.2rem 0; }
+        .box-info h4 { color: var(--bath-sky); margin-top: 0; }
+        .box-success { background: rgba(0,227,169,0.12); border-left: 4px solid var(--stockholm-neon); border-radius: 12px; padding: 1.2rem; margin: 1.2rem 0; }
+        .box-success h4 { color: var(--stockholm-neon); margin-top: 0; }
+        .box-warn { background: rgba(249,45,99,0.12); border-left: 4px solid var(--orlando-red); border-radius: 12px; padding: 1.2rem; margin: 1.2rem 0; }
+        .box-warn h4 { color: var(--orlando-red); margin-top: 0; }
+        .box-tech { background: rgba(142,50,156,0.12); border-left: 4px solid var(--mumbai-magenta); border-radius: 12px; padding: 1.2rem; margin: 1.2rem 0; }
+        .box-tech h4 { color: var(--mumbai-magenta); margin-top: 0; }
+        .box-mentor { background: rgba(241,136,244,0.12); border-left: 4px solid var(--houston-pink); border-radius: 12px; padding: 1.2rem; margin: 1.2rem 0; }
+        .box-mentor h4 { color: var(--houston-pink); margin-top: 0; }
+
+        /* Tables */
+        .data-table { width: 100%; border-collapse: separate; border-spacing: 0; margin: 1.2rem 0; border-radius: 12px; overflow: hidden; }
+        .data-table thead { background: linear-gradient(135deg, var(--stockholm-neon), var(--malmo-green)); }
+        .data-table th { padding: 1rem; text-align: left; font-weight: 700; color: white; font-size: 0.9rem; }
+        .data-table td { padding: 0.8rem 1rem; background: rgba(255,255,255,0.03); border-bottom: 1px solid rgba(255,255,255,0.05); color: rgba(255,255,255,0.9); font-size: 0.95rem; }
+        .data-table tbody tr:hover td { background: rgba(255,255,255,0.06); }
+
+        /* Process Flow */
+        .process-flow { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.2rem; margin: 1.5rem 0; }
+        .process-step {
+            background: rgba(0,227,169,0.08); border: 1px solid rgba(0,227,169,0.2);
+            border-radius: 16px; padding: 1.5rem; text-align: center;
+        }
+        .step-number {
+            display: inline-block; width: 44px; height: 44px; line-height: 44px;
+            background: linear-gradient(135deg, var(--stockholm-neon), var(--malmo-green));
+            border-radius: 50%; font-size: 1.3rem; font-weight: 700; margin-bottom: 0.8rem;
+        }
+        .step-title { font-size: 1.1rem; font-weight: 700; margin-bottom: 0.4rem; }
+        .step-desc { font-size: 0.9rem; color: rgba(255,255,255,0.7); }
+
+        /* Formative Knowledge Check */
+        .knowledge-check {
+            background: linear-gradient(135deg, rgba(75,129,239,0.1), rgba(0,227,169,0.05));
+            border: 2px solid rgba(75,129,239,0.2); border-radius: 20px; padding: 2rem; margin: 2rem 0;
+        }
+        .kc-header { display: flex; align-items: center; gap: 0.8rem; margin-bottom: 1.2rem; }
+        .kc-icon { font-size: 1.5rem; }
+        .kc-label { font-size: 1rem; font-weight: 700; color: var(--bath-sky); }
+        .kc-xp { font-size: 0.8rem; color: rgba(255,255,255,0.5); margin-left: auto; }
+        .kc-question { font-size: 1.05rem; font-weight: 600; margin-bottom: 1rem; color: white; }
+        .kc-options { display: flex; flex-direction: column; gap: 0.6rem; }
+        .kc-option {
+            padding: 0.9rem 1.2rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.03); cursor: pointer; transition: all 0.3s ease;
+            font-size: 0.95rem; color: rgba(255,255,255,0.9);
+        }
+        .kc-option:hover { border-color: rgba(75,129,239,0.4); background: rgba(75,129,239,0.1); }
+        .kc-option.selected { border-color: var(--bath-sky); background: rgba(75,129,239,0.15); }
+        .kc-option.correct { border-color: var(--stockholm-neon); background: rgba(0,227,169,0.15); color: var(--stockholm-neon); }
+        .kc-option.incorrect { border-color: var(--orlando-red); background: rgba(249,45,99,0.1); color: var(--orlando-red); }
+        .kc-option.disabled { pointer-events: none; opacity: 0.7; }
+        .kc-feedback { margin-top: 1rem; padding: 1rem; border-radius: 10px; font-size: 0.9rem; display: none; }
+        .kc-feedback.show { display: block; }
+        .kc-feedback.correct-fb { background: rgba(0,227,169,0.1); border: 1px solid rgba(0,227,169,0.3); color: var(--stockholm-neon); }
+        .kc-feedback.incorrect-fb { background: rgba(249,45,99,0.1); border: 1px solid rgba(249,45,99,0.3); color: var(--orlando-red); }
+
+        /* Feedback Hotspot */
+        .feedback-hotspot {
+            background: linear-gradient(135deg, rgba(241,136,244,0.08), rgba(142,50,156,0.08));
+            border: 1px dashed rgba(241,136,244,0.3); border-radius: 20px;
+            padding: 2rem; margin: 2rem 0; text-align: center;
+        }
+        .feedback-hotspot h4 { color: var(--houston-pink); margin-bottom: 0.8rem; font-size: 1.1rem; }
+        .feedback-hotspot p { color: rgba(255,255,255,0.6); font-size: 0.9rem; margin-bottom: 1rem; }
+        .feedback-textarea {
+            width: 100%; min-height: 80px; border-radius: 12px; border: 1px solid rgba(255,255,255,0.15);
+            background: rgba(255,255,255,0.05); color: white; padding: 1rem; font-size: 0.95rem;
+            font-family: 'Inter', sans-serif; resize: vertical; margin-bottom: 0.8rem;
+        }
+        .feedback-textarea::placeholder { color: rgba(255,255,255,0.3); }
+        .feedback-stars { display: flex; gap: 0.4rem; justify-content: center; margin-bottom: 1rem; }
+        .feedback-star {
+            font-size: 1.5rem; cursor: pointer; opacity: 0.3; transition: all 0.2s;
+        }
+        .feedback-star.active { opacity: 1; }
+        .feedback-submit {
+            padding: 0.7rem 2rem; border-radius: 25px; border: none;
+            background: linear-gradient(135deg, var(--houston-pink), var(--mumbai-magenta));
+            color: white; font-weight: 700; cursor: pointer; font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+        .feedback-submit:hover { transform: translateY(-2px); box-shadow: 0 4px 20px rgba(241,136,244,0.4); }
+        .feedback-submitted { color: var(--stockholm-neon); font-weight: 600; display: none; }
+
+        /* Assessment */
+        .assessment-container { max-width: 900px; margin: 0 auto; }
+        .quiz-card { margin-bottom: 2rem; }
+        .question-number { font-size: 0.85rem; color: var(--bath-sky); font-weight: 700; margin-bottom: 0.5rem; }
+        .question-text { font-size: 1.15rem; font-weight: 600; margin-bottom: 1.2rem; color: white; }
+        .answer-options { display: flex; flex-direction: column; gap: 0.6rem; }
+        .answer-option {
+            padding: 1rem 1.2rem; border-radius: 14px; border: 2px solid rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.03); cursor: pointer; transition: all 0.3s ease;
+            font-size: 1rem; color: rgba(255,255,255,0.9); display: flex; align-items: center; gap: 0.8rem;
+        }
+        .answer-option:hover { border-color: rgba(0,227,169,0.4); background: rgba(0,227,169,0.08); }
+        .answer-option.selected { border-color: var(--stockholm-neon); background: rgba(0,227,169,0.12); }
+        .answer-option .opt-letter {
+            width: 32px; height: 32px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            background: rgba(255,255,255,0.08); font-weight: 700; font-size: 0.9rem; flex-shrink: 0;
+        }
+        .answer-option.selected .opt-letter {
+            background: var(--stockholm-neon); color: var(--navy);
+        }
+
+        /* Results Card */
+        .results-card { text-align: center; }
+        .score-circle {
+            width: 160px; height: 160px; border-radius: 50%; margin: 1.5rem auto;
+            display: flex; align-items: center; justify-content: center; flex-direction: column;
+            font-size: 3rem; font-weight: 800;
+        }
+        .score-circle.pass {
+            border: 4px solid var(--stockholm-neon);
+            background: rgba(0,227,169,0.1); color: var(--stockholm-neon);
+        }
+        .score-circle.fail {
+            border: 4px solid var(--orlando-red);
+            background: rgba(249,45,99,0.1); color: var(--orlando-red);
+        }
+        .score-circle small { font-size: 1rem; font-weight: 400; }
+
+        .xp-awarded {
+            background: rgba(0,227,169,0.1); border: 1px solid rgba(0,227,169,0.3);
+            border-radius: 16px; padding: 1.2rem; margin: 1.5rem auto; max-width: 400px;
+        }
+        .badge-earned {
+            background: rgba(241,136,244,0.1); border: 1px solid rgba(241,136,244,0.3);
+            border-radius: 16px; padding: 1rem; margin: 0.5rem auto; max-width: 350px;
+            font-size: 1.1rem;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 0.9rem 2.5rem; font-size: 1rem; font-weight: 700; border: none;
+            border-radius: 30px; cursor: pointer; transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+        }
+        .btn-primary {
+            background: linear-gradient(135deg, var(--stockholm-neon), var(--malmo-green));
+            color: white; box-shadow: 0 4px 20px rgba(0,227,169,0.3);
+        }
+        .btn-primary:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,227,169,0.5); }
+        .btn-secondary {
+            background: rgba(255,255,255,0.08); border: 1px solid rgba(255,255,255,0.15);
+            color: white;
+        }
+        .btn-secondary:hover { background: rgba(255,255,255,0.12); }
+        .btn-group { display: flex; gap: 1rem; justify-content: center; margin-top: 2rem; flex-wrap: wrap; }
+
+        /* Section end navigation */
+        .section-end-nav {
+            display: flex; justify-content: space-between; align-items: center;
+            margin-top: 2rem; padding-top: 1.5rem; border-top: 1px solid rgba(255,255,255,0.08);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .content-wrap { padding: 7rem 1rem 3rem; }
+            .glass { padding: 1.5rem; }
+            .glass-hero h1 { font-size: 2rem; }
+            .section-nav { overflow-x: auto; justify-content: flex-start; }
+            .section-tab { font-size: 0.7rem; padding: 0.4rem 0.7rem; }
+            .top-bar { padding: 0.5rem 1rem; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Background -->
+    <div class="bg-container" id="bg-container"></div>
+
+    <!-- Top Bar -->
+    <div class="top-bar">
+        <div class="top-bar-left">
+            <a href='/'>← Portal</a>
+            <span class="module-title-bar" id="module-title-bar">Loading...</span>
+        </div>
+        <div class="top-bar-right">
+            <span class="timer-pill" id="timer-display">0m 00s</span>
+            <span class="xp-pill" id="xp-display">0 XP</span>
+        </div>
+    </div>
+
+    <!-- Progress Bar -->
+    <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+
+    <!-- Section Navigation -->
+    <div class="section-nav" id="section-nav"></div>
+
+    <!-- Content -->
+    <div class="content-wrap" id="content-wrap"></div>
+
+    <!-- Training Engine -->
+    <script src="training-engine.js"></script>
+
+    <!-- Module Renderer -->
+    <script>
+    (() => {
+        'use strict';
+
+        // MODULE_DATA must be defined before this template loads
+        // Either inline in a module HTML file or set on window
+        const DATA = window.MODULE_DATA;
+        if (!DATA) {
+            document.getElementById('content-wrap').innerHTML = '<div class="glass glass-hero"><h1>Module Not Found</h1><p>No module data loaded.</p></div>';
+            return;
+        }
+
+        const SECTION_LABELS = ['Context & Scenario', 'Deep Dive', 'Practical Application', 'Advanced / Edge Cases', 'Assessment'];
+        const SECTION_ICONS = ['🎯', '🔬', '🛠️', '⚠️', '📝'];
+        const FEEDBACK_AFTER = [0, 2, 4]; // Sections after which to show feedback hotspots (0-indexed)
+
+        let currentSection = 0;
+        let assessmentState = { answers: [], submitted: false };
+        let timerInterval = null;
+
+        // ── Init ──────────────────────────────────────────────────
+        function init() {
+            // Set page title
+            document.title = `${DATA.title} | Grid Engineering Training`;
+            document.getElementById('page-title').textContent = document.title;
+            document.getElementById('module-title-bar').textContent = DATA.title;
+
+            // Set background
+            const bgContainer = document.getElementById('bg-container');
+            if (DATA.backgroundImage) {
+                bgContainer.innerHTML = `<div class="bg-layer active" style="background-image:url('${DATA.backgroundImage}')"></div>`;
+            } else {
+                bgContainer.innerHTML = `<div class="bg-layer active" style="background-image:url('https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=1920&q=90')"></div>`;
+            }
+
+            // Init engine
+            TrainingEngine.init();
+            const state = TrainingEngine.User.current();
+            if (state) {
+                document.getElementById('xp-display').textContent = `${state.xp} XP`;
+            }
+
+            // Register module
+            TrainingEngine.Modules.startModule(DATA.id);
+
+            // Build section nav
+            buildSectionNav();
+
+            // Render all sections
+            renderSections();
+
+            // Start timer
+            TrainingEngine.TimeTracker.startSection(DATA.id, 0);
+            timerInterval = setInterval(updateTimer, 1000);
+
+            // Show first section
+            showSection(0);
+        }
+
+        function buildSectionNav() {
+            const nav = document.getElementById('section-nav');
+            const progress = TrainingEngine.Modules.getProgress(DATA.id);
+            nav.innerHTML = SECTION_LABELS.map((label, i) => {
+                const completed = progress.sectionsCompleted.includes(i);
+                const locked = false; // All sections accessible
+                return `<button class="section-tab ${i === 0 ? 'active' : ''} ${completed ? 'completed' : ''} ${locked ? 'locked' : ''}"
+                    data-section="${i}" onclick="ModuleRenderer.showSection(${i})">${SECTION_ICONS[i]} ${label}</button>`;
+            }).join('');
+        }
+
+        function showSection(index) {
+            if (index < 0 || index > 4) return;
+
+            // Stop timer for previous section
+            TrainingEngine.TimeTracker.stopSection();
+
+            currentSection = index;
+
+            // Update nav
+            document.querySelectorAll('.section-tab').forEach((tab, i) => {
+                tab.classList.toggle('active', i === index);
+            });
+
+            // Show panel
+            document.querySelectorAll('.section-panel').forEach((panel, i) => {
+                panel.classList.toggle('active', i === index);
+            });
+
+            // Update progress bar
+            const pct = ((index + 1) / 5) * 100;
+            document.getElementById('progress-fill').style.width = `${pct}%`;
+
+            // Start timer for new section
+            TrainingEngine.TimeTracker.startSection(DATA.id, index);
+
+            // Scroll to top
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function renderSections() {
+            const wrap = document.getElementById('content-wrap');
+            let html = '';
+
+            // Sections 0-3: Content sections
+            for (let i = 0; i < 4; i++) {
+                const section = DATA.sections[i];
+                if (!section) continue;
+
+                html += `<div class="section-panel ${i === 0 ? 'active' : ''}" id="section-${i}">`;
+
+                // Hero
+                html += `<div class="glass glass-hero">
+                    <h1>${section.title}</h1>
+                    <p class="tagline">${SECTION_LABELS[i]}</p>
+                    <p class="subtitle">${section.subtitle || ''}</p>
+                </div>`;
+
+                // Content blocks
+                html += renderContentBlocks(section.content);
+
+                // Knowledge check 1
+                if (section.checks && section.checks[0]) {
+                    html += renderKnowledgeCheck(i, 0, section.checks[0]);
+                }
+
+                // More content (if split)
+                if (section.contentAfterCheck1) {
+                    html += renderContentBlocks(section.contentAfterCheck1);
+                }
+
+                // Knowledge check 2
+                if (section.checks && section.checks[1]) {
+                    html += renderKnowledgeCheck(i, 1, section.checks[1]);
+                }
+
+                // Feedback hotspot (after sections 0, 2)
+                if (FEEDBACK_AFTER.includes(i) && i < 4) {
+                    html += renderFeedbackHotspot(i);
+                }
+
+                // Section navigation
+                html += `<div class="section-end-nav">
+                    ${i > 0 ? `<button class="btn btn-secondary" onclick="ModuleRenderer.showSection(${i - 1})">← Previous</button>` : '<span></span>'}
+                    <button class="btn btn-primary" onclick="ModuleRenderer.completeAndAdvance(${i})">
+                        ${i < 3 ? 'Continue →' : 'Go to Assessment →'}
+                    </button>
+                </div>`;
+
+                html += '</div>';
+            }
+
+            // Section 4: Assessment
+            html += renderAssessment();
+
+            wrap.innerHTML = html;
+        }
+
+        function renderContentBlocks(blocks) {
+            if (!blocks) return '';
+            let html = '';
+            blocks.forEach(block => {
+                switch (block.type) {
+                    case 'card':
+                        html += `<div class="glass"><div class="content-section">${block.html}</div></div>`;
+                        break;
+                    case 'info': html += `<div class="box-info"><h4>${block.title || 'Note'}</h4><p>${block.text}</p></div>`; break;
+                    case 'success': html += `<div class="box-success"><h4>${block.title || 'Key Point'}</h4><p>${block.text}</p></div>`; break;
+                    case 'warning': html += `<div class="box-warn"><h4>${block.title || 'Warning'}</h4><p>${block.text}</p></div>`; break;
+                    case 'tech': html += `<div class="box-tech"><h4>${block.title || 'Technical Detail'}</h4><p>${block.text}</p></div>`; break;
+                    case 'mentor': html += `<div class="box-mentor"><h4>${block.title || 'Mentor Tip'}</h4><p>${block.text}</p></div>`; break;
+                    case 'html': html += block.html; break;
+                    default: html += `<div class="glass">${block.html || block.text || ''}</div>`;
+                }
+            });
+            return html;
+        }
+
+        function renderKnowledgeCheck(sectionIndex, checkIndex, check) {
+            const id = `kc-${sectionIndex}-${checkIndex}`;
+            const progress = TrainingEngine.Modules.getProgress(DATA.id);
+            const key = `s${sectionIndex}_c${checkIndex}`;
+            const answered = progress.formativeScores[key] !== undefined;
+
+            return `
+            <div class="knowledge-check" id="${id}">
+                <div class="kc-header">
+                    <span class="kc-icon">🧠</span>
+                    <span class="kc-label">Knowledge Check</span>
+                    <span class="kc-xp">+${TrainingEngine.CONFIG.FORMATIVE_XP} XP</span>
+                </div>
+                <div class="kc-question">${check.question}</div>
+                <div class="kc-options">
+                    ${check.options.map((opt, oi) => `
+                        <div class="kc-option ${answered ? 'disabled' : ''} ${answered && oi === check.correct ? 'correct' : ''}"
+                            data-kc="${id}" data-index="${oi}" data-correct="${check.correct}"
+                            onclick="ModuleRenderer.answerKC('${id}', ${sectionIndex}, ${checkIndex}, ${oi}, ${check.correct})">
+                            ${opt}
+                        </div>
+                    `).join('')}
+                </div>
+                <div class="kc-feedback" id="${id}-feedback"></div>
+            </div>`;
+        }
+
+        function answerKC(kcId, sectionIndex, checkIndex, selected, correct) {
+            const container = document.getElementById(kcId);
+            if (!container) return;
+
+            const options = container.querySelectorAll('.kc-option');
+            const isCorrect = selected === correct;
+
+            options.forEach((opt, i) => {
+                opt.classList.add('disabled');
+                if (i === correct) opt.classList.add('correct');
+                if (i === selected && !isCorrect) opt.classList.add('incorrect');
+            });
+
+            // Show feedback
+            const fb = document.getElementById(`${kcId}-feedback`);
+            if (fb) {
+                fb.className = `kc-feedback show ${isCorrect ? 'correct-fb' : 'incorrect-fb'}`;
+                const check = DATA.sections[sectionIndex]?.checks?.[checkIndex];
+                fb.textContent = isCorrect
+                    ? (check?.correctFeedback || 'Correct! Well done.')
+                    : (check?.incorrectFeedback || `Not quite. The correct answer was: ${check?.options[correct]}`);
+            }
+
+            // Record
+            TrainingEngine.Modules.recordFormative(DATA.id, sectionIndex, checkIndex, isCorrect);
+
+            if (isCorrect) {
+                TrainingEngine.UI.showNotification(`+${TrainingEngine.CONFIG.FORMATIVE_XP} XP — Knowledge check correct!`, 'xp');
+                updateXPDisplay();
+            }
+        }
+
+        function renderFeedbackHotspot(sectionIndex) {
+            const id = `feedback-${sectionIndex}`;
+            return `
+            <div class="feedback-hotspot" id="${id}">
+                <h4>💬 How's This Section?</h4>
+                <p>Your feedback helps us improve this training content. Rate and comment below (+${TrainingEngine.CONFIG.FEEDBACK_XP} XP).</p>
+                <div class="feedback-stars" id="${id}-stars">
+                    ${[1,2,3,4,5].map(n => `<span class="feedback-star" data-rating="${n}" onclick="ModuleRenderer.setRating('${id}', ${n})">⭐</span>`).join('')}
+                </div>
+                <textarea class="feedback-textarea" id="${id}-text" placeholder="What worked well? What could be improved?"></textarea>
+                <br>
+                <button class="feedback-submit" onclick="ModuleRenderer.submitFeedback('${id}', ${sectionIndex})">Submit Feedback</button>
+                <div class="feedback-submitted" id="${id}-done">✓ Feedback submitted — thank you!</div>
+            </div>`;
+        }
+
+        function setRating(hotspotId, rating) {
+            const stars = document.querySelectorAll(`#${hotspotId}-stars .feedback-star`);
+            stars.forEach((star, i) => star.classList.toggle('active', i < rating));
+            document.getElementById(hotspotId).dataset.rating = rating;
+        }
+
+        function submitFeedback(hotspotId, sectionIndex) {
+            const container = document.getElementById(hotspotId);
+            const text = document.getElementById(`${hotspotId}-text`).value;
+            const rating = parseInt(container.dataset.rating) || 0;
+
+            if (!text.trim() && !rating) return;
+
+            TrainingEngine.Feedback.submit(DATA.id, sectionIndex, text || '(rating only)', rating);
+            TrainingEngine.UI.showNotification(`+${TrainingEngine.CONFIG.FEEDBACK_XP} XP — Thanks for your feedback!`, 'badge');
+
+            container.querySelector('.feedback-submit').style.display = 'none';
+            container.querySelector('.feedback-submitted').style.display = 'block';
+            container.querySelector('.feedback-textarea').disabled = true;
+            updateXPDisplay();
+        }
+
+        function renderAssessment() {
+            const questions = DATA.assessment || [];
+            return `
+            <div class="section-panel" id="section-4">
+                <div class="glass glass-hero">
+                    <h1>Final Assessment</h1>
+                    <p class="tagline">${questions.length} Questions · ${Math.round(TrainingEngine.CONFIG.PASS_THRESHOLD * 100)}% Pass Mark</p>
+                    <p class="subtitle">${DATA.title}</p>
+                </div>
+
+                <div class="assessment-container" id="assessment-questions">
+                    ${questions.map((q, qi) => `
+                    <div class="glass quiz-card">
+                        <div class="question-number">Question ${qi + 1} of ${questions.length}</div>
+                        <div class="question-text">${q.question}</div>
+                        <div class="answer-options">
+                            ${q.options.map((opt, oi) => `
+                                <div class="answer-option" data-q="${qi}" data-o="${oi}"
+                                    onclick="ModuleRenderer.selectAnswer(${qi}, ${oi})">
+                                    <span class="opt-letter">${String.fromCharCode(65 + oi)}</span>
+                                    <span>${opt}</span>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                    `).join('')}
+
+                    <!-- Feedback hotspot after assessment -->
+                    ${renderFeedbackHotspot(4)}
+
+                    <div style="text-align:center; margin: 2rem 0;">
+                        <button class="btn btn-primary" onclick="ModuleRenderer.submitAssessment()" id="submit-assessment-btn" style="font-size:1.1rem; padding:1rem 3rem;">
+                            Submit Assessment
+                        </button>
+                    </div>
+                </div>
+
+                <div class="glass results-card" id="results-card" style="display:none;">
+                    <div id="results-content"></div>
+                </div>
+            </div>`;
+        }
+
+        function selectAnswer(qIndex, oIndex) {
+            if (assessmentState.submitted) return;
+            assessmentState.answers[qIndex] = oIndex;
+
+            // Update UI
+            document.querySelectorAll(`.answer-option[data-q="${qIndex}"]`).forEach((opt, i) => {
+                opt.classList.toggle('selected', i === oIndex);
+            });
+        }
+
+        function submitAssessment() {
+            if (assessmentState.submitted) return;
+            const questions = DATA.assessment || [];
+
+            // Check all answered
+            const unanswered = questions.filter((_, i) => assessmentState.answers[i] === undefined);
+            if (unanswered.length > 0) {
+                TrainingEngine.UI.showNotification(`Please answer all ${questions.length} questions before submitting.`, 'warning');
+                return;
+            }
+
+            assessmentState.submitted = true;
+
+            // Calculate score
+            let correct = 0;
+            questions.forEach((q, i) => {
+                if (assessmentState.answers[i] === q.correct) correct++;
+            });
+            const scorePercent = Math.round((correct / questions.length) * 100);
+
+            // Record with engine
+            const result = TrainingEngine.Modules.completeAssessment(DATA.id, scorePercent, assessmentState.answers);
+
+            // Stop timer
+            TrainingEngine.TimeTracker.stopSection();
+            clearInterval(timerInterval);
+
+            // Complete section
+            TrainingEngine.Modules.completeSection(DATA.id, 4);
+
+            // Hide questions, show results
+            document.getElementById('assessment-questions').style.display = 'none';
+            const resultsCard = document.getElementById('results-card');
+            resultsCard.style.display = 'block';
+
+            let resultsHTML = `
+                <h2 style="font-size:2rem; margin-bottom:0.5rem;">Assessment Complete</h2>
+                <div class="score-circle ${result.passed ? 'pass' : 'fail'}">
+                    ${scorePercent}%
+                    <small>${correct}/${questions.length}</small>
+                </div>
+                <h3 style="margin:1rem 0; color:${result.passed ? 'var(--stockholm-neon)' : 'var(--orlando-red)'}">
+                    ${result.passed ? '✓ Passed!' : '✗ Not Passed — 70% Required'}
+                </h3>
+            `;
+
+            if (result.passed && result.xpAwarded) {
+                resultsHTML += `<div class="xp-awarded">⚡ +${result.xpAwarded.xp} XP earned${scorePercent === 100 ? ' (Perfect Score Bonus!)' : ''}</div>`;
+            }
+
+            if (result.newBadges && result.newBadges.length > 0) {
+                result.newBadges.forEach(b => {
+                    resultsHTML += `<div class="badge-earned">${b.icon} Badge: ${b.name}</div>`;
+                    TrainingEngine.UI.showBadgeEarned(b);
+                });
+            }
+
+            if (result.xpAwarded?.leveledUp) {
+                resultsHTML += `<div class="xp-awarded" style="border-color:gold;background:rgba(255,215,0,0.1);">
+                    ${result.xpAwarded.level.icon} Level Up! ${result.xpAwarded.level.name}
+                </div>`;
+                TrainingEngine.UI.showLevelUp(result.xpAwarded.level);
+            }
+
+            resultsHTML += `
+                <div class="btn-group" style="margin-top:2rem;">
+                    ${!result.passed ? `<button class="btn btn-secondary" onclick="ModuleRenderer.retakeAssessment()">Retake Assessment</button>` : ''}
+                    <button class="btn btn-primary" onclick="window.location.href='index.html'">Back to Portal</button>
+                </div>
+            `;
+
+            document.getElementById('results-content').innerHTML = resultsHTML;
+            updateXPDisplay();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        function retakeAssessment() {
+            assessmentState = { answers: [], submitted: false };
+            document.getElementById('assessment-questions').style.display = 'block';
+            document.getElementById('results-card').style.display = 'none';
+            document.querySelectorAll('.answer-option').forEach(opt => opt.classList.remove('selected'));
+            TrainingEngine.TimeTracker.startSection(DATA.id, 4);
+            timerInterval = setInterval(updateTimer, 1000);
+        }
+
+        function completeAndAdvance(sectionIndex) {
+            TrainingEngine.Modules.completeSection(DATA.id, sectionIndex);
+
+            // Update nav tab
+            const tabs = document.querySelectorAll('.section-tab');
+            if (tabs[sectionIndex]) tabs[sectionIndex].classList.add('completed');
+
+            showSection(sectionIndex + 1);
+        }
+
+        function updateTimer() {
+            const elapsed = TrainingEngine.TimeTracker.getElapsed();
+            document.getElementById('timer-display').textContent = TrainingEngine.TimeTracker.formatTime(elapsed);
+        }
+
+        function updateXPDisplay() {
+            const state = TrainingEngine.User.current();
+            if (state) {
+                document.getElementById('xp-display').textContent = `${state.xp} XP`;
+            }
+        }
+
+        // Expose to global
+        window.ModuleRenderer = {
+            showSection, answerKC, setRating, submitFeedback,
+            selectAnswer, submitAssessment, retakeAssessment, completeAndAdvance
+        };
+
+        // Boot
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', init);
+        } else {
+            init();
+        }
+    })();
+    </script>
+</body>
+</html>

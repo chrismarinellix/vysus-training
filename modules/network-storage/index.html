@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="page-title">Network Storage & SSD Workflow | Grid Engineering Training</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+    <link rel="stylesheet" href="../../module-styles.css">
+</head>
+<body>
+    <div class="bg-container" id="bg-container"></div>
+    <div class="top-bar">
+        <div class="top-bar-left">
+            <a href='/'>← Portal</a>
+            <span class="module-title-bar" id="module-title-bar">Loading...</span>
+        </div>
+        <div class="top-bar-right">
+            <span class="timer-pill" id="timer-display">0m 00s</span>
+            <span class="xp-pill" id="xp-display">0 XP</span>
+        </div>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+    <div class="section-nav" id="section-nav"></div>
+    <div class="content-wrap" id="content-wrap"></div>
+
+    <script>
+    window.MODULE_DATA = {
+        id: 'network-storage',
+        title: 'Network Storage & SSD Workflow',
+        level: 'entry',
+        xp: 500,
+        backgroundImage: 'https://images.unsplash.com/photo-1558494949-ef010cbdcc31?w=1920&q=90',
+        sections: [
+            {
+                title: 'Why File Management Matters',
+                subtitle: 'A real scenario where poor file management cost the team time and credibility',
+                content: [
+                    { type: 'card', html: '<h2>Scenario: The Missing Model File</h2><p>A senior engineer is presenting PSCAD simulation results to AEMO during a critical GPS review meeting. The AEMO reviewer asks to see the model input parameters. The engineer opens the project folder on the network drive — but the model file is not there. Someone saved it locally, the filename does not match the project naming convention, and there are three different versions with no indication which is current.</p><p>The meeting is rescheduled. The client is not impressed. Two hours of senior time is wasted tracking down the right file.</p><p><strong>This is preventable.</strong> Vysus has network storage standards and SSD workflow procedures that, when followed, ensure every team member can find the right file at the right time.</p>' },
+                    { type: 'success', title: 'The Core Principle', text: 'If you cannot find a file in under 30 seconds, the filing system has failed. Vysus network storage standards ensure every project document has one definitive location with a predictable naming convention.' },
+                    { type: 'card', html: '<h3>The Vysus Network Structure</h3><p>Vysus uses a hierarchical network storage system organised by:</p><ul><li><strong>Business Unit</strong> — Grid Connection Engineering, Advisory, Power Systems, etc.</li><li><strong>Project</strong> — Each client project has a dedicated folder with a standardised sub-structure</li><li><strong>Work Package</strong> — Within each project, folders are organised by deliverable type</li></ul><h4>Standard Project Folder Structure:</h4><table class="data-table"><thead><tr><th>Folder</th><th>Contents</th><th>Example Files</th></tr></thead><tbody><tr><td>01_Project_Management</td><td>Plans, budgets, schedules, meeting minutes</td><td>ProjectPlan_v2.1.docx</td></tr><tr><td>02_Client_Correspondence</td><td>Emails, letters, RFIs</td><td>RFI_001_Transformer_Rating.pdf</td></tr><tr><td>03_Technical_Reports</td><td>Deliverable reports and memos</td><td>GPS_Document_v3.0.docx</td></tr><tr><td>04_Calculations</td><td>Spreadsheets, design calculations</td><td>ReactPower_Calc_Rev01.xlsx</td></tr><tr><td>05_Models</td><td>PSCAD, PSS/E, MATLAB models</td><td>PSCAD_FRT_Model_v2.pscx</td></tr><tr><td>06_Drawings</td><td>SLDs, layouts, schematics</td><td>SLD_ConnectionPoint_RevB.dwg</td></tr><tr><td>07_Reference</td><td>Standards, OEM data, NSP documents</td><td>AEMO_GPS_Template_2025.docx</td></tr><tr><td>08_QA</td><td>Review records, checklists</td><td>QA_Checklist_GPS_v1.xlsx</td></tr></tbody></table>' }
+                ],
+                checks: [
+                    {
+                        question: 'In the Vysus standard project folder structure, where should PSCAD simulation model files be stored?',
+                        options: ['03_Technical_Reports', '04_Calculations', '05_Models', '07_Reference'],
+                        correct: 2,
+                        correctFeedback: 'Correct! PSCAD, PSS/E, and other simulation model files belong in the 05_Models folder.',
+                        incorrectFeedback: 'Simulation model files (PSCAD, PSS/E, MATLAB) should be stored in 05_Models. Technical reports go in 03, calculations in 04, and reference documents in 07.'
+                    },
+                    {
+                        question: 'What is the target time to find any project file using the Vysus network structure?',
+                        options: ['Under 5 minutes', 'Under 2 minutes', 'Under 30 seconds', 'Under 10 seconds'],
+                        correct: 2,
+                        correctFeedback: 'Correct! The target is 30 seconds. If you cannot find a file in 30 seconds, the filing system needs improvement.',
+                        incorrectFeedback: 'The Vysus standard targets 30 seconds to find any file. This requires consistent naming conventions and folder structures across all projects.'
+                    }
+                ]
+            },
+            {
+                title: 'File Naming Conventions & Version Control',
+                subtitle: 'The naming rules that make files findable and traceable',
+                content: [
+                    { type: 'card', html: '<h2>The Vysus Naming Convention</h2><p>Every file on the network must follow the standard naming pattern:</p><p style="font-size:1.3rem; text-align:center; padding:1.5rem; background:rgba(0,227,169,0.1); border-radius:12px; margin:1.5rem 0; font-family:monospace;"><strong>[ProjectCode]_[DocType]_[Description]_[Version].[ext]</strong></p><h4>Components:</h4><ul><li><strong>ProjectCode</strong> — The IFS project code (e.g., GRD0500026)</li><li><strong>DocType</strong> — Abbreviated document type (GPS, CALC, RPT, DWG, MDL, MOM)</li><li><strong>Description</strong> — Brief description using underscores (no spaces)</li><li><strong>Version</strong> — v1.0, v2.0 for major revisions; v1.1, v1.2 for minor edits</li></ul><h4>Examples:</h4><table class="data-table"><thead><tr><th>File Type</th><th>Example Name</th></tr></thead><tbody><tr><td>GPS Document</td><td>GRD0500026_GPS_Armidale_Solar_v3.0.docx</td></tr><tr><td>Calculation</td><td>GRD0500026_CALC_Reactive_Power_Range_v1.2.xlsx</td></tr><tr><td>Model</td><td>GRD0500026_MDL_PSCAD_FRT_Study_v2.0.pscx</td></tr><tr><td>Drawing</td><td>GRD0500026_DWG_SLD_Connection_Point_RevB.dwg</td></tr><tr><td>Minutes</td><td>GRD0500026_MOM_AEMO_Review_20260215.docx</td></tr></tbody></table>' },
+                    { type: 'warning', title: 'Common Naming Mistakes', text: 'Never use spaces in filenames (use underscores). Never use "final", "final_v2", "FINAL_REAL" — use proper version numbers. Never store working copies on your local desktop — always work from the network or use the SSD sync workflow.' },
+                    { type: 'card', html: '<h3>Version Control Rules</h3><ul><li><strong>Major versions</strong> (v1.0 → v2.0) — significant content changes, new sections, client-facing revisions</li><li><strong>Minor versions</strong> (v1.0 → v1.1) — corrections, formatting, minor updates</li><li><strong>Draft vs Issued</strong> — drafts include "DRAFT" in the description (e.g., GRD050_GPS_DRAFT_v0.3.docx)</li><li><strong>Superseded files</strong> — move to an "_Archive" subfolder, never delete</li><li><strong>Only one "current" version</strong> — the highest version number in the main folder is the current version</li></ul>' },
+                    { type: 'info', title: 'The _Archive Folder', text: 'Every project folder should contain an _Archive subfolder. When a new version is created, the previous version moves to _Archive. This means the main folder only ever contains the current version of each document, eliminating confusion about which file is latest.' }
+                ],
+                checks: [
+                    {
+                        question: 'What is the correct filename for version 2 of a GPS document for project GRD0500030?',
+                        options: [
+                            'GPS_Document_Final_v2.docx',
+                            'GRD0500030_GPS_Document_v2.0.docx',
+                            'GRD0500030 GPS Document v2.docx',
+                            'GPS_GRD0500030_v2.0.docx'
+                        ],
+                        correct: 1,
+                        correctFeedback: 'Correct! The format is [ProjectCode]_[DocType]_[Description]_[Version].[ext]. GRD0500030 comes first, followed by the document type abbreviation.',
+                        incorrectFeedback: 'The correct format is [ProjectCode]_[DocType]_[Description]_[Version].[ext]. So it would be GRD0500030_GPS_Document_v2.0.docx — project code first, no spaces, proper version number.'
+                    },
+                    {
+                        question: 'What should you do with the previous version of a file when creating a new version?',
+                        options: [
+                            'Delete it to keep the folder clean',
+                            'Rename it with "OLD" prefix',
+                            'Move it to the _Archive subfolder',
+                            'Leave it alongside the new version'
+                        ],
+                        correct: 2,
+                        correctFeedback: 'Correct! Previous versions move to _Archive. The main folder only contains the current version, and nothing is deleted.',
+                        incorrectFeedback: 'Superseded versions should be moved to the _Archive subfolder. Never delete previous versions — they provide audit trail. Never leave them in the main folder — that creates confusion about which is current.'
+                    }
+                ]
+            },
+            {
+                title: 'The SSD Workflow',
+                subtitle: 'Working with large files efficiently using portable SSDs',
+                content: [
+                    { type: 'card', html: '<h2>Why We Use SSDs</h2><p>Grid connection engineering involves large simulation files. A single PSCAD model can be 500MB-2GB. Running these models over the network is painfully slow and can cause file corruption.</p><p>The <strong>SSD workflow</strong> solves this: you sync project files to a portable SSD for local work, then sync back to the network when done. This gives you local-speed performance with network-level backup and accessibility.</p><h3>SSD Workflow Steps</h3>' },
+                    { type: 'html', html: '<div class="glass"><div class="process-flow"><div class="process-step"><div class="step-number">1</div><div class="step-title">Sync Down</div><div class="step-desc">Copy project folder from network to your SSD at start of day</div></div><div class="process-step"><div class="step-number">2</div><div class="step-title">Work Local</div><div class="step-desc">Run models and edit files from SSD — fast and reliable</div></div><div class="process-step"><div class="step-number">3</div><div class="step-title">Sync Up</div><div class="step-desc">Copy changed files back to network at end of day or milestone</div></div><div class="process-step"><div class="step-number">4</div><div class="step-title">Verify</div><div class="step-desc">Check file sizes match and no sync errors occurred</div></div></div></div>' },
+                    { type: 'card', html: '<h3>SSD Sync Rules</h3><ul><li><strong>Always sync up before leaving the office</strong> — your SSD is not backed up. The network is.</li><li><strong>Check for conflicts</strong> — if someone else modified the same file on the network, resolve the conflict before overwriting</li><li><strong>Use robocopy or FreeFileSync</strong> — manual copy/paste misses files. Use sync tools that compare timestamps and detect changes.</li><li><strong>Lock model files</strong> — before syncing down, let your team know you are working on a model to avoid parallel editing</li><li><strong>Label your SSD</strong> — write your name and "VYSUS" on the SSD. If lost, it can be returned.</li></ul>' },
+                    { type: 'tech', title: 'Recommended Sync Command (robocopy)', text: 'To sync from network to SSD: robocopy "N:\\Projects\\GRD0500026" "E:\\GRD0500026" /MIR /XD _Archive /LOG:sync.log — The /MIR flag mirrors the source. /XD _Archive excludes archive folders to save space. Always check the log file after syncing.' },
+                    { type: 'card', html: '<h3>When NOT to Use SSD Workflow</h3><ul><li><strong>Small documents</strong> (Word, Excel, PowerPoint under 50MB) — work directly on the network</li><li><strong>Client correspondence</strong> — always save directly to network for audit trail</li><li><strong>Meeting minutes</strong> — save immediately to network after the meeting</li><li><strong>Shared templates</strong> — never copy templates to SSD; always use the network master</li></ul>' },
+                    { type: 'mentor', title: 'SSD Best Practice', text: '"I sync down every morning when I arrive, work on models all day from the SSD, and sync up before I pack up. It takes 2-3 minutes each way and saves hours of network lag. The key is making it a habit — like locking your workstation when you leave your desk."' }
+                ],
+                checks: [
+                    {
+                        question: 'What is the primary reason for the SSD workflow in grid connection engineering?',
+                        options: [
+                            'The network has limited storage space',
+                            'Simulation model files are too large to run efficiently over the network',
+                            'SSD files are more secure than network files',
+                            'The IT department requires local backups'
+                        ],
+                        correct: 1,
+                        correctFeedback: 'Correct! PSCAD and PSS/E models can be 500MB-2GB. Running them over the network causes lag and potential file corruption. Local SSD access is much faster.',
+                        incorrectFeedback: 'The SSD workflow exists because simulation model files (PSCAD, PSS/E) are very large (500MB-2GB) and running them over the network is too slow and risks file corruption.'
+                    },
+                    {
+                        question: 'When should you sync your SSD files back to the network?',
+                        options: [
+                            'Only when the project is complete',
+                            'Every Friday afternoon',
+                            'Before leaving the office each day, or at key milestones',
+                            'Once a week during the team meeting'
+                        ],
+                        correct: 2,
+                        correctFeedback: 'Correct! Always sync up before leaving the office. Your SSD is not backed up — if it is lost or damaged, unsynced work is gone.',
+                        incorrectFeedback: 'You should sync up before leaving the office each day, or at significant milestones. The SSD is not backed up — the network is the definitive storage location.'
+                    }
+                ]
+            },
+            {
+                title: 'Troubleshooting & Edge Cases',
+                subtitle: 'Common problems and how to handle them',
+                content: [
+                    { type: 'card', html: '<h2>File Conflicts</h2><p>The most common SSD workflow issue is <strong>file conflicts</strong> — when two people modify the same file simultaneously.</p><h3>How Conflicts Happen:</h3><ol><li>Engineer A syncs down project files to SSD on Monday morning</li><li>Engineer B modifies a calculation file on the network on Monday afternoon</li><li>Engineer A modifies the same calculation file on their SSD on Tuesday</li><li>Engineer A syncs up on Tuesday afternoon — B\'s changes are overwritten</li></ol><h3>Prevention:</h3><ul><li><strong>Communication</strong> — tell your team which files you are working on</li><li><strong>File locking</strong> — use "checked out" status in the project tracker</li><li><strong>Merge before overwrite</strong> — always check network timestamps before syncing up</li><li><strong>Use sync tools</strong> — FreeFileSync highlights conflicts and lets you choose which version to keep</li></ul>' },
+                    { type: 'card', html: '<h3>Remote and Multi-Office Working</h3><p>With team members across AU, IN, and MY, remote access patterns vary:</p><table class="data-table"><thead><tr><th>Location</th><th>Network Access</th><th>Recommended Workflow</th></tr></thead><tbody><tr><td>Perth / Melbourne Office</td><td>Direct LAN</td><td>SSD for models, network for documents</td></tr><tr><td>India (Pune)</td><td>VPN</td><td>SSD for all large files, sync during off-peak hours</td></tr><tr><td>Malaysia (KL)</td><td>VPN</td><td>SSD for all large files, sync during off-peak hours</td></tr><tr><td>Working from Home</td><td>VPN</td><td>SSD preferred for models, small docs via OneDrive</td></tr></tbody></table>' },
+                    { type: 'warning', title: 'OneDrive Is NOT the Network Drive', text: 'OneDrive is for personal and temporary sharing. It is NOT a substitute for the project network drive. All official project files must live on the network. Use OneDrive only for sharing drafts or quick transfers — never as the primary storage for deliverables.' },
+                    { type: 'card', html: '<h3>Data Loss Recovery</h3><p>If files are accidentally deleted or overwritten:</p><ul><li><strong>Network files</strong> — contact IT. The network has nightly backups with 30-day retention. Recovery takes 2-4 hours.</li><li><strong>SSD files</strong> — if not synced to network, recovery depends on SSD health. First try: use Recuva or similar recovery software. Second: check if a colleague synced the same project recently.</li><li><strong>Email attachments</strong> — for client correspondence, check Sent Items for the last attachment version.</li></ul>' },
+                    { type: 'success', title: 'Prevention Is Easier Than Recovery', text: 'The best recovery strategy is not needing one. Sync daily, use proper version control, and communicate with your team about which files you are editing. These three habits prevent 95% of data loss incidents.' }
+                ],
+                checks: [
+                    {
+                        question: 'What should you do before syncing your SSD files back to the network to prevent overwriting a colleague\'s changes?',
+                        options: [
+                            'Delete the network version first',
+                            'Check network file timestamps and compare for conflicts',
+                            'Ask IT to lock the network folder',
+                            'Email the file to yourself as backup'
+                        ],
+                        correct: 1,
+                        correctFeedback: 'Correct! Always check network file timestamps before syncing up. If a file has been modified on the network since you synced down, you have a conflict that needs manual resolution.',
+                        incorrectFeedback: 'Before syncing up, always compare timestamps between your SSD and the network to detect conflicts. Sync tools like FreeFileSync can highlight these automatically.'
+                    },
+                    {
+                        question: 'What is the correct use of OneDrive in the Vysus workflow?',
+                        options: [
+                            'Primary storage for all project deliverables',
+                            'Backup for network drive files',
+                            'Temporary sharing and personal drafts only — not for official project files',
+                            'Archive for completed project files'
+                        ],
+                        correct: 2,
+                        correctFeedback: 'Correct! OneDrive is for temporary sharing and personal drafts only. All official project deliverables must be on the network drive.',
+                        incorrectFeedback: 'OneDrive is only for temporary sharing and personal drafts. All official project files must live on the network drive, which has proper backups and access controls.'
+                    }
+                ]
+            }
+        ],
+        assessment: [
+            {
+                question: 'In the Vysus standard project folder structure, which folder contains simulation model files?',
+                options: ['03_Technical_Reports', '04_Calculations', '05_Models', '07_Reference'],
+                correct: 2
+            },
+            {
+                question: 'What is the correct file naming convention order?',
+                options: [
+                    '[DocType]_[ProjectCode]_[Description]_[Version]',
+                    '[ProjectCode]_[DocType]_[Description]_[Version]',
+                    '[Description]_[ProjectCode]_[DocType]_[Version]',
+                    '[ProjectCode]_[Description]_[DocType]_[Version]'
+                ],
+                correct: 1
+            },
+            {
+                question: 'Which of these is the correct filename for a GPS document?',
+                options: [
+                    'GPS Document Final v2.docx',
+                    'GRD0500026_GPS_Armidale_Solar_v3.0.docx',
+                    'GRD0500026 GPS Document v3.docx',
+                    'Armidale_Solar_GPS_GRD0500026_v3.docx'
+                ],
+                correct: 1
+            },
+            {
+                question: 'What happens to superseded file versions under the Vysus standard?',
+                options: [
+                    'They are deleted to save storage space',
+                    'They are renamed with an "OLD" prefix',
+                    'They are moved to the _Archive subfolder',
+                    'They remain in the main folder alongside the new version'
+                ],
+                correct: 2
+            },
+            {
+                question: 'When should you use the SSD workflow instead of working directly on the network?',
+                options: [
+                    'For all files regardless of size',
+                    'For large simulation model files (500MB+) that are slow over the network',
+                    'Only when the network is down',
+                    'For client correspondence and meeting minutes'
+                ],
+                correct: 1
+            },
+            {
+                question: 'How often should SSD files be synced back to the network?',
+                options: [
+                    'Weekly during the team meeting',
+                    'When the project is complete',
+                    'Before leaving the office each day or at key milestones',
+                    'Monthly during the backup cycle'
+                ],
+                correct: 2
+            },
+            {
+                question: 'What is the recommended tool approach for SSD sync operations?',
+                options: [
+                    'Manual copy/paste using File Explorer',
+                    'Use sync tools like robocopy or FreeFileSync that compare timestamps',
+                    'Email files to yourself as backup',
+                    'Use OneDrive automatic sync'
+                ],
+                correct: 1
+            },
+            {
+                question: 'What should you do if you discover a file conflict during SSD sync?',
+                options: [
+                    'Always overwrite the network version with your SSD version',
+                    'Always keep the network version and discard your changes',
+                    'Compare both versions, resolve the conflict manually, then sync',
+                    'Delete both and start fresh from the archive'
+                ],
+                correct: 2
+            },
+            {
+                question: 'What is the role of OneDrive in the Vysus file management workflow?',
+                options: [
+                    'Primary storage for all project files',
+                    'Backup for the network drive',
+                    'Temporary sharing and personal drafts only',
+                    'Archive for completed projects'
+                ],
+                correct: 2
+            },
+            {
+                question: 'For the India and Malaysia offices accessing files via VPN, what is the recommended workflow?',
+                options: [
+                    'Work directly on the network via VPN for all files',
+                    'Use SSD for all large files and sync during off-peak hours',
+                    'Store all files on OneDrive',
+                    'Request IT to set up a local file server in each office'
+                ],
+                correct: 1
+            }
+        ]
+    };
+    </script>
+    <script src="../../training-engine.js"></script>
+    <script src="../../module-renderer.js"></script>
+</body>
+</html>

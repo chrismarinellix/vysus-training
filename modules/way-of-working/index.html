@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="page-title">Way of Working / WOW | Grid Engineering Training</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+    <link rel="stylesheet" href="../../module-styles.css">
+</head>
+<body>
+    <div class="bg-container" id="bg-container"></div>
+    <div class="top-bar">
+        <div class="top-bar-left">
+            <a href='/'>← Portal</a>
+            <span class="module-title-bar" id="module-title-bar">Loading...</span>
+        </div>
+        <div class="top-bar-right">
+            <span class="timer-pill" id="timer-display">0m 00s</span>
+            <span class="xp-pill" id="xp-display">0 XP</span>
+        </div>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+    <div class="section-nav" id="section-nav"></div>
+    <div class="content-wrap" id="content-wrap"></div>
+
+    <script>
+    window.MODULE_DATA = {
+        id: 'way-of-working',
+        title: 'Way of Working / WOW',
+        level: 'entry',
+        xp: 500,
+        backgroundImage: 'https://images.unsplash.com/photo-1522071820081-009f0129c71c?w=1920&q=90',
+        sections: [
+            {
+                title: 'The Vysus Way of Working',
+                subtitle: 'How a distributed engineering team delivers world-class grid connection services',
+                content: [
+                    { type: 'card', html: '<h2>Scenario: Your First Week at Vysus Grid Connection</h2><p>You have just joined the Vysus Grid Connection Engineering team. You are based in Perth, but your project lead is in Melbourne. Two of your team members are in Pune, India, and another is in Kuala Lumpur, Malaysia. You have three active projects, each at different stages of the connection process.</p><p>How do you know what to work on each day? How do you communicate effectively across time zones? How do you maintain quality when deliverables pass through multiple hands?</p><p>This module covers the <strong>Way of Working (WOW)</strong> — the agreed standards, communication protocols, and team practices that make Vysus Grid Connection function as one cohesive team despite being spread across three countries.</p>' },
+                    { type: 'success', title: 'Why WOW Matters', text: 'A distributed team without clear working standards quickly fragments into isolated individuals. The WOW creates predictability — every team member knows how to find information, who to escalate to, when meetings happen, and what quality standards apply. This predictability is what allows us to scale.' },
+                    { type: 'card', html: '<h3>The Five Pillars of Vysus WOW</h3><ol><li><strong>Structured Communication</strong> — defined channels, meeting cadence, and escalation paths</li><li><strong>Project Execution Framework</strong> — standard phases, milestones, and deliverable templates</li><li><strong>Quality Assurance</strong> — peer review, checklists, and approval workflows</li><li><strong>Knowledge Sharing</strong> — technical hub, lessons learned, mentoring program</li><li><strong>Continuous Improvement</strong> — retrospectives, process updates, Sentinel submissions</li></ol>' },
+                    { type: 'card', html: '<h3>Team Structure</h3><p>The Grid Connection Engineering team is organised into three tiers:</p><table class="data-table"><thead><tr><th>Tier</th><th>Role</th><th>Responsibilities</th></tr></thead><tbody><tr><td>Principal</td><td>Technical Authority</td><td>Strategy, client relationships, final technical sign-off, mentoring leads</td></tr><tr><td>Lead / Senior</td><td>Project Technical Lead</td><td>GPS preparation, model studies, AEMO liaison, deliverable quality</td></tr><tr><td>Entry / Engineer</td><td>Project Engineer</td><td>Calculations, drafting, model setup, data gathering, documentation</td></tr></tbody></table>' }
+                ],
+                checks: [
+                    {
+                        question: 'How many pillars make up the Vysus Way of Working (WOW)?',
+                        options: ['Three', 'Four', 'Five', 'Seven'],
+                        correct: 2,
+                        correctFeedback: 'Correct! The five pillars are: Structured Communication, Project Execution Framework, Quality Assurance, Knowledge Sharing, and Continuous Improvement.',
+                        incorrectFeedback: 'There are five pillars: Structured Communication, Project Execution Framework, Quality Assurance, Knowledge Sharing, and Continuous Improvement.'
+                    },
+                    {
+                        question: 'In the team structure, who is responsible for final technical sign-off on deliverables?',
+                        options: ['Entry-level engineers', 'Senior engineers', 'Lead engineers', 'Principals'],
+                        correct: 3,
+                        correctFeedback: 'Correct! Principals hold the Technical Authority role and provide final technical sign-off on deliverables.',
+                        incorrectFeedback: 'Principals serve as the Technical Authority and are responsible for final technical sign-off. Leads prepare deliverables, and Principals approve them.'
+                    }
+                ]
+            },
+            {
+                title: 'Communication & Meetings',
+                subtitle: 'The rhythm that keeps a distributed team aligned',
+                content: [
+                    { type: 'card', html: '<h2>Meeting Cadence</h2><p>Vysus Grid Connection runs on a structured meeting rhythm designed to minimise meeting overload while ensuring alignment:</p><table class="data-table"><thead><tr><th>Meeting</th><th>Frequency</th><th>Duration</th><th>Purpose</th><th>Attendees</th></tr></thead><tbody><tr><td>Daily Standup</td><td>Daily (Mon-Fri)</td><td>15 min</td><td>Blockers, priorities, quick updates</td><td>All engineers on active projects</td></tr><tr><td>Project Review</td><td>Weekly</td><td>30-45 min</td><td>Per-project deep dive on progress, risks, decisions</td><td>Project team + lead</td></tr><tr><td>Team Meeting</td><td>Weekly</td><td>60 min</td><td>Cross-project updates, knowledge sharing, announcements</td><td>Full team</td></tr><tr><td>Technical Forum</td><td>Fortnightly</td><td>45 min</td><td>Technical presentation, lessons learned, new standards</td><td>Full team</td></tr><tr><td>Principal Review</td><td>Monthly</td><td>30 min</td><td>Portfolio health, resourcing, strategic decisions</td><td>Principals + leads</td></tr></tbody></table>' },
+                    { type: 'info', title: 'Time Zone Considerations', text: 'With team members in AU, IN, and MY, the daily standup is scheduled at 9:00 AM AEST (3:30 AM IST, 6:00 AM MYT) — but the India team joins at their 1:30 PM slot and the Malaysia team at 11:00 AM. Asynchronous updates via Teams channels cover any gaps.' },
+                    { type: 'card', html: '<h3>Communication Channels</h3><table class="data-table"><thead><tr><th>Channel</th><th>Use For</th><th>Do NOT Use For</th></tr></thead><tbody><tr><td>Microsoft Teams Chat</td><td>Quick questions, informal updates, availability checks</td><td>Technical decisions, formal client comms</td></tr><tr><td>Teams Project Channels</td><td>Project-specific discussions, file sharing, meeting notes</td><td>Personal messages, non-project topics</td></tr><tr><td>Email</td><td>Client correspondence, formal deliverables, audit trail items</td><td>Internal quick questions, file sharing</td></tr><tr><td>Phone/Video Call</td><td>Complex technical discussions, conflict resolution, mentoring</td><td>Simple status updates</td></tr><tr><td>IFS (Project System)</td><td>Timesheets, budgets, project milestones, formal approvals</td><td>Technical discussions</td></tr></tbody></table>' },
+                    { type: 'warning', title: 'The 24-Hour Response Rule', text: 'All internal messages must receive a response within 24 hours. If you cannot provide a full answer, acknowledge receipt and give a timeline. Client emails must receive acknowledgement within 4 business hours, even if the full response takes longer.' },
+                    { type: 'card', html: '<h3>Escalation Path</h3><p>When you hit a blocker, escalate quickly — do not spend days stuck:</p><ol><li><strong>Self-resolve</strong> — check reference docs, previous project files, Knowledge Hub (15 min max)</li><li><strong>Peer consult</strong> — ask a team member at the same level (30 min max)</li><li><strong>Lead escalation</strong> — raise to your project lead with the specific question and what you have tried</li><li><strong>Principal escalation</strong> — for cross-project issues, client relationship matters, or unresolved technical disputes</li></ol>' },
+                    { type: 'mentor', title: 'Escalation Advice', text: '"Never be afraid to escalate. Being stuck for a day costs the project more than a 10-minute conversation with your lead. When you escalate, bring the problem AND your attempted solution — this shows initiative and helps the lead give a faster answer."' }
+                ],
+                checks: [
+                    {
+                        question: 'What is the maximum time you should spend trying to self-resolve a blocker before escalating?',
+                        options: ['5 minutes', '15 minutes', '1 hour', 'Half a day'],
+                        correct: 1,
+                        correctFeedback: 'Correct! Spend a maximum of 15 minutes self-resolving (check docs, Knowledge Hub), then move to peer consult.',
+                        incorrectFeedback: 'The WOW specifies 15 minutes maximum for self-resolution. After that, consult a peer. Spending too long stuck is more expensive than asking for help.'
+                    },
+                    {
+                        question: 'What is the response time requirement for client emails?',
+                        options: [
+                            'Within 1 hour',
+                            'Within 4 business hours (acknowledgement)',
+                            'Within 24 hours',
+                            'Within 48 hours'
+                        ],
+                        correct: 1,
+                        correctFeedback: 'Correct! Client emails must receive at least an acknowledgement within 4 business hours, even if the full response takes longer to prepare.',
+                        incorrectFeedback: 'Client emails require acknowledgement within 4 business hours. Internal messages have a 24-hour response window. Even a brief "received, will respond by [date]" meets the requirement.'
+                    }
+                ]
+            },
+            {
+                title: 'Project Execution & Quality',
+                subtitle: 'From project kickoff to final delivery — the standard workflow',
+                content: [
+                    { type: 'card', html: '<h2>Project Phases</h2><p>Every grid connection project at Vysus follows a standard phase structure. The phases align with the NER connection process but include additional internal milestones:</p>' },
+                    { type: 'html', html: '<div class="glass"><div class="process-flow"><div class="process-step"><div class="step-number">R0</div><div class="step-title">Proposal & Scoping</div><div class="step-desc">Client brief, scope definition, proposal, contract</div></div><div class="process-step"><div class="step-number">R1</div><div class="step-title">Studies & GPS</div><div class="step-desc">Data gathering, modelling, GPS preparation, AEMO submission</div></div><div class="process-step"><div class="step-number">R2</div><div class="step-title">Support & Commissioning</div><div class="step-desc">AEMO queries, GPS updates, commissioning support, RPS</div></div></div></div>' },
+                    { type: 'card', html: '<h3>Quality Assurance Process</h3><p>Every deliverable must pass through the QA process before it reaches the client or AEMO:</p><ol><li><strong>Self-check</strong> — author reviews against the QA checklist</li><li><strong>Peer review</strong> — a second engineer reviews for technical accuracy and completeness</li><li><strong>Lead review</strong> — project lead reviews for scope compliance and consistency</li><li><strong>Principal sign-off</strong> — for GPS documents and major deliverables only</li></ol><h4>QA Checklist Items (for GPS):</h4><ul><li>All S5.2.5 clauses addressed with proposed access standard level stated</li><li>Simulation evidence attached for all performance claims</li><li>Single line diagram current and consistent with text</li><li>OEM data referenced and attached</li><li>No tracked changes or comments remaining</li><li>File naming convention followed</li><li>Spelling and formatting consistent</li><li>Client project name and code correct throughout</li></ul>' },
+                    { type: 'card', html: '<h3>Timesheet & Budget Discipline</h3><p>Accurate timesheets are critical for project health and future scoping:</p><ul><li><strong>Log time daily</strong> — enter your hours into IFS at the end of each day</li><li><strong>Correct WBS codes</strong> — charge time to the correct work package, not just the project header</li><li><strong>Flag overruns early</strong> — if you are approaching budget limits, tell your lead immediately. A budget conversation today prevents a crisis next week.</li><li><strong>Non-project time</strong> — training, admin, and leave all have specific codes. Always use the correct code.</li></ul>' },
+                    { type: 'success', title: 'The 80% Rule', text: 'If a work package reaches 80% of its budget and the work is not 80% complete, raise it with your lead. This gives enough buffer to course-correct. Waiting until 100% is too late.' },
+                    { type: 'card', html: '<h3>Deliverable Templates</h3><p>Vysus maintains standard templates for all common deliverables:</p><table class="data-table"><thead><tr><th>Template</th><th>Location</th><th>When to Use</th></tr></thead><tbody><tr><td>GPS Document</td><td>AEMO GPS Template (latest version from AEMO website)</td><td>All GPS submissions</td></tr><tr><td>Technical Memo</td><td>Network Drive / 00_Templates / TechMemo</td><td>Internal technical analyses, AEMO responses</td></tr><tr><td>Meeting Minutes</td><td>Network Drive / 00_Templates / Minutes</td><td>All project meetings</td></tr><tr><td>Calculation Sheet</td><td>Network Drive / 00_Templates / Calculations</td><td>All formal calculations</td></tr></tbody></table>' }
+                ],
+                checks: [
+                    {
+                        question: 'What are the three project phases in the Vysus standard framework?',
+                        options: [
+                            'Design, Build, Test',
+                            'R0 (Proposal & Scoping), R1 (Studies & GPS), R2 (Support & Commissioning)',
+                            'Initiation, Execution, Closure',
+                            'Planning, Modelling, Delivery'
+                        ],
+                        correct: 1,
+                        correctFeedback: 'Correct! R0 covers proposal and scoping, R1 covers studies and GPS preparation, R2 covers AEMO query support and commissioning.',
+                        incorrectFeedback: 'The three phases are R0 (Proposal & Scoping), R1 (Studies & GPS), and R2 (Support & Commissioning). These align with the NER connection process stages.'
+                    },
+                    {
+                        question: 'At what budget utilisation percentage should you raise a concern with your lead?',
+                        options: ['50%', '70%', '80%', '95%'],
+                        correct: 2,
+                        correctFeedback: 'Correct! The 80% rule — if a work package hits 80% budget and work is not 80% complete, escalate immediately to allow time for course-correction.',
+                        incorrectFeedback: 'The 80% rule applies — raise the concern at 80% budget utilisation if the work is not proportionally complete. This provides a buffer for corrective action.'
+                    }
+                ]
+            },
+            {
+                title: 'Knowledge Sharing & Improvement',
+                subtitle: 'Learning from every project and making the team better',
+                content: [
+                    { type: 'card', html: '<h2>The Technical Knowledge Hub</h2><p>The Knowledge Hub is the team\'s shared repository of technical knowledge, lessons learned, and reference material. It is a living resource — every team member is expected to contribute.</p><h3>Knowledge Hub Structure:</h3><ul><li><strong>Technical Guides</strong> — how-to documents for common tasks (e.g., "How to set up a PSCAD FRT study")</li><li><strong>Lessons Learned</strong> — post-project summaries of what went well and what to improve</li><li><strong>AEMO Query Library</strong> — database of common AEMO questions and proven responses</li><li><strong>Standards Updates</strong> — summaries of NER rule changes and their implications</li><li><strong>OEM Reference</strong> — technical datasheets and capability summaries for common equipment</li></ul>' },
+                    { type: 'card', html: '<h3>Sentinel Competition</h3><p>Vysus runs the annual Sentinel Competition to encourage innovation and process improvement. Team members submit proposals for tools, processes, or knowledge resources that would benefit the team.</p><h4>Recent Sentinel Winners:</h4><ul><li>GPS Requirements Checklist — automated checklist that reduces GPS preparation errors by 40%</li><li>PSCAD Template Library — pre-configured models for common IBR configurations</li><li>AEMO Query Response Templates — standardised responses to frequently asked AEMO questions</li><li>Network Storage Standard — the filing and SSD workflow covered in the Network Storage module</li></ul>' },
+                    { type: 'card', html: '<h3>Mentoring Program</h3><p>Every entry-level and new-joiner is paired with a senior/lead mentor:</p><ul><li><strong>First month</strong> — weekly 30-min check-ins, guided walk-through of first project tasks</li><li><strong>Months 2-6</strong> — fortnightly check-ins, increasing independence with mentor review of work</li><li><strong>Months 6-12</strong> — monthly check-ins, mentor available for escalation</li><li><strong>Ongoing</strong> — annual development discussion, career planning support</li></ul>' },
+                    { type: 'info', title: 'Contributing to the Knowledge Hub', text: 'After every project milestone, consider: "Did I learn something that a future team member would benefit from?" If yes, spend 30 minutes writing it up for the Knowledge Hub. Small contributions compound into a powerful knowledge base.' },
+                    { type: 'card', html: '<h3>Retrospectives</h3><p>At the end of each project (or major phase), the team runs a structured retrospective:</p><ol><li><strong>What went well?</strong> — celebrate successes and identify practices to continue</li><li><strong>What could improve?</strong> — honest assessment of challenges without blame</li><li><strong>Action items</strong> — specific, assigned improvements for next time</li></ol><p>Retrospective outputs feed into the Knowledge Hub as Lessons Learned and may trigger WOW updates if a process change is warranted.</p>' },
+                    { type: 'mentor', title: 'The Learning Mindset', text: '"Every project teaches you something. The best engineers I know are the ones who reflect on what they learned and share it with the team. A mistake that is documented and shared becomes a team learning. A mistake kept quiet becomes a repeated mistake."' }
+                ],
+                checks: [
+                    {
+                        question: 'What is the Sentinel Competition?',
+                        options: [
+                            'A technical quiz competition for the engineering team',
+                            'An annual competition for innovation and process improvement proposals',
+                            'A client satisfaction scoring system',
+                            'A monthly safety review meeting'
+                        ],
+                        correct: 1,
+                        correctFeedback: 'Correct! The Sentinel Competition encourages team members to submit proposals for tools, processes, or knowledge resources that benefit the team.',
+                        incorrectFeedback: 'The Sentinel Competition is an annual innovation challenge where team members propose tools, processes, or resources that improve the team\'s capabilities. Many modules on this training platform originated as Sentinel entries.'
+                    },
+                    {
+                        question: 'In the retrospective process, what are the three key questions asked?',
+                        options: [
+                            'Who, What, When',
+                            'What went well, What could improve, Action items',
+                            'Cost, Quality, Schedule',
+                            'Technical, Commercial, Safety'
+                        ],
+                        correct: 1,
+                        correctFeedback: 'Correct! Retrospectives cover what went well (continue), what could improve (change), and specific action items (do).',
+                        incorrectFeedback: 'The three retrospective questions are: What went well? What could improve? What action items should we commit to? This structure ensures balanced, actionable feedback.'
+                    }
+                ]
+            }
+        ],
+        assessment: [
+            {
+                question: 'How many pillars make up the Vysus Way of Working?',
+                options: ['Three', 'Four', 'Five', 'Six'],
+                correct: 2
+            },
+            {
+                question: 'What is the maximum time for self-resolving a blocker before escalating?',
+                options: ['5 minutes', '15 minutes', '30 minutes', '1 hour'],
+                correct: 1
+            },
+            {
+                question: 'What is the response time requirement for internal team messages?',
+                options: ['4 hours', '12 hours', '24 hours', '48 hours'],
+                correct: 2
+            },
+            {
+                question: 'What are the three standard project phases?',
+                options: [
+                    'Plan, Execute, Close',
+                    'R0 (Proposal), R1 (Studies & GPS), R2 (Support & Commissioning)',
+                    'Scope, Design, Deliver',
+                    'Phase 1, Phase 2, Phase 3'
+                ],
+                correct: 1
+            },
+            {
+                question: 'At what budget percentage should you escalate a potential overrun to your lead?',
+                options: ['50%', '70%', '80%', '100%'],
+                correct: 2
+            },
+            {
+                question: 'How many levels of QA review does a GPS document require?',
+                options: ['Two (self-check and peer review)', 'Three (self, peer, lead)', 'Four (self, peer, lead, principal)', 'Five (including external review)'],
+                correct: 2
+            },
+            {
+                question: 'What is the purpose of the Technical Knowledge Hub?',
+                options: [
+                    'Client-facing marketing content',
+                    'Shared repository of technical knowledge, lessons learned, and reference material',
+                    'Training exam results database',
+                    'Project management dashboard'
+                ],
+                correct: 1
+            },
+            {
+                question: 'How often should new-joiner mentoring check-ins happen in the first month?',
+                options: ['Daily', 'Weekly', 'Fortnightly', 'Monthly'],
+                correct: 1
+            },
+            {
+                question: 'Which communication channel should be used for formal client correspondence?',
+                options: ['Microsoft Teams Chat', 'Teams Project Channels', 'Email', 'Phone call'],
+                correct: 2
+            },
+            {
+                question: 'What happens to retrospective outputs?',
+                options: [
+                    'They are filed and forgotten',
+                    'They feed into the Knowledge Hub as Lessons Learned and may trigger WOW updates',
+                    'They are sent to clients for transparency',
+                    'They are reviewed only by principals'
+                ],
+                correct: 1
+            }
+        ]
+    };
+    </script>
+    <script src="../../training-engine.js"></script>
+    <script src="../../module-renderer.js"></script>
+</body>
+</html>

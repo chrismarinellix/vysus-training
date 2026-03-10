@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="page-title">NER Chapter 5 Introduction | Grid Engineering Training</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+    <link rel="stylesheet" href="../../module-styles.css">
+</head>
+<body>
+    <div class="bg-container" id="bg-container"></div>
+    <div class="top-bar">
+        <div class="top-bar-left">
+            <a href='/'>&larr; Portal</a>
+            <span class="module-title-bar" id="module-title-bar">Loading...</span>
+        </div>
+        <div class="top-bar-right">
+            <span class="timer-pill" id="timer-display">0m 00s</span>
+            <span class="xp-pill" id="xp-display">0 XP</span>
+        </div>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+    <div class="section-nav" id="section-nav"></div>
+    <div class="content-wrap" id="content-wrap"></div>
+
+    <script>
+    window.MODULE_DATA = {
+        id: "ner-chapter5",
+        title: "NER Chapter 5 Introduction",
+        level: "entry",
+        xp: 500,
+        backgroundImage: "https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?w=1920&q=90",
+        sections: [
+            {
+                title: "Welcome to Grid Connections",
+                subtitle: "Your first day on a 150 MW solar farm connection project starts here.",
+                content: [
+                    {
+                        type: "card",
+                        html: "<h2>The Scenario</h2><p>You have just joined Vysus as a graduate grid connection engineer. Your first assignment: a <strong>150 MW solar farm</strong> in regional New South Wales. The project developer wants to connect to the Transgrid transmission network and start exporting power within 24 months.</p><p>Before you open a single model or draft a single email, you need to understand the rulebook that governs every generating system connection in Australia: <strong>Chapter 5 of the National Electricity Rules</strong>.</p>"
+                    },
+                    {
+                        type: "card",
+                        html: "<h2>What Are the National Electricity Rules?</h2><p>The <strong>National Electricity Rules (NER)</strong> are the legally binding set of rules that govern the operation and planning of the <strong>National Electricity Market (NEM)</strong>. They are made by the <strong>Australian Energy Market Commission (AEMC)</strong> under the National Electricity Law and administered by the <strong>Australian Energy Regulator (AER)</strong>.</p><p>The NER cover everything from network pricing to system security, but for grid connection engineers, one chapter stands above the rest: <strong>Chapter 5 &mdash; Network Connection Access, Planning and Expansion</strong>.</p><p>Think of Chapter 5 as the single source of truth for how generating systems physically and electrically connect to the national grid.</p>"
+                    },
+                    {
+                        type: "info",
+                        title: "Key Institutions",
+                        text: "<strong>AEMC</strong> &mdash; makes the rules. <strong>AER</strong> &mdash; enforces compliance. <strong>AEMO</strong> &mdash; operates the market and power system, assesses connection applications. <strong>TNSPs/DNSPs</strong> &mdash; own and operate the networks you connect to."
+                    },
+                    {
+                        type: "card",
+                        html: "<h2>How the NEM Works</h2><p>The NEM is an interconnected power system spanning <strong>Queensland, New South Wales (including the ACT), Victoria, South Australia, and Tasmania</strong>. It is one of the longest interconnected power systems in the world, stretching over 5,000 km.</p><p>The key participants are:</p><ul><li><strong>Generators</strong> &mdash; produce electricity (coal, gas, wind, solar, hydro, batteries)</li><li><strong>Network Service Providers (NSPs)</strong> &mdash; transport electricity via transmission (TNSPs) and distribution (DNSPs) networks</li><li><strong>Retailers</strong> &mdash; sell electricity to consumers</li><li><strong>AEMO</strong> &mdash; operates the spot market and ensures system security in real time</li></ul>"
+                    },
+                    {
+                        type: "success",
+                        title: "Why Chapter 5 Matters",
+                        text: "Every generating system that connects to the NEM must comply with Chapter 5. It defines the technical performance standards your plant must meet, the process for applying, and the obligations of both the connection applicant and the network service provider. Without understanding Chapter 5, you cannot do grid connection engineering."
+                    },
+                    {
+                        type: "card",
+                        html: "<h2>Chapter 5 vs Chapter 5A: The 5 MW Threshold</h2><p>The NER distinguishes between two connection frameworks based on the size of the generating system:</p><ul><li><strong>Chapter 5</strong> &mdash; applies to generating systems with a nameplate rating of <strong>5 MW or greater</strong>. This is the registered generator pathway and involves AEMO assessment, formal Generator Performance Standards, and a multi-stage connection process.</li><li><strong>Chapter 5A</strong> &mdash; applies to <strong>micro and small embedded generators</strong>, typically below 5 MW, connecting to distribution networks. This is a simpler, more streamlined process.</li></ul><p>Our 150 MW solar farm is firmly in <strong>Chapter 5</strong> territory. All utility-scale projects&mdash;wind farms, solar farms, battery energy storage systems (BESS), and synchronous generators&mdash;follow this path.</p>"
+                    },
+                    {
+                        type: "tech",
+                        title: "Clause Reference",
+                        text: "The 5 MW threshold is defined in NER clause 2.2.1(a) for the requirement to register as a Generator. Chapter 5 applies to all registered generators and those seeking to connect generating systems with capacity of 5 MW or more at the connection point."
+                    }
+                ],
+                checks: [
+                    {
+                        question: "Which body is responsible for making the National Electricity Rules?",
+                        options: [
+                            "Australian Energy Market Operator (AEMO)",
+                            "Australian Energy Market Commission (AEMC)",
+                            "Australian Energy Regulator (AER)",
+                            "Clean Energy Council (CEC)"
+                        ],
+                        correct: 1,
+                        correctFeedback: "Correct! The AEMC is the rule-maker for the NEM. AEMO operates the market and AER enforces compliance, but the AEMC writes and amends the rules.",
+                        incorrectFeedback: "Not quite. The Australian Energy Market Commission (AEMC) is the rule-maker. AEMO operates the power system, and the AER enforces compliance."
+                    },
+                    {
+                        question: "A developer proposes a 3.5 MW solar farm connecting to a distribution network. Which NER chapter primarily governs this connection?",
+                        options: [
+                            "Chapter 4 (Power System Security)",
+                            "Chapter 5 (Network Connection)",
+                            "Chapter 5A (Embedded Generation)",
+                            "Chapter 6 (Network Pricing)"
+                        ],
+                        correct: 2,
+                        correctFeedback: "Correct! At 3.5 MW the system is below the 5 MW threshold, so it falls under Chapter 5A for embedded generation rather than the full Chapter 5 process.",
+                        incorrectFeedback: "Not quite. At 3.5 MW the generating system is below the 5 MW threshold. Chapter 5A applies to micro and small embedded generators, typically under 5 MW connecting to distribution networks."
+                    }
+                ],
+                contentAfterCheck1: [
+                    {
+                        type: "mentor",
+                        title: "Getting Started",
+                        text: "When you first open the NER, Chapter 5 can feel overwhelming. It is hundreds of pages long. The trick is to focus on the connection process (clauses 5.3.1 through 5.3.8) and the technical standards in Schedule 5.2 first. Everything else builds on those foundations."
+                    }
+                ]
+            },
+            {
+                title: "The Connection Process & Performance Standards",
+                subtitle: "The four-stage connection process and the GPS framework that every generator must satisfy.",
+                content: [
+                    {
+                        type: "card",
+                        html: "<h2>The Four-Stage Connection Process</h2><p>Chapter 5 defines a structured, sequential process for connecting a generating system to the grid. There are <strong>four formal stages</strong>, each governed by a specific NER clause:</p>"
+                    },
+                    {
+                        type: "html",
+                        html: "<div class=\"process-flow\"><div class=\"process-step\"><div class=\"step-number\">1</div><div class=\"step-title\">Connection Enquiry</div><div class=\"step-desc\">NER 5.3.2 &mdash; The applicant submits preliminary information about the proposed generating system to the NSP. The NSP responds with high-level technical and commercial information.</div></div><div class=\"process-step\"><div class=\"step-number\">2</div><div class=\"step-title\">Connection Application</div><div class=\"step-desc\">NER 5.3.4 &mdash; The applicant submits a detailed application including proposed Generator Performance Standards, power system models, and technical data. AEMO assesses the GPS.</div></div><div class=\"process-step\"><div class=\"step-number\">3</div><div class=\"step-title\">Connection Offer</div><div class=\"step-desc\">NER 5.3.6 &mdash; The NSP makes a formal connection offer detailing connection works, charges, technical requirements, and the agreed Generator Performance Standards.</div></div><div class=\"process-step\"><div class=\"step-number\">4</div><div class=\"step-title\">Connection Agreement</div><div class=\"step-desc\">NER 5.3.7 &mdash; The applicant and NSP execute a connection agreement. This is the legally binding contract that allows connection works to proceed.</div></div></div>"
+                    },
+                    {
+                        type: "info",
+                        title: "Typical Duration",
+                        text: "The full process from initial enquiry to executed connection agreement typically takes 12 to 24 months for a Chapter 5 connection, depending on the complexity of the project and the number of GPS that require negotiation."
+                    },
+                    {
+                        type: "card",
+                        html: "<h2>Generator Performance Standards (GPS)</h2><p>Generator Performance Standards are the technical requirements that a generating system must meet at its connection point. They are the heart of the Chapter 5 process and are defined in <strong>Schedule 5.2</strong> of the NER.</p><p>Every performance standard in Schedule 5.2 has <strong>three levels</strong>:</p><ul><li><strong>Automatic Access Standard (AAS)</strong> &mdash; The highest level. If your plant meets the AAS, the NSP and AEMO <em>must</em> approve it. No negotiation required.</li><li><strong>Minimum Access Standard (MAS)</strong> &mdash; The lowest acceptable level. The NSP and AEMO cannot require performance below the MAS.</li><li><strong>Negotiated Access Standard (NAS)</strong> &mdash; Any level between the AAS and MAS. This is where most real-world negotiations happen. The applicant proposes, AEMO assesses, and the NSP agrees or pushes back.</li></ul>"
+                    },
+                    {
+                        type: "warning",
+                        title: "Critical Concept",
+                        text: "A connection applicant cannot be denied connection simply because they cannot meet the Automatic Access Standard. They have the right to propose a Negotiated Access Standard down to the Minimum Access Standard. However, they must demonstrate that their proposed standard does not adversely affect power system security."
+                    },
+                    {
+                        type: "card",
+                        html: "<h2>Key Schedule 5.2 Clauses</h2><p>The following table summarises the most important technical performance standards you will encounter on every grid connection project:</p><table class=\"data-table\"><thead><tr><th>Clause</th><th>Standard</th><th>Description</th></tr></thead><tbody><tr><td><strong>S5.2.5.1</strong></td><td>Reactive Power Capability</td><td>The generating system must be capable of supplying and absorbing reactive power. Typically 0.395 leading to 0.395 lagging power factor at full output for the AAS.</td></tr><tr><td><strong>S5.2.5.3</strong></td><td>Generating System Response to Frequency Disturbances</td><td>Defines how the plant must respond during frequency excursions, including governor-type responses and ride-through requirements.</td></tr><tr><td><strong>S5.2.5.4</strong></td><td>Generating System Response to Voltage Disturbances</td><td>Specifies continuous uninterrupted operation (CUO) voltage envelope and voltage ride-through capabilities.</td></tr><tr><td><strong>S5.2.5.5</strong></td><td>Generating System Response to Disturbances Following Contingency Events (FRT)</td><td>Fault Ride-Through. The plant must remain connected and inject reactive current during and after network faults. One of the most technically demanding standards.</td></tr><tr><td><strong>S5.2.5.11</strong></td><td>Frequency Control</td><td>Requirements for the plant to provide frequency control services, including droop response and deadband settings.</td></tr><tr><td><strong>S5.2.5.13</strong></td><td>Voltage and Reactive Power Control</td><td>Defines the voltage control system requirements, including setpoint response, settling time, and steady-state accuracy.</td></tr><tr><td><strong>S5.2.5.14</strong></td><td>Active Power Control</td><td>Requirements for remote active power dispatch, ramp rate control, and response to dispatch instructions from AEMO.</td></tr></tbody></table>"
+                    },
+                    {
+                        type: "card",
+                        html: "<h2>Roles in the Connection Process</h2><p>Several parties are involved in every Chapter 5 connection:</p><ul><li><strong>Connection Applicant</strong> &mdash; the developer or generator owner seeking to connect (your client)</li><li><strong>Network Service Provider (NSP)</strong> &mdash; the TNSP or DNSP that owns the network at the connection point. They process the enquiry, make the offer, and execute the agreement.</li><li><strong>AEMO</strong> &mdash; assesses Generator Performance Standards, reviews power system studies, ensures the connection does not compromise system security. AEMO must approve the GPS before the NSP can include them in a connection offer.</li><li><strong>Vysus (you)</strong> &mdash; the technical adviser. You prepare the GPS proposals, run power system models, liaise with AEMO and the NSP, and guide the applicant through the process.</li></ul>"
+                    }
+                ],
+                checks: [
+                    {
+                        question: "What is the correct sequence of the four connection stages under Chapter 5?",
+                        options: [
+                            "Application, Enquiry, Agreement, Offer",
+                            "Enquiry, Application, Offer, Agreement",
+                            "Enquiry, Offer, Application, Agreement",
+                            "Application, Offer, Enquiry, Agreement"
+                        ],
+                        correct: 1,
+                        correctFeedback: "Correct! The sequence is Enquiry (5.3.2), Application (5.3.4), Offer (5.3.6), Agreement (5.3.7). This order is fixed in the NER.",
+                        incorrectFeedback: "Not quite. The correct sequence is: Enquiry (5.3.2) then Application (5.3.4) then Offer (5.3.6) then Agreement (5.3.7). Remember: E-A-O-A."
+                    },
+                    {
+                        question: "A solar farm proposes a GPS level between the Automatic Access Standard and the Minimum Access Standard. What is this called?",
+                        options: [
+                            "Default Access Standard",
+                            "Modified Access Standard",
+                            "Negotiated Access Standard (NAS)",
+                            "Conditional Access Standard"
+                        ],
+                        correct: 2,
+                        correctFeedback: "Correct! A Negotiated Access Standard (NAS) is any performance level between the Automatic Access Standard (ceiling) and the Minimum Access Standard (floor).",
+                        incorrectFeedback: "Not quite. The three GPS levels are: Automatic Access Standard (AAS), Negotiated Access Standard (NAS), and Minimum Access Standard (MAS). A NAS sits between the AAS and MAS."
+                    }
+                ],
+                contentAfterCheck1: [
+                    {
+                        type: "mentor",
+                        title: "Practical Tip",
+                        text: "Memorise the sequence E-A-O-A (Enquiry, Application, Offer, Agreement) and the clause numbers 5.3.2, 5.3.4, 5.3.6, 5.3.7. You will reference these hundreds of times in your career. They form the skeleton of every connection project timeline."
+                    }
+                ]
+            },
+            {
+                title: "Walking Through a Connection Enquiry",
+                subtitle: "Practical guidance on submitting your first connection enquiry and working with TNSPs.",
+                content: [
+                    {
+                        type: "card",
+                        html: "<h2>Preparing a Connection Enquiry</h2><p>The connection enquiry (NER 5.3.2) is the first formal step. Your client wants to connect a 150 MW solar farm in NSW, so you will be submitting the enquiry to <strong>Transgrid</strong> as the relevant TNSP.</p><p>Before you draft the enquiry, you need to gather key information from the client:</p><ul><li><strong>Site location</strong> &mdash; GPS coordinates, nearest existing substation, and proposed connection point</li><li><strong>Technology type</strong> &mdash; solar PV, wind, BESS, hybrid, or synchronous generation</li><li><strong>Nameplate capacity</strong> &mdash; total MW and MVA ratings</li><li><strong>Inverter and plant controller details</strong> &mdash; manufacturer, model, firmware version, number of units</li><li><strong>Proposed connection voltage</strong> &mdash; e.g., 132 kV, 220 kV, 330 kV</li><li><strong>Expected energisation date</strong> &mdash; when the client wants to first export power</li><li><strong>Single line diagram</strong> &mdash; preliminary layout showing the generating system, transformers, and connection assets</li><li><strong>Preliminary GPS proposals</strong> &mdash; initial indication of which standards you expect to meet at AAS and which may require negotiation</li></ul>"
+                    },
+                    {
+                        type: "info",
+                        title: "Enquiry Fees",
+                        text: "TNSPs charge an enquiry processing fee, typically ranging from $5,000 to $15,000 depending on the complexity. This is separate from the connection application fee, which can be significantly larger (often $50,000 to $200,000+) as it covers detailed system studies."
+                    },
+                    {
+                        type: "card",
+                        html: "<h2>The TNSP Landscape</h2><p>Each NEM state has a primary transmission network service provider. You will work with different TNSPs depending on where the project is located:</p><table class=\"data-table\"><thead><tr><th>State</th><th>TNSP</th><th>Notes</th></tr></thead><tbody><tr><td>NSW &amp; ACT</td><td><strong>Transgrid</strong></td><td>Largest transmission network in the NEM. Manages connection to 500 kV, 330 kV, 220 kV, and 132 kV networks.</td></tr><tr><td>QLD</td><td><strong>Powerlink</strong></td><td>Operates the Queensland transmission network. Strong pipeline of renewable projects in North and Central QLD.</td></tr><tr><td>VIC</td><td><strong>AusNet Services</strong></td><td>Now part of Brookfield. Manages the Victorian transmission network including REZ development areas.</td></tr><tr><td>SA</td><td><strong>ElectraNet</strong></td><td>South Australian transmission. High renewable penetration, system strength challenges common.</td></tr><tr><td>TAS</td><td><strong>TasNetworks</strong></td><td>Combined transmission and distribution in Tasmania. Smaller network, Marinus Link development underway.</td></tr></tbody></table>"
+                    },
+                    {
+                        type: "card",
+                        html: "<h2>What Happens After the Enquiry</h2><p>Once you submit the connection enquiry, the TNSP will:</p><ol><li><strong>Acknowledge receipt</strong> and confirm the enquiry is complete (or request additional information)</li><li>Conduct a <strong>preliminary assessment</strong> of the proposed connection point, including high-level network capacity and available fault levels</li><li>Issue a <strong>response to the connection enquiry</strong> containing:<ul><li>Identified connection point and connection configuration</li><li>Preliminary technical requirements and any obvious GPS concerns</li><li>Estimated connection charges and required network augmentation works</li><li>Information about other connection applications in the area (queued projects)</li></ul></li></ol><p>The response timeframe is nominally <strong>20 business days</strong> under NER 5.3.3, but in practice can take 2 to 4 months during busy periods.</p>"
+                    },
+                    {
+                        type: "warning",
+                        title: "Common Pitfalls",
+                        text: "Incomplete enquiries are the number one cause of delays. Always check that your single line diagram is current, your GPS proposals address every clause in Schedule 5.2, and your technology data is accurate. Submitting incorrect inverter models or outdated firmware versions will cause rework later in the process."
+                    },
+                    {
+                        type: "html",
+                        html: "<div class=\"process-flow\"><div class=\"process-step\"><div class=\"step-number\">1</div><div class=\"step-title\">Gather Client Data</div><div class=\"step-desc\">Site details, technology specs, SLD, proposed connection voltage, target timeline.</div></div><div class=\"process-step\"><div class=\"step-number\">2</div><div class=\"step-title\">Draft Enquiry Package</div><div class=\"step-desc\">Compile NER 5.3.2 enquiry form, preliminary GPS table, and supporting documents.</div></div><div class=\"process-step\"><div class=\"step-number\">3</div><div class=\"step-title\">Submit to TNSP</div><div class=\"step-desc\">Lodge via the TNSP portal (e.g., Transgrid Connection Portal) with the enquiry fee.</div></div><div class=\"process-step\"><div class=\"step-number\">4</div><div class=\"step-title\">Review Enquiry Response</div><div class=\"step-desc\">Analyse the TNSP response for connection configuration, augmentation costs, and GPS flags.</div></div><div class=\"process-step\"><div class=\"step-number\">5</div><div class=\"step-title\">Advise Client</div><div class=\"step-desc\">Brief the client on technical requirements, costs, risks, and recommended next steps.</div></div></div>"
+                    },
+                    {
+                        type: "mentor",
+                        title: "Reading an Enquiry Response",
+                        text: "When you receive the TNSP enquiry response, pay close attention to three things: (1) the proposed connection configuration and voltage level, (2) any flagged system strength or thermal constraint issues, and (3) the list of queued projects ahead of you. If there are many projects in the queue at the same connection point, your client may face significant network augmentation costs or delays."
+                    }
+                ],
+                checks: [
+                    {
+                        question: "You are working on a solar farm project in Queensland. Which TNSP will you submit the connection enquiry to?",
+                        options: [
+                            "Transgrid",
+                            "AusNet Services",
+                            "Powerlink",
+                            "ElectraNet"
+                        ],
+                        correct: 2,
+                        correctFeedback: "Correct! Powerlink is the TNSP for Queensland. Transgrid covers NSW, AusNet covers Victoria, and ElectraNet covers South Australia.",
+                        incorrectFeedback: "Not quite. Powerlink is the TNSP for Queensland. Remember: Transgrid (NSW), Powerlink (QLD), AusNet (VIC), ElectraNet (SA), TasNetworks (TAS)."
+                    },
+                    {
+                        question: "A TNSP receives a connection enquiry under NER 5.3.2. Under NER 5.3.3, what is the nominal timeframe for the TNSP to respond?",
+                        options: [
+                            "5 business days",
+                            "10 business days",
+                            "20 business days",
+                            "60 business days"
+                        ],
+                        correct: 2,
+                        correctFeedback: "Correct! NER 5.3.3 specifies a response timeframe of 20 business days, although in practice responses often take longer during periods of high application volume.",
+                        incorrectFeedback: "Not quite. The nominal response timeframe under NER 5.3.3 is 20 business days. In practice, responses can take 2 to 4 months during busy periods, but 20 business days is the NER requirement."
+                    }
+                ],
+                contentAfterCheck1: [
+                    {
+                        type: "success",
+                        title: "Timeline Reality Check",
+                        text: "While the NER specifies nominal timeframes, the reality is that the connection process is often longer than expected. Factor in 3 to 6 months for the enquiry stage, 6 to 12 months for the application and GPS negotiation stage, and 2 to 4 months for offer and agreement execution. Total: 12 to 24 months is typical, but complex projects can take longer."
+                    }
+                ]
+            },
+            {
+                title: "Advanced Concepts & Recent Changes",
+                subtitle: "System strength, negotiated standards, state-specific differences, and the 2025 NER rule changes.",
+                content: [
+                    {
+                        type: "card",
+                        html: "<h2>System Strength and Short Circuit Ratio</h2><p>One of the most critical concepts in modern grid connection engineering is <strong>system strength</strong>. As more inverter-based resources (IBR) like solar and wind farms connect to the grid, the system becomes weaker because IBR do not provide the same fault current contribution as synchronous machines.</p><p><strong>Short Circuit Ratio (SCR)</strong> is the key metric. It is defined as the ratio of the available fault level at the connection point to the MW capacity of the generating system:</p><p style=\"text-align:center;font-size:1.3em;\"><strong>SCR = Fault Level (MVA) / Plant Capacity (MW)</strong></p><p>A <strong>low SCR</strong> (below about 3) indicates a weak grid point, which can cause:</p><ul><li>Voltage instability and oscillations</li><li>Difficulty maintaining stable power factor control</li><li>Inverter tripping during network disturbances</li><li>Inability to meet FRT requirements under S5.2.5.5</li><li>Challenges with voltage control response under S5.2.5.13</li></ul>"
+                    },
+                    {
+                        type: "warning",
+                        title: "System Strength is a Growing Challenge",
+                        text: "Many regions in the NEM, particularly regional areas of SA, western NSW, and north Queensland, now have SCR values below 3 at proposed connection points. If your project is in a weak grid area, expect significant additional technical requirements including potentially a synchronous condenser or system strength remediation scheme."
+                    },
+                    {
+                        type: "card",
+                        html: "<h2>When and Why You Negotiate Below AAS</h2><p>In practice, most generating systems cannot meet every Automatic Access Standard. The areas most commonly requiring negotiation include:</p><ul><li><strong>Fault Ride-Through (S5.2.5.5)</strong> &mdash; IBR may not be able to provide the AAS reactive current injection profile during deep voltage depressions, particularly in weak grid conditions. Negotiation typically involves reduced reactive current injection depth or modified recovery profiles.</li><li><strong>Active Power Recovery (S5.2.5.5)</strong> &mdash; the rate at which active power recovers after a fault. Inverter-based plants often need longer recovery times than the AAS specifies, especially for multiple sequential faults.</li><li><strong>Reactive Current Injection (S5.2.5.5)</strong> &mdash; the amount and speed of reactive current injected during a voltage disturbance. Technology limitations of specific inverter platforms often drive this negotiation.</li><li><strong>Voltage Control Response (S5.2.5.13)</strong> &mdash; settling time and accuracy of the voltage control system. In weak grids, fast voltage control can cause instability, requiring a negotiated slower response.</li></ul>"
+                    },
+                    {
+                        type: "tech",
+                        title: "Negotiation Strategy",
+                        text: "When proposing a Negotiated Access Standard, you must demonstrate to AEMO that the proposed level does not adversely affect power system security or the quality of supply to other network users. This requires detailed power system modelling (PSS/E, PSCAD, or PowerFactory) with evidence that the plant performs acceptably under the agreed conditions."
+                    },
+                    {
+                        type: "card",
+                        html: "<h2>2025 NER Rule Changes (AEMC May 2025)</h2><p>The AEMC finalised a significant package of rule changes in May 2025 that affect Chapter 5 and Schedule 5.2. Key changes include:</p><ul><li><strong>Synchronous Condensers</strong> &mdash; New provisions explicitly address the connection of synchronous condensers as system strength services. Synchronous condensers now have a dedicated performance standard framework rather than being treated as generating systems.</li><li><strong>HVDC Links</strong> &mdash; Updated technical standards for High Voltage Direct Current interconnectors, recognising their increasing importance (e.g., Marinus Link, HumeLink, EnergyConnect). HVDC converter stations now have tailored GPS requirements.</li><li><strong>Grid-Forming Inverters</strong> &mdash; The rules now formally recognise grid-forming inverter technology as distinct from grid-following. New clauses address voltage source behaviour, inertia emulation, and fault current contribution from grid-forming plant. This is a significant shift that will affect how future IBR connections are assessed.</li><li><strong>System Strength Framework Updates</strong> &mdash; Strengthened system strength obligations on TNSPs, including clearer requirements for system strength service provision and more detailed assessment criteria for new connections in weak grid areas.</li></ul>"
+                    },
+                    {
+                        type: "success",
+                        title: "Why This Matters to You",
+                        text: "The 2025 rule changes mean that projects connecting from 2025 onwards will encounter new GPS clauses and updated AEMO assessment criteria. Grid-forming inverter requirements, in particular, may become mandatory for projects in weak grid areas. Stay current with AEMC determinations and AEMO guidelines."
+                    },
+                    {
+                        type: "card",
+                        html: "<h2>NSP-Specific Differences Across States</h2><p>While the NER is a national framework, each TNSP interprets and applies it differently in practice:</p><ul><li><strong>Transgrid (NSW)</strong> &mdash; Generally follows NER requirements closely. Large pipeline means longer processing times. Uses a formal connection portal.</li><li><strong>Powerlink (QLD)</strong> &mdash; Tends to be conservative on system strength assessments. North Queensland projects face particular challenges due to long, radial transmission lines.</li><li><strong>AusNet (VIC)</strong> &mdash; Active in REZ coordination. May require additional power quality studies beyond the standard NER requirements.</li><li><strong>ElectraNet (SA)</strong> &mdash; South Australia has the highest renewable penetration in the NEM. Expect strong focus on system strength, fault level, and grid-forming capability. ElectraNet often requires detailed PSCAD modelling.</li><li><strong>TasNetworks (TAS)</strong> &mdash; Smaller network with unique challenges related to the Basslink interconnector. Generally more collaborative in the connection process.</li></ul>"
+                    },
+                    {
+                        type: "card",
+                        html: "<h2>Power Quality Requirements</h2><p>In addition to the GPS in Schedule 5.2, connecting generators must comply with power quality standards:</p><ul><li><strong>Harmonics</strong> &mdash; assessed under <strong>AS/NZS 61000.3.6</strong> (emission limits for harmonic currents). IBR are a significant source of harmonics, and the TNSP will set emission limits at the connection point based on the available harmonic headroom.</li><li><strong>Voltage Flicker</strong> &mdash; assessed under <strong>AS/NZS 61000.3.7</strong> (emission limits for voltage fluctuations and flicker). Wind farms in particular can cause flicker due to variable generation output.</li></ul><p>These standards are referenced in the NER but are separate Australian/New Zealand standards. You will need to conduct harmonic and flicker assessments as part of the connection application.</p>"
+                    },
+                    {
+                        type: "mentor",
+                        title: "Career Advice",
+                        text: "The 2025 rule changes around grid-forming inverters represent a generational shift in power systems engineering. Developing expertise in grid-forming technology, EMT modelling (PSCAD), and system strength assessment will be highly valuable skills. The industry is moving from grid-following to grid-forming, and engineers who understand both will be in high demand."
+                    }
+                ],
+                checks: [
+                    {
+                        question: "A proposed solar farm has a connection point with an available fault level of 300 MVA and a plant capacity of 150 MW. What is the Short Circuit Ratio (SCR)?",
+                        options: [
+                            "0.5",
+                            "2.0",
+                            "3.0",
+                            "450"
+                        ],
+                        correct: 1,
+                        correctFeedback: "Correct! SCR = Fault Level / Plant Capacity = 300 MVA / 150 MW = 2.0. This is considered a weak connection point (below 3) and would likely trigger additional system strength requirements.",
+                        incorrectFeedback: "Not quite. SCR = Fault Level (MVA) / Plant Capacity (MW) = 300 / 150 = 2.0. An SCR below 3 generally indicates a weak grid point."
+                    },
+                    {
+                        question: "Which of the following is a key feature of the AEMC May 2025 NER rule changes?",
+                        options: [
+                            "Removal of the 5 MW threshold for Chapter 5",
+                            "Formal recognition of grid-forming inverter technology in the NER",
+                            "Transfer of GPS assessment responsibility from AEMO to TNSPs",
+                            "Elimination of the Negotiated Access Standard pathway"
+                        ],
+                        correct: 1,
+                        correctFeedback: "Correct! The May 2025 rule changes formally recognise grid-forming inverter technology as distinct from grid-following, introducing new clauses for voltage source behaviour, inertia emulation, and fault current contribution.",
+                        incorrectFeedback: "Not quite. A key feature of the 2025 rule changes is the formal recognition of grid-forming inverter technology in the NER, with new clauses addressing voltage source behaviour, inertia emulation, and fault current contribution."
+                    }
+                ],
+                contentAfterCheck1: [
+                    {
+                        type: "info",
+                        title: "Further Reading",
+                        text: "The full NER is available on the AEMC website (aemc.gov.au). AEMO publishes connection guides and GPS assessment criteria on their website (aemo.com.au). For the 2025 rule changes, search for the AEMC final determination on the Connections Reform package."
+                    }
+                ]
+            }
+        ],
+        assessment: [
+            {
+                question: "What are the National Electricity Rules (NER)?",
+                options: [
+                    "Guidelines published by the Clean Energy Council for solar installers",
+                    "The legally binding rules governing the operation and planning of the National Electricity Market, made by the AEMC",
+                    "Technical standards published by Standards Australia for electrical equipment",
+                    "Internal policies used by AEMO to manage the spot market"
+                ],
+                correct: 1
+            },
+            {
+                question: "A developer proposes a 7 MW wind farm connecting to a transmission network. Which NER chapter primarily governs this connection?",
+                options: [
+                    "Chapter 4 (Power System Security)",
+                    "Chapter 5 (Network Connection Access, Planning and Expansion)",
+                    "Chapter 5A (Embedded Generation)",
+                    "Chapter 6A (Transmission Network Pricing)"
+                ],
+                correct: 1
+            },
+            {
+                question: "What is the correct order of the four connection stages under NER Chapter 5?",
+                options: [
+                    "Application, Enquiry, Offer, Agreement",
+                    "Enquiry, Offer, Application, Agreement",
+                    "Enquiry, Application, Offer, Agreement",
+                    "Offer, Enquiry, Agreement, Application"
+                ],
+                correct: 2
+            },
+            {
+                question: "Under the GPS framework, a connection applicant proposes a performance level below the Automatic Access Standard but above the Minimum Access Standard. What is this called?",
+                options: [
+                    "Conditional Access Standard",
+                    "Negotiated Access Standard (NAS)",
+                    "Reduced Access Standard",
+                    "Interim Access Standard"
+                ],
+                correct: 1
+            },
+            {
+                question: "Which NER Schedule 5.2 clause covers Fault Ride-Through (generating system response to disturbances following contingency events)?",
+                options: [
+                    "S5.2.5.1 (Reactive Power Capability)",
+                    "S5.2.5.3 (Frequency Response)",
+                    "S5.2.5.5 (Response to Disturbances Following Contingency Events)",
+                    "S5.2.5.13 (Voltage and Reactive Power Control)"
+                ],
+                correct: 2
+            },
+            {
+                question: "In the Chapter 5 connection process, which organisation is responsible for assessing Generator Performance Standards before they can be included in a connection offer?",
+                options: [
+                    "The relevant TNSP",
+                    "AEMO",
+                    "The AER",
+                    "The AEMC"
+                ],
+                correct: 1
+            },
+            {
+                question: "What is the typical duration from initial connection enquiry to executed connection agreement for a Chapter 5 connection?",
+                options: [
+                    "1 to 3 months",
+                    "3 to 6 months",
+                    "12 to 24 months",
+                    "3 to 5 years"
+                ],
+                correct: 2
+            },
+            {
+                question: "Which of the following was introduced by the AEMC May 2025 NER rule changes?",
+                options: [
+                    "The original four-stage connection process",
+                    "The concept of Automatic and Minimum Access Standards",
+                    "Formal recognition of grid-forming inverter technology with dedicated performance standards",
+                    "The requirement for generators above 5 MW to register with AEMO"
+                ],
+                correct: 2
+            },
+            {
+                question: "A proposed connection point has a fault level of 200 MVA and the generating system has a nameplate capacity of 100 MW. What is the Short Circuit Ratio (SCR), and what does it indicate?",
+                options: [
+                    "SCR = 0.5, indicating a strong connection point",
+                    "SCR = 2.0, indicating a relatively weak connection point that may require system strength remediation",
+                    "SCR = 20, indicating excellent fault level availability",
+                    "SCR = 100, indicating the project will have no connection issues"
+                ],
+                correct: 1
+            },
+            {
+                question: "You are advising a client on a 200 MW solar farm in South Australia. During the enquiry response, ElectraNet flags system strength concerns and requests PSCAD modelling. Which GPS clause is most likely to require negotiation due to weak grid conditions?",
+                options: [
+                    "S5.2.5.14 (Active Power Control) because the plant cannot be dispatched remotely",
+                    "S5.2.5.5 (Fault Ride-Through) because the plant may not maintain stable reactive current injection during voltage depressions in weak grid conditions",
+                    "S5.2.5.1 (Reactive Power Capability) because the plant cannot produce any reactive power",
+                    "S5.2.5.11 (Frequency Control) because solar farms cannot respond to frequency changes"
+                ],
+                correct: 1
+            }
+        ]
+    };
+    </script>
+    <script src="../../training-engine.js"></script>
+    <script src="../../module-renderer.js"></script>
+</body>
+</html>

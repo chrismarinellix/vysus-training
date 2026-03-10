@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Training Admin — Vysus Grid Connection</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚙️</text></svg>">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        :root {
+            --stockholm-neon: #00E3A9; --malmo-green: #005454; --bath-sky: #4b81ef;
+            --hellerup-royal: #05275e; --orlando-red: #f92d63; --houston-pink: #f188f4;
+            --mumbai-magenta: #8e329c; --navy: #1a2744;
+        }
+        body { font-family: 'Inter', sans-serif; color: white; background: var(--navy); min-height: 100vh; }
+
+        /* Top Bar */
+        .top-bar {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 9999;
+            background: rgba(26,39,68,0.9); backdrop-filter: blur(40px);
+            border-bottom: 1px solid rgba(249,45,99,0.2);
+            padding: 0.6rem 2rem; display: flex; align-items: center; justify-content: space-between;
+        }
+        .top-bar h2 {
+            font-size: 1rem; font-weight: 800;
+            background: linear-gradient(135deg, var(--orlando-red), var(--houston-pink));
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+        }
+        .top-bar-right { display: flex; gap: 1rem; align-items: center; }
+        .top-bar a {
+            color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.85rem; font-weight: 600;
+            padding: 0.3rem 0.6rem; border-radius: 8px;
+        }
+        .top-bar a:hover { color: var(--stockholm-neon); background: rgba(0,227,169,0.1); }
+
+        /* Tab Nav */
+        .tab-nav {
+            position: fixed; top: 48px; left: 0; right: 0; z-index: 9998;
+            background: rgba(26,39,68,0.8); backdrop-filter: blur(30px);
+            display: flex; justify-content: center; gap: 0.3rem; padding: 0.4rem 1rem;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .tab-btn {
+            border: none; background: transparent; color: rgba(255,255,255,0.5);
+            font-size: 0.8rem; font-weight: 600; padding: 0.5rem 1rem; border-radius: 20px;
+            cursor: pointer; transition: all 0.3s; font-family: 'Inter', sans-serif;
+        }
+        .tab-btn:hover { color: white; background: rgba(255,255,255,0.05); }
+        .tab-btn.active {
+            background: linear-gradient(135deg, var(--orlando-red), var(--mumbai-magenta));
+            color: white; box-shadow: 0 2px 12px rgba(249,45,99,0.3);
+        }
+
+        /* Content */
+        .main { padding: 7rem 2rem 4rem; max-width: 1600px; margin: 0 auto; }
+        .panel { display: none; animation: fadeUp 0.3s ease; }
+        .panel.active { display: block; }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
+
+        .glass {
+            background: rgba(255,255,255,0.03); backdrop-filter: blur(40px);
+            border-radius: 20px; border: 1px solid rgba(255,255,255,0.08);
+            padding: 2rem; margin-bottom: 1.5rem;
+        }
+        .glass h3 { color: var(--stockholm-neon); margin-bottom: 1rem; font-size: 1.3rem; }
+
+        /* Stats Row */
+        .stats-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 1rem; margin-bottom: 1.5rem; }
+        .stat-card {
+            background: rgba(255,255,255,0.04); border-radius: 16px; padding: 1.5rem;
+            text-align: center; border: 1px solid rgba(255,255,255,0.06);
+        }
+        .stat-value { font-size: 2.2rem; font-weight: 800; }
+        .stat-label { font-size: 0.8rem; color: rgba(255,255,255,0.5); margin-top: 0.3rem; }
+        .stat-green { color: var(--stockholm-neon); }
+        .stat-blue { color: var(--bath-sky); }
+        .stat-pink { color: var(--houston-pink); }
+        .stat-red { color: var(--orlando-red); }
+
+        /* Tables */
+        table { width: 100%; border-collapse: separate; border-spacing: 0; }
+        th {
+            padding: 0.7rem 0.8rem; text-align: left; font-size: 0.75rem; font-weight: 700;
+            color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.5px;
+            border-bottom: 1px solid rgba(255,255,255,0.08); white-space: nowrap;
+        }
+        td {
+            padding: 0.6rem 0.8rem; font-size: 0.85rem; border-bottom: 1px solid rgba(255,255,255,0.04);
+        }
+        tr:hover td { background: rgba(255,255,255,0.03); }
+
+        /* Matrix cells */
+        .cell-pass { background: rgba(0,227,169,0.15); color: var(--stockholm-neon); text-align: center; border-radius: 6px; font-weight: 700; font-size: 0.8rem; }
+        .cell-progress { background: rgba(75,129,239,0.15); color: var(--bath-sky); text-align: center; border-radius: 6px; font-size: 0.75rem; }
+        .cell-none { color: rgba(255,255,255,0.15); text-align: center; font-size: 0.7rem; }
+
+        /* Buttons */
+        .btn { padding: 0.6rem 1.5rem; border-radius: 10px; border: none; font-weight: 700; font-size: 0.85rem; cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.3s; }
+        .btn-export { background: var(--stockholm-neon); color: var(--navy); }
+        .btn-export:hover { transform: translateY(-2px); box-shadow: 0 4px 15px rgba(0,227,169,0.3); }
+        .btn-secondary { background: rgba(255,255,255,0.08); color: white; border: 1px solid rgba(255,255,255,0.15); }
+        .btn-secondary:hover { background: rgba(255,255,255,0.12); }
+        .btn-group { display: flex; gap: 0.8rem; margin-bottom: 1rem; flex-wrap: wrap; }
+
+        /* Feedback */
+        .feedback-item {
+            background: rgba(255,255,255,0.03); border-radius: 12px; padding: 1rem;
+            margin-bottom: 0.8rem; border: 1px solid rgba(255,255,255,0.06);
+        }
+        .feedback-meta { display: flex; gap: 1rem; align-items: center; margin-bottom: 0.5rem; font-size: 0.8rem; color: rgba(255,255,255,0.5); }
+        .feedback-text { font-size: 0.9rem; color: rgba(255,255,255,0.8); }
+        .feedback-actioned { background: rgba(0,227,169,0.05); border-color: rgba(0,227,169,0.15); }
+        .action-btn {
+            background: rgba(0,227,169,0.1); border: 1px solid rgba(0,227,169,0.3); color: var(--stockholm-neon);
+            border-radius: 8px; padding: 0.3rem 0.6rem; font-size: 0.7rem; cursor: pointer; font-weight: 600;
+        }
+
+        /* Score bars */
+        .score-bar { height: 8px; border-radius: 4px; background: rgba(255,255,255,0.08); overflow: hidden; width: 100px; display: inline-block; vertical-align: middle; }
+        .score-bar-fill { height: 100%; border-radius: 4px; }
+
+        /* Access denied */
+        .access-denied { text-align: center; padding: 4rem 2rem; }
+        .access-denied h1 { font-size: 2.5rem; color: var(--orlando-red); margin-bottom: 1rem; }
+
+        /* Responsive */
+        .table-scroll { overflow-x: auto; }
+        @media (max-width: 768px) {
+            .main { padding: 6.5rem 1rem 3rem; }
+            .tab-nav { overflow-x: auto; justify-content: flex-start; }
+        }
+    </style>
+</head>
+<body>
+    <div class="top-bar">
+        <div style="display:flex; align-items:center; gap:0.7rem;">
+            <span style="font-size:1.2rem;">⚙️</span>
+            <h2>Training Admin</h2>
+        </div>
+        <div class="top-bar-right">
+            <a href='/'>← Portal</a>
+        </div>
+    </div>
+
+    <div class="tab-nav">
+        <button class="tab-btn active" onclick="switchTab('overview')">Overview</button>
+        <button class="tab-btn" onclick="switchTab('matrix')">Completion Matrix</button>
+        <button class="tab-btn" onclick="switchTab('scores')">Score Analytics</button>
+        <button class="tab-btn" onclick="switchTab('time')">Time Analytics</button>
+        <button class="tab-btn" onclick="switchTab('feedback')">Feedback</button>
+        <button class="tab-btn" onclick="switchTab('export')">Export</button>
+    </div>
+
+    <div class="main" id="main-content">
+        <div class="access-denied" id="access-denied" style="display:none;">
+            <h1>Access Denied</h1>
+            <p style="color:rgba(255,255,255,0.6);">Admin access is restricted. Please log in via the portal first.</p>
+            <a href='/' style='color:var(--stockholm-neon);'>Go to Portal →</a>
+        </div>
+
+        <!-- Overview -->
+        <div class="panel active" id="panel-overview">
+            <div class="stats-row" id="stats-row"></div>
+            <div class="glass" id="overview-leaderboard"></div>
+        </div>
+
+        <!-- Completion Matrix -->
+        <div class="panel" id="panel-matrix">
+            <div class="glass">
+                <h3>Completion Matrix</h3>
+                <p style="color:rgba(255,255,255,0.5); font-size:0.85rem; margin-bottom:1rem;">Person × Module grid showing best scores. Green = passed, blue = in progress, empty = not started.</p>
+                <div class="table-scroll" id="matrix-table"></div>
+            </div>
+        </div>
+
+        <!-- Score Analytics -->
+        <div class="panel" id="panel-scores">
+            <div class="glass">
+                <h3>Score Analytics by Module</h3>
+                <div class="table-scroll" id="score-table"></div>
+            </div>
+        </div>
+
+        <!-- Time Analytics -->
+        <div class="panel" id="panel-time">
+            <div class="glass">
+                <h3>Time Analytics by Module</h3>
+                <p style="color:rgba(255,255,255,0.5); font-size:0.85rem; margin-bottom:1rem;">Average, minimum, and maximum time spent per module. Outliers may indicate content that is too easy or too difficult.</p>
+                <div class="table-scroll" id="time-table"></div>
+            </div>
+        </div>
+
+        <!-- Feedback -->
+        <div class="panel" id="panel-feedback">
+            <div class="glass">
+                <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
+                    <h3 style="margin:0;">Feedback Review</h3>
+                    <div>
+                        <select id="feedback-filter" onchange="renderFeedback()" style="background:rgba(255,255,255,0.08); border:1px solid rgba(255,255,255,0.15); color:white; padding:0.4rem 0.8rem; border-radius:8px; font-size:0.8rem;">
+                            <option value="all">All Feedback</option>
+                            <option value="unactioned">Unactioned Only</option>
+                            <option value="actioned">Actioned Only</option>
+                        </select>
+                    </div>
+                </div>
+                <div id="feedback-list"></div>
+            </div>
+        </div>
+
+        <!-- Export -->
+        <div class="panel" id="panel-export">
+            <div class="glass">
+                <h3>Data Export</h3>
+                <p style="color:rgba(255,255,255,0.5); margin-bottom:1.5rem;">Export training data for reporting and analysis.</p>
+                <div class="btn-group">
+                    <button class="btn btn-export" onclick="downloadCSV()">Download CSV</button>
+                    <button class="btn btn-export" onclick="downloadJSON()">Download JSON</button>
+                    <button class="btn btn-secondary" onclick="downloadFeedbackCSV()">Download Feedback CSV</button>
+                </div>
+                <div id="export-preview" style="margin-top:1.5rem;"></div>
+            </div>
+        </div>
+    </div>
+
+    <script src="training-engine.js"></script>
+    <script>
+    (() => {
+        'use strict';
+
+        // Check auth
+        TrainingEngine.init();
+        if (!TrainingEngine.User.isAdmin()) {
+            document.querySelectorAll('.panel').forEach(p => p.style.display = 'none');
+            document.querySelector('.tab-nav').style.display = 'none';
+            document.getElementById('access-denied').style.display = 'block';
+            return;
+        }
+
+        // Tab switching
+        window.switchTab = function(tab) {
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.toggle('active', btn.textContent.toLowerCase().replace(/\s/g,'') === tab.replace(/\s/g,''));
+            });
+            document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+            const panel = document.getElementById(`panel-${tab}`);
+            if (panel) panel.classList.add('active');
+        };
+
+        // Fix tab btn active state
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+                this.classList.add('active');
+            });
+        });
+
+        const MODULES = TrainingEngine.MODULES;
+
+        // ── Overview ──────────────────────────────────────────────
+        async function renderOverview() {
+            const users = await TrainingEngine.Admin.getAllUserData();
+            const totalModules = Object.keys(MODULES).length;
+            const allCompletions = users.reduce((sum, u) =>
+                sum + Object.values(u.modules || {}).filter(m => m.completed).length, 0);
+            const allAttempts = users.reduce((sum, u) =>
+                sum + Object.values(u.modules || {}).reduce((s, m) => s + (m.attempts || 0), 0), 0);
+            const allFeedback = users.reduce((sum, u) => sum + (u.feedback || []).length, 0);
+
+            document.getElementById('stats-row').innerHTML = `
+                <div class="stat-card"><div class="stat-value stat-green">${users.length}</div><div class="stat-label">Total Users</div></div>
+                <div class="stat-card"><div class="stat-value stat-blue">${allCompletions}</div><div class="stat-label">Module Completions</div></div>
+                <div class="stat-card"><div class="stat-value stat-pink">${allAttempts}</div><div class="stat-label">Total Attempts</div></div>
+                <div class="stat-card"><div class="stat-value stat-red">${allFeedback}</div><div class="stat-label">Feedback Items</div></div>
+                <div class="stat-card"><div class="stat-value stat-green">${totalModules}</div><div class="stat-label">Total Modules</div></div>
+            `;
+
+            // Leaderboard
+            const entries = await TrainingEngine.Leaderboard.getEntries();
+            let html = '<h3>Leaderboard</h3>';
+            if (entries.length === 0) {
+                html += '<p style="color:rgba(255,255,255,0.4);">No data yet.</p>';
+            } else {
+                html += '<table><thead><tr><th>#</th><th>Name</th><th>Email</th><th>Level</th><th>XP</th><th>Modules</th><th>Badges</th><th>Streak</th></tr></thead><tbody>';
+                entries.forEach((e, i) => {
+                    html += `<tr>
+                        <td style="font-weight:700;">${i+1}</td>
+                        <td style="font-weight:600;">${e.name}</td>
+                        <td style="color:rgba(255,255,255,0.5);">${e.email}</td>
+                        <td>${e.level.icon} ${e.level.name}</td>
+                        <td style="color:var(--stockholm-neon); font-weight:700;">${e.xp.toLocaleString()}</td>
+                        <td>${e.completedModules}</td>
+                        <td>${e.badges}</td>
+                        <td>🔥 ${e.streak}</td>
+                    </tr>`;
+                });
+                html += '</tbody></table>';
+            }
+            document.getElementById('overview-leaderboard').innerHTML = html;
+        }
+
+        // ── Completion Matrix ─────────────────────────────────────
+        async function renderMatrix() {
+            const matrix = await TrainingEngine.Admin.getCompletionMatrix();
+            const moduleIds = Object.keys(MODULES);
+
+            if (matrix.length === 0) {
+                document.getElementById('matrix-table').innerHTML = '<p style="color:rgba(255,255,255,0.4);">No user data available.</p>';
+                return;
+            }
+
+            let html = '<table><thead><tr><th>Name</th><th>Level</th><th>XP</th>';
+            moduleIds.forEach(id => {
+                const abbr = MODULES[id].name.split(' ').map(w => w[0]).join('').substring(0, 4);
+                html += `<th title="${MODULES[id].name}" style="writing-mode:vertical-lr; text-orientation:mixed; font-size:0.65rem; min-width:30px;">${abbr}</th>`;
+            });
+            html += '</tr></thead><tbody>';
+
+            matrix.forEach(row => {
+                html += `<tr><td style="font-weight:600; white-space:nowrap;">${row.name}</td>`;
+                html += `<td style="font-size:0.8rem;">${row.level || '-'}</td>`;
+                html += `<td style="color:var(--stockholm-neon); font-weight:700;">${(row.xp || 0).toLocaleString()}</td>`;
+                moduleIds.forEach(id => {
+                    const val = row[id];
+                    if (typeof val === 'number') {
+                        html += `<td class="cell-pass">${val}%</td>`;
+                    } else if (val === 'in-progress') {
+                        html += `<td class="cell-progress">…</td>`;
+                    } else {
+                        html += `<td class="cell-none">—</td>`;
+                    }
+                });
+                html += '</tr>';
+            });
+            html += '</tbody></table>';
+            document.getElementById('matrix-table').innerHTML = html;
+        }
+
+        // ── Score Analytics ───────────────────────────────────────
+        async function renderScores() {
+            const analytics = await TrainingEngine.Admin.getScoreAnalytics();
+
+            let html = '<table><thead><tr><th>Module</th><th>Level</th><th>Completions</th><th>Attempts</th><th>Avg Score</th><th>Min</th><th>Max</th><th>Distribution</th></tr></thead><tbody>';
+            analytics.forEach(a => {
+                const barWidth = a.avgScore;
+                const barColor = a.avgScore >= 90 ? 'var(--stockholm-neon)' : a.avgScore >= 70 ? 'var(--bath-sky)' : 'var(--orlando-red)';
+                html += `<tr>
+                    <td style="font-weight:600; max-width:200px;">${a.moduleName}</td>
+                    <td style="text-transform:capitalize; font-size:0.8rem;">${a.level}</td>
+                    <td>${a.completions}</td>
+                    <td>${a.attempts}</td>
+                    <td style="font-weight:700; color:${barColor};">${a.avgScore}%</td>
+                    <td>${a.minScore}%</td>
+                    <td>${a.maxScore}%</td>
+                    <td><div class="score-bar"><div class="score-bar-fill" style="width:${barWidth}%; background:${barColor};"></div></div></td>
+                </tr>`;
+            });
+            html += '</tbody></table>';
+            document.getElementById('score-table').innerHTML = html;
+        }
+
+        // ── Time Analytics ────────────────────────────────────────
+        async function renderTime() {
+            const analytics = await TrainingEngine.Admin.getTimeAnalytics();
+
+            const fmt = s => {
+                if (s === 0) return '—';
+                const m = Math.floor(s / 60);
+                const sec = s % 60;
+                return m > 0 ? `${m}m ${sec}s` : `${sec}s`;
+            };
+
+            let html = '<table><thead><tr><th>Module</th><th>Sessions</th><th>Avg Time</th><th>Min</th><th>Max</th><th>Outlier?</th></tr></thead><tbody>';
+            analytics.forEach(a => {
+                const isOutlier = a.maxTime > 0 && a.maxTime > a.avgTime * 3;
+                html += `<tr>
+                    <td style="font-weight:600; max-width:200px;">${a.moduleName}</td>
+                    <td>${a.sessions}</td>
+                    <td style="font-weight:600;">${fmt(a.avgTime)}</td>
+                    <td>${fmt(a.minTime)}</td>
+                    <td>${fmt(a.maxTime)}</td>
+                    <td>${isOutlier ? '<span style="color:var(--orlando-red); font-weight:700;">⚠ Yes</span>' : '<span style="color:rgba(255,255,255,0.3);">No</span>'}</td>
+                </tr>`;
+            });
+            html += '</tbody></table>';
+            document.getElementById('time-table').innerHTML = html;
+        }
+
+        // ── Feedback ──────────────────────────────────────────────
+        window.renderFeedback = async function() {
+            const filter = document.getElementById('feedback-filter').value;
+            let feedback = await TrainingEngine.Admin.getAllFeedback();
+
+            if (filter === 'unactioned') feedback = feedback.filter(f => !f.actioned);
+            if (filter === 'actioned') feedback = feedback.filter(f => f.actioned);
+
+            if (feedback.length === 0) {
+                document.getElementById('feedback-list').innerHTML = '<p style="color:rgba(255,255,255,0.4);">No feedback items.</p>';
+                return;
+            }
+
+            document.getElementById('feedback-list').innerHTML = feedback.map(f => `
+                <div class="feedback-item ${f.actioned ? 'feedback-actioned' : ''}" id="fb-${f.id}">
+                    <div class="feedback-meta">
+                        <strong style="color:white;">${f.userName || f.user}</strong>
+                        <span>${f.moduleName}</span>
+                        <span>Section ${(f.sectionIndex || 0) + 1}</span>
+                        ${f.rating ? '<span>' + '⭐'.repeat(f.rating) + '</span>' : ''}
+                        <span>${new Date(f.timestamp).toLocaleDateString()}</span>
+                        ${!f.actioned ? `<button class="action-btn" onclick="markActioned('${f.id}')">Mark Actioned</button>` : '<span style="color:var(--stockholm-neon);">✓ Actioned</span>'}
+                    </div>
+                    <div class="feedback-text">${f.text}</div>
+                </div>
+            `).join('');
+        };
+
+        window.markActioned = function(id) {
+            const state = TrainingEngine.getState();
+            if (state && state.feedback) {
+                const fb = state.feedback.find(f => f.id === id);
+                if (fb) {
+                    fb.actioned = true;
+                    TrainingEngine.Storage.save(state);
+                    renderFeedback();
+                }
+            }
+        };
+
+        // ── Export ────────────────────────────────────────────────
+        window.downloadCSV = async function() {
+            const csv = await TrainingEngine.Admin.exportCSV();
+            if (!csv) { alert('No data to export.'); return; }
+            download(csv, 'training_completion_matrix.csv', 'text/csv');
+        };
+
+        window.downloadJSON = async function() {
+            const json = await TrainingEngine.Admin.exportJSON();
+            download(json, 'training_data.json', 'application/json');
+        };
+
+        window.downloadFeedbackCSV = async function() {
+            const feedback = await TrainingEngine.Admin.getAllFeedback();
+            if (!feedback.length) { alert('No feedback to export.'); return; }
+            const headers = ['User', 'Email', 'Module', 'Section', 'Rating', 'Text', 'Date', 'Actioned'];
+            const rows = feedback.map(f => [
+                f.userName || '', f.user || '', f.moduleName || '', f.sectionIndex || 0,
+                f.rating || '', `"${(f.text || '').replace(/"/g, '""')}"`,
+                f.timestamp || '', f.actioned ? 'Yes' : 'No'
+            ].join(','));
+            download([headers.join(','), ...rows].join('\n'), 'training_feedback.csv', 'text/csv');
+        };
+
+        function download(content, filename, mimeType) {
+            const blob = new Blob([content], { type: mimeType });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url; a.download = filename;
+            document.body.appendChild(a); a.click();
+            document.body.removeChild(a); URL.revokeObjectURL(url);
+        }
+
+        // ── Init ──────────────────────────────────────────────────
+        renderOverview();
+        renderMatrix();
+        renderScores();
+        renderTime();
+        renderFeedback();
+    })();
+    </script>
+</body>
+</html>

@@ -1,0 +1,891 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vysus Grid Connection — Training Platform</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --stockholm-neon: #00E3A9;
+            --malmo-green: #005454;
+            --barcelona-dusk: #3c1363;
+            --houston-pink: #f188f4;
+            --mumbai-magenta: #8e329c;
+            --hellerup-royal: #05275e;
+            --bath-sky: #4b81ef;
+            --orlando-red: #f92d63;
+            --trondheim-night: #1d1d1b;
+            --scandinavia-rock: #485559;
+            --bergen-rain: #dadada;
+            --oslo-snow: #f8f8f8;
+            --navy: #1a2744;
+        }
+
+        body {
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+            color: white;
+            line-height: 1.6;
+            min-height: 100vh;
+            background: var(--navy);
+            overflow-x: hidden;
+        }
+
+        /* Background */
+        .bg-fixed {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1;
+            background: linear-gradient(135deg, var(--navy) 0%, #0d1b2a 40%, #1b2d4a 100%);
+        }
+        .bg-fixed::after {
+            content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(ellipse at 20% 50%, rgba(0,227,169,0.05) 0%, transparent 50%),
+                        radial-gradient(ellipse at 80% 20%, rgba(75,129,239,0.05) 0%, transparent 50%);
+        }
+
+        /* Login Screen */
+        .login-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: 10000;
+            background: linear-gradient(135deg, var(--navy), #0d1b2a);
+            display: flex; align-items: center; justify-content: center;
+        }
+        .login-screen.hidden { display: none; }
+        .login-card {
+            background: rgba(255,255,255,0.04); backdrop-filter: blur(40px);
+            border-radius: 30px; border: 1px solid rgba(255,255,255,0.1);
+            padding: 3rem; width: 90%; max-width: 420px; text-align: center;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+        }
+        .login-card h1 {
+            font-size: 2rem; margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--stockholm-neon), white);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+        }
+        .login-card .tagline { color: var(--stockholm-neon); font-size: 1rem; margin-bottom: 2rem; }
+        .login-input {
+            width: 100%; padding: 0.9rem 1.2rem; border-radius: 14px;
+            border: 2px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.05);
+            color: white; font-size: 1rem; font-family: 'Inter', sans-serif;
+            margin-bottom: 1rem; outline: none; transition: border-color 0.3s;
+        }
+        .login-input::placeholder { color: rgba(255,255,255,0.3); }
+        .login-input:focus { border-color: var(--stockholm-neon); }
+        .login-btn {
+            width: 100%; padding: 1rem; border-radius: 14px; border: none;
+            background: linear-gradient(135deg, var(--stockholm-neon), var(--malmo-green));
+            color: white; font-size: 1.05rem; font-weight: 700; cursor: pointer;
+            font-family: 'Inter', sans-serif; transition: all 0.3s;
+            box-shadow: 0 4px 20px rgba(0,227,169,0.3);
+        }
+        .login-btn:hover { transform: translateY(-2px); box-shadow: 0 8px 30px rgba(0,227,169,0.5); }
+        .login-btn:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+        .login-btn.secondary {
+            background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.15);
+            box-shadow: none; font-size: 0.95rem;
+        }
+        .login-btn.secondary:hover { background: rgba(255,255,255,0.1); transform: translateY(-1px); }
+        .login-divider {
+            display: flex; align-items: center; gap: 1rem; margin: 1.2rem 0;
+            color: rgba(255,255,255,0.3); font-size: 0.8rem; font-weight: 600;
+        }
+        .login-divider::before, .login-divider::after {
+            content: ''; flex: 1; height: 1px; background: rgba(255,255,255,0.1);
+        }
+        .login-tabs {
+            display: flex; gap: 0.5rem; margin-bottom: 1.5rem;
+        }
+        .login-tab {
+            flex: 1; padding: 0.6rem; border-radius: 10px; border: 1px solid rgba(255,255,255,0.1);
+            background: transparent; color: rgba(255,255,255,0.5); font-size: 0.8rem;
+            font-weight: 600; cursor: pointer; font-family: 'Inter', sans-serif; transition: all 0.3s;
+        }
+        .login-tab.active {
+            background: rgba(0,227,169,0.15); border-color: var(--stockholm-neon);
+            color: var(--stockholm-neon);
+        }
+        .login-mode { display: none; }
+        .login-mode.active { display: block; }
+        .login-error { color: var(--orlando-red); font-size: 0.85rem; margin-top: 0.5rem; min-height: 1.2rem; }
+
+        /* Top Bar */
+        .top-bar {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 9999;
+            background: rgba(26,39,68,0.85); backdrop-filter: blur(40px);
+            border-bottom: 1px solid rgba(0,227,169,0.12);
+            padding: 0.6rem 2rem; display: flex; align-items: center; justify-content: space-between;
+        }
+        .top-bar-brand { display: flex; align-items: center; gap: 0.7rem; }
+        .top-bar-brand h2 {
+            font-size: 1rem; font-weight: 800;
+            background: linear-gradient(135deg, var(--stockholm-neon), white);
+            -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
+        }
+        .top-bar-right { display: flex; align-items: center; gap: 1rem; }
+        .user-pill {
+            background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 20px; padding: 0.3rem 0.8rem; font-size: 0.8rem; font-weight: 600;
+            color: rgba(255,255,255,0.8); cursor: pointer;
+        }
+        .user-pill:hover { background: rgba(255,255,255,0.1); }
+        .xp-pill {
+            background: rgba(0,227,169,0.12); border: 1px solid rgba(0,227,169,0.25);
+            border-radius: 20px; padding: 0.3rem 0.8rem; font-size: 0.8rem; font-weight: 700;
+            color: var(--stockholm-neon);
+        }
+        .streak-pill {
+            background: rgba(249,45,99,0.12); border: 1px solid rgba(249,45,99,0.25);
+            border-radius: 20px; padding: 0.3rem 0.8rem; font-size: 0.8rem; font-weight: 700;
+            color: var(--orlando-red);
+        }
+        .admin-link {
+            color: rgba(255,255,255,0.5); text-decoration: none; font-size: 0.8rem;
+            font-weight: 600; padding: 0.3rem 0.6rem; border-radius: 8px;
+        }
+        .admin-link:hover { color: var(--houston-pink); background: rgba(241,136,244,0.1); }
+
+        /* Tab Navigation */
+        .tab-nav {
+            position: fixed; top: 48px; left: 0; right: 0; z-index: 9998;
+            background: rgba(26,39,68,0.7); backdrop-filter: blur(30px);
+            display: flex; justify-content: center; gap: 0.3rem; padding: 0.4rem 1rem;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .tab-btn {
+            border: none; background: transparent; color: rgba(255,255,255,0.5);
+            font-size: 0.82rem; font-weight: 600; padding: 0.5rem 1rem; border-radius: 20px;
+            cursor: pointer; transition: all 0.3s; font-family: 'Inter', sans-serif; white-space: nowrap;
+        }
+        .tab-btn:hover { color: rgba(255,255,255,0.8); background: rgba(255,255,255,0.05); }
+        .tab-btn.active {
+            background: linear-gradient(135deg, var(--stockholm-neon), var(--malmo-green));
+            color: white; box-shadow: 0 2px 12px rgba(0,227,169,0.4);
+        }
+
+        /* Content */
+        .main-content { padding: 7rem 2rem 4rem; max-width: 1400px; margin: 0 auto; }
+        .tab-panel { display: none; animation: fadeUp 0.4s ease; }
+        .tab-panel.active { display: block; }
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* Glass */
+        .glass {
+            background: rgba(255,255,255,0.03); backdrop-filter: blur(60px) saturate(180%);
+            border-radius: 24px; border: 1px solid rgba(255,255,255,0.08);
+            padding: 2rem; margin-bottom: 1.5rem; box-shadow: 0 8px 32px rgba(0,0,0,0.2);
+        }
+
+        /* Profile Card */
+        .profile-card { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 2rem; align-items: center; }
+        .profile-info h2 { font-size: 1.8rem; margin-bottom: 0.3rem; }
+        .profile-info .level-name {
+            font-size: 1.1rem; color: var(--stockholm-neon); font-weight: 600;
+        }
+        .xp-bar-track {
+            width: 100%; height: 10px; background: rgba(255,255,255,0.08); border-radius: 10px;
+            margin: 0.5rem 0; overflow: hidden;
+        }
+        .xp-bar-fill {
+            height: 100%; border-radius: 10px; transition: width 0.8s ease;
+            background: linear-gradient(90deg, var(--stockholm-neon), var(--bath-sky));
+        }
+        .xp-numbers { display: flex; justify-content: space-between; font-size: 0.8rem; color: rgba(255,255,255,0.5); }
+
+        .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1rem; }
+        .stat-card {
+            background: rgba(255,255,255,0.04); border-radius: 16px; padding: 1.2rem;
+            text-align: center; border: 1px solid rgba(255,255,255,0.06);
+        }
+        .stat-value { font-size: 2rem; font-weight: 800; color: var(--stockholm-neon); }
+        .stat-label { font-size: 0.8rem; color: rgba(255,255,255,0.5); font-weight: 600; margin-top: 0.2rem; }
+
+        /* Streak Calendar */
+        .streak-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.8rem; }
+        .streak-fire { font-size: 1.1rem; font-weight: 700; }
+        .streak-best { font-size: 0.85rem; color: rgba(255,255,255,0.5); }
+        .streak-grid { display: flex; gap: 4px; flex-wrap: wrap; }
+        .streak-cell {
+            width: 28px; height: 28px; border-radius: 6px; display: flex; align-items: center;
+            justify-content: center; font-size: 0.6rem; color: rgba(255,255,255,0.3);
+            background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.06);
+        }
+        .streak-cell.active {
+            background: rgba(0,227,169,0.25); border-color: rgba(0,227,169,0.4);
+            color: var(--stockholm-neon); font-weight: 700;
+        }
+
+        /* Module Grid */
+        .category-section { margin-bottom: 2.5rem; }
+        .category-header {
+            display: flex; align-items: center; gap: 1rem; margin-bottom: 1.2rem;
+            padding-bottom: 0.8rem; border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
+        .category-header h3 { font-size: 1.5rem; }
+        .category-badge {
+            padding: 0.3rem 0.8rem; border-radius: 15px; font-size: 0.75rem;
+            font-weight: 700; text-transform: uppercase;
+        }
+        .badge-entry { background: linear-gradient(135deg, var(--stockholm-neon), var(--malmo-green)); color: white; }
+        .badge-senior { background: linear-gradient(135deg, var(--bath-sky), var(--hellerup-royal)); color: white; }
+        .badge-lead { background: linear-gradient(135deg, var(--houston-pink), var(--mumbai-magenta)); color: white; }
+        .badge-principal { background: linear-gradient(135deg, var(--orlando-red), var(--barcelona-dusk)); color: white; }
+
+        .modules-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.2rem; }
+
+        .module-card {
+            background: rgba(255,255,255,0.03); backdrop-filter: blur(40px);
+            border-radius: 20px; border: 1px solid rgba(255,255,255,0.08);
+            padding: 1.5rem; cursor: pointer; transition: all 0.4s ease;
+            position: relative; overflow: hidden;
+        }
+        .module-card:hover {
+            transform: translateY(-6px); border-color: rgba(0,227,169,0.3);
+            box-shadow: 0 15px 40px rgba(0,227,169,0.2);
+        }
+        .module-card.completed-card { border-color: rgba(0,227,169,0.2); }
+        .module-card.coming-soon { opacity: 0.45; cursor: default; }
+        .module-card.coming-soon:hover { transform: none; box-shadow: none; border-color: rgba(255,255,255,0.08); }
+
+        .module-card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.8rem; }
+        .module-icon {
+            width: 48px; height: 48px; border-radius: 14px; display: flex; align-items: center;
+            justify-content: center; font-size: 1.5rem;
+            background: linear-gradient(135deg, rgba(0,227,169,0.2), rgba(0,84,84,0.2));
+        }
+        .module-status {
+            padding: 0.2rem 0.6rem; border-radius: 10px; font-size: 0.7rem;
+            font-weight: 700; text-transform: uppercase;
+        }
+        .status-ready { background: var(--stockholm-neon); color: var(--navy); }
+        .status-done { background: rgba(0,227,169,0.15); color: var(--stockholm-neon); border: 1px solid rgba(0,227,169,0.3); }
+        .status-coming { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.4); }
+        .status-progress { background: rgba(75,129,239,0.15); color: var(--bath-sky); border: 1px solid rgba(75,129,239,0.3); }
+
+        .module-card h4 { font-size: 1.05rem; margin-bottom: 0.4rem; color: white; }
+        .module-card .module-xp { font-size: 0.8rem; color: var(--stockholm-neon); font-weight: 600; }
+        .module-card .module-score { font-size: 0.8rem; color: rgba(255,255,255,0.5); margin-top: 0.3rem; }
+
+        /* Badge Showcase */
+        .badge-grid { display: flex; gap: 0.8rem; flex-wrap: wrap; }
+        .badge-item {
+            background: rgba(255,255,255,0.04); border-radius: 14px; padding: 0.8rem 1rem;
+            display: flex; align-items: center; gap: 0.5rem; border: 1px solid rgba(255,255,255,0.06);
+            transition: all 0.3s;
+        }
+        .badge-item.earned {
+            background: rgba(0,227,169,0.08); border-color: rgba(0,227,169,0.2);
+        }
+        .badge-item.locked { opacity: 0.35; }
+        .badge-icon { font-size: 1.3rem; }
+        .badge-name { font-size: 0.8rem; font-weight: 600; }
+        .badge-desc { font-size: 0.7rem; color: rgba(255,255,255,0.4); }
+
+        /* Leaderboard */
+        .lb-table { width: 100%; border-collapse: separate; border-spacing: 0; }
+        .lb-table th {
+            padding: 0.8rem 1rem; text-align: left; font-size: 0.8rem; font-weight: 700;
+            color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 1px;
+            border-bottom: 1px solid rgba(255,255,255,0.08);
+        }
+        .lb-table td {
+            padding: 0.8rem 1rem; border-bottom: 1px solid rgba(255,255,255,0.04);
+            font-size: 0.9rem;
+        }
+        .lb-table tr:hover td { background: rgba(255,255,255,0.03); }
+        .lb-rank {
+            width: 40px; height: 40px; border-radius: 50%; display: inline-flex;
+            align-items: center; justify-content: center; font-weight: 800; font-size: 0.9rem;
+        }
+        .rank-1 { background: rgba(255,215,0,0.2); color: #FFD700; border: 1px solid rgba(255,215,0,0.3); }
+        .rank-2 { background: rgba(192,192,192,0.15); color: #C0C0C0; border: 1px solid rgba(192,192,192,0.3); }
+        .rank-3 { background: rgba(205,127,50,0.15); color: #CD7F32; border: 1px solid rgba(205,127,50,0.3); }
+        .rank-default { background: rgba(255,255,255,0.05); color: rgba(255,255,255,0.5); }
+        .lb-name { font-weight: 600; }
+        .lb-level { font-size: 0.8rem; color: rgba(255,255,255,0.5); }
+
+        /* Responsive */
+        @media (max-width: 900px) {
+            .profile-card { grid-template-columns: 1fr; }
+            .stats-grid { grid-template-columns: repeat(3, 1fr); }
+        }
+        @media (max-width: 600px) {
+            .main-content { padding: 6.5rem 1rem 3rem; }
+            .tab-nav { overflow-x: auto; justify-content: flex-start; }
+            .modules-grid { grid-template-columns: 1fr; }
+            .top-bar { padding: 0.5rem 1rem; }
+            .top-bar-right .user-pill { display: none; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- Login Screen -->
+<div class="login-screen" id="login-screen">
+    <div class="login-card">
+        <h1>⚡ Grid Connection</h1>
+        <p class="tagline">Training Platform</p>
+
+        <div class="login-tabs">
+            <button class="login-tab active" onclick="switchLoginMode('password')">🔒 Password</button>
+            <button class="login-tab" onclick="switchLoginMode('passkey')">🔑 Passkey</button>
+        </div>
+
+        <!-- Password Login Mode -->
+        <div class="login-mode active" id="mode-password">
+            <input type="text" class="login-input" id="login-name" placeholder="Full Name" autocomplete="name">
+            <input type="email" class="login-input" id="login-email" placeholder="your.name@vysusgroup.com" autocomplete="email">
+            <input type="password" class="login-input" id="login-password" placeholder="Password" autocomplete="current-password">
+            <button class="login-btn" id="login-btn" onclick="doLogin()">Sign In</button>
+            <div style="margin-top: 0.8rem;">
+                <button class="login-btn secondary" onclick="doRegister()" id="register-btn" style="font-size: 0.85rem; padding: 0.7rem;">
+                    First time? Create Account
+                </button>
+            </div>
+        </div>
+
+        <!-- Passkey Login Mode -->
+        <div class="login-mode" id="mode-passkey">
+            <input type="email" class="login-input" id="passkey-email" placeholder="your.name@vysusgroup.com" autocomplete="email webauthn">
+            <button class="login-btn" onclick="loginWithPasskey()">🔑 Sign in with Passkey</button>
+            <div class="login-divider">or</div>
+            <input type="text" class="login-input" id="passkey-name" placeholder="Full Name (for first-time registration)" autocomplete="name">
+            <button class="login-btn secondary" onclick="registerPasskey()">Register New Passkey</button>
+        </div>
+
+        <div class="login-error" id="login-error"></div>
+    </div>
+</div>
+
+<div class="bg-fixed"></div>
+
+<!-- Top Bar -->
+<div class="top-bar" id="top-bar" style="display:none;">
+    <div class="top-bar-brand">
+        <span style="font-size:1.3rem;">⚡</span>
+        <h2>Grid Connection Training</h2>
+    </div>
+    <div class="top-bar-right">
+        <span class="streak-pill" id="streak-pill">🔥 0</span>
+        <span class="xp-pill" id="top-xp">0 XP</span>
+        <span class="user-pill" id="user-pill"></span>
+        <span class="user-pill" onclick="logout()" title="Sign out" style="cursor:pointer;">🚪 Logout</span>
+        <a class='admin-link' href='/admin' id='admin-link' style='display:none;'>Admin</a>
+    </div>
+</div>
+
+<!-- Tab Navigation -->
+<div class="tab-nav" id="tab-nav" style="display:none;">
+    <button class="tab-btn active" onclick="switchTab('dashboard')">Dashboard</button>
+    <button class="tab-btn" onclick="switchTab('modules')">Modules</button>
+    <button class="tab-btn" onclick="switchTab('badges')">Badges</button>
+    <button class="tab-btn" onclick="switchTab('leaderboard')">Leaderboard</button>
+</div>
+
+<!-- Main Content -->
+<div class="main-content" id="main-content" style="display:none;">
+
+    <!-- Dashboard Tab -->
+    <div class="tab-panel active" id="panel-dashboard">
+        <!-- Profile & Stats -->
+        <div class="glass profile-card" id="profile-card"></div>
+
+        <!-- Streak -->
+        <div class="glass" id="streak-calendar"></div>
+
+        <!-- Quick Stats -->
+        <div class="glass">
+            <h3 style="margin-bottom:1rem; color:var(--stockholm-neon);">Continue Learning</h3>
+            <div class="modules-grid" id="continue-grid"></div>
+        </div>
+    </div>
+
+    <!-- Modules Tab -->
+    <div class="tab-panel" id="panel-modules">
+        <div id="modules-list"></div>
+    </div>
+
+    <!-- Badges Tab -->
+    <div class="tab-panel" id="panel-badges">
+        <div class="glass">
+            <h3 style="margin-bottom:1.2rem; color:var(--stockholm-neon);">Your Badges</h3>
+            <div class="badge-grid" id="earned-badges"></div>
+        </div>
+        <div class="glass">
+            <h3 style="margin-bottom:1.2rem;">All Badges</h3>
+            <div class="badge-grid" id="all-badges"></div>
+        </div>
+    </div>
+
+    <!-- Leaderboard Tab -->
+    <div class="tab-panel" id="panel-leaderboard">
+        <div class="glass">
+            <h3 style="margin-bottom:1.2rem; color:var(--stockholm-neon);">Leaderboard</h3>
+            <div id="leaderboard-content"></div>
+        </div>
+    </div>
+</div>
+
+<script src="training-engine.js"></script>
+<script>
+(() => {
+    'use strict';
+
+    const MODULE_ICONS = {
+        'ner-chapter5': '📖', 'access-standards': '🔑', 'network-storage': '💾',
+        'way-of-working': '🤝', 'file-storage': '📁', 'aemo-gps': '📋',
+        'gps-requirements': '📐', 'grid-code-hub': '📚', 'dmat-ner': '✅',
+        'simulation': '🖥️', 'script-repo': '💻', 'tech-hub': '🧪',
+        'cross-platform': '🔄', 'auto-init': '🤖', 'project-mgmt': '📊',
+        'ms-project': '📅', 'team-governance': '👥', 'peace-framework': '🎯',
+        'talent-pipeline': '🌱'
+    };
+
+    const READY_MODULES = ['ner-chapter5', 'access-standards', 'aemo-gps', 'gps-requirements', 'network-storage', 'way-of-working'];
+
+    // ── Login ──────────────────────────────────────────────────
+    function checkLogin() {
+        const state = TrainingEngine.init();
+        if (state && state.user && state._authenticated) {
+            showPlatform();
+        }
+    }
+
+    // ── Tab switching ──────────────────────────────────────────
+    window.switchLoginMode = function(mode) {
+        document.querySelectorAll('.login-tab').forEach(t => t.classList.remove('active'));
+        document.querySelectorAll('.login-mode').forEach(m => m.classList.remove('active'));
+        document.getElementById('mode-' + mode).classList.add('active');
+        document.querySelectorAll('.login-tab').forEach(t => {
+            if (t.textContent.toLowerCase().includes(mode)) t.classList.add('active');
+        });
+        document.getElementById('login-error').textContent = '';
+    };
+
+    // ── Password hashing (PBKDF2-SHA256) ────────────────────
+    async function hashPassword(password, salt) {
+        const enc = new TextEncoder();
+        const keyMaterial = await crypto.subtle.importKey('raw', enc.encode(password), 'PBKDF2', false, ['deriveBits']);
+        const bits = await crypto.subtle.deriveBits({
+            name: 'PBKDF2', salt: enc.encode(salt), iterations: 100000, hash: 'SHA-256'
+        }, keyMaterial, 256);
+        return Array.from(new Uint8Array(bits)).map(b => b.toString(16).padStart(2, '0')).join('');
+    }
+
+    // ── Password Login ──────────────────────────────────────
+    window.doLogin = async function() {
+        const name = document.getElementById('login-name').value.trim();
+        const email = document.getElementById('login-email').value.trim().toLowerCase();
+        const password = document.getElementById('login-password').value;
+        const btn = document.getElementById('login-btn');
+
+        if (!email || !name || !password) {
+            document.getElementById('login-error').textContent = 'Please fill in all fields.';
+            return;
+        }
+        if (!email.endsWith('@vysusgroup.com')) {
+            document.getElementById('login-error').textContent = 'Only @vysusgroup.com emails are permitted.';
+            return;
+        }
+
+        btn.textContent = 'Signing in...'; btn.disabled = true;
+        document.getElementById('login-error').textContent = '';
+
+        try {
+            const hash = await hashPassword(password, email);
+            const verified = await TrainingEngine.Auth.verifyPassword(email, hash);
+
+            if (verified === null) {
+                document.getElementById('login-error').textContent = 'Could not connect to server. Please try again.';
+                btn.textContent = 'Sign In'; btn.disabled = false;
+                return;
+            }
+
+            if (!verified) {
+                document.getElementById('login-error').textContent = 'Invalid email or password.';
+                btn.textContent = 'Sign In'; btn.disabled = false;
+                return;
+            }
+
+            const result = await TrainingEngine.User.login(email, name);
+            btn.textContent = 'Sign In'; btn.disabled = false;
+
+            if (result.ok) {
+                showPlatform();
+            } else {
+                document.getElementById('login-error').textContent = result.error;
+            }
+        } catch (err) {
+            console.error('Login error:', err);
+            document.getElementById('login-error').textContent = 'Login failed. Please try again.';
+            btn.textContent = 'Sign In'; btn.disabled = false;
+        }
+    };
+
+    // ── Password Registration ───────────────────────────────
+    window.doRegister = async function() {
+        const name = document.getElementById('login-name').value.trim();
+        const email = document.getElementById('login-email').value.trim().toLowerCase();
+        const password = document.getElementById('login-password').value;
+        const btn = document.getElementById('register-btn');
+
+        if (!email || !name || !password) {
+            document.getElementById('login-error').textContent = 'Please fill in all fields.';
+            return;
+        }
+        if (!email.endsWith('@vysusgroup.com')) {
+            document.getElementById('login-error').textContent = 'Only @vysusgroup.com emails are permitted.';
+            return;
+        }
+        if (password.length < 6) {
+            document.getElementById('login-error').textContent = 'Password must be at least 6 characters.';
+            return;
+        }
+
+        btn.textContent = 'Creating account...'; btn.disabled = true;
+        document.getElementById('login-error').textContent = '';
+
+        try {
+            const hash = await hashPassword(password, email);
+            const registered = await TrainingEngine.Auth.registerPassword(email, hash);
+
+            if (!registered.ok) {
+                document.getElementById('login-error').textContent = registered.error || 'Registration failed.';
+                btn.textContent = 'First time? Create Account'; btn.disabled = false;
+                return;
+            }
+
+            // Auto-login after registration
+            const result = await TrainingEngine.User.login(email, name);
+            btn.textContent = 'First time? Create Account'; btn.disabled = false;
+
+            if (result.ok) {
+                showPlatform();
+            } else {
+                document.getElementById('login-error').textContent = result.error;
+            }
+        } catch (err) {
+            console.error('Registration error:', err);
+            document.getElementById('login-error').textContent = 'Registration failed. Please try again.';
+            btn.textContent = 'First time? Create Account'; btn.disabled = false;
+        }
+    };
+
+    // ── Passkey (WebAuthn) ──────────────────────────────────
+    function generateChallenge() {
+        const arr = new Uint8Array(32);
+        crypto.getRandomValues(arr);
+        return arr;
+    }
+
+    window.registerPasskey = async function() {
+        const email = document.getElementById('passkey-email').value.trim().toLowerCase();
+        const name = document.getElementById('passkey-name').value.trim();
+        document.getElementById('login-error').textContent = '';
+
+        if (!email) { document.getElementById('login-error').textContent = 'Please enter your email.'; return; }
+        if (!email.endsWith('@vysusgroup.com')) { document.getElementById('login-error').textContent = 'Only @vysusgroup.com emails permitted.'; return; }
+        if (!name || name.length < 2) { document.getElementById('login-error').textContent = 'Please enter your full name.'; return; }
+
+        if (!window.PublicKeyCredential) {
+            document.getElementById('login-error').textContent = 'Passkeys not supported in this browser.';
+            return;
+        }
+
+        try {
+            const credential = await navigator.credentials.create({
+                publicKey: {
+                    challenge: generateChallenge(),
+                    rp: { name: 'Vysus Training', id: location.hostname },
+                    user: {
+                        id: new TextEncoder().encode(email),
+                        name: email,
+                        displayName: name
+                    },
+                    pubKeyCredParams: [{ alg: -7, type: 'public-key' }, { alg: -257, type: 'public-key' }],
+                    timeout: 60000,
+                    attestation: 'none'
+                }
+            });
+
+            // Store credential mapping
+            const passkeys = JSON.parse(localStorage.getItem('vysus_passkeys') || '{}');
+            passkeys[btoa(String.fromCharCode(...new Uint8Array(credential.rawId)))] = email;
+            localStorage.setItem('vysus_passkeys', JSON.stringify(passkeys));
+
+            // Auto-login
+            const result = await TrainingEngine.User.login(email, name);
+            if (result.ok) { showPlatform(); }
+            else { document.getElementById('login-error').textContent = result.error; }
+        } catch (err) {
+            if (err.name === 'NotAllowedError') {
+                document.getElementById('login-error').textContent = 'Passkey registration cancelled.';
+            } else if (err.name === 'InvalidStateError') {
+                document.getElementById('login-error').textContent = 'A passkey already exists for this account on this device.';
+            } else {
+                document.getElementById('login-error').textContent = 'Failed to register passkey.';
+                console.error('Passkey registration error:', err);
+            }
+        }
+    };
+
+    window.loginWithPasskey = async function() {
+        document.getElementById('login-error').textContent = '';
+
+        if (!window.PublicKeyCredential) {
+            document.getElementById('login-error').textContent = 'Passkeys not supported in this browser.';
+            return;
+        }
+
+        try {
+            const credential = await navigator.credentials.get({
+                publicKey: {
+                    challenge: generateChallenge(),
+                    rpId: location.hostname,
+                    timeout: 60000,
+                    userVerification: 'preferred'
+                }
+            });
+
+            const credId = btoa(String.fromCharCode(...new Uint8Array(credential.rawId)));
+            const passkeys = JSON.parse(localStorage.getItem('vysus_passkeys') || '{}');
+            const email = passkeys[credId];
+
+            if (!email || !email.endsWith('@vysusgroup.com')) {
+                document.getElementById('login-error').textContent = 'Passkey not recognised. Please register first.';
+                return;
+            }
+
+            // Get user name from Supabase or use email prefix
+            const displayName = email.split('@')[0].split('.').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+            const result = await TrainingEngine.User.login(email, displayName);
+            if (result.ok) { showPlatform(); }
+            else { document.getElementById('login-error').textContent = result.error; }
+        } catch (err) {
+            if (err.name === 'NotAllowedError') {
+                document.getElementById('login-error').textContent = 'Login cancelled or no passkeys available.';
+            } else {
+                document.getElementById('login-error').textContent = 'Passkey login failed. Try password login.';
+                console.error('Passkey login error:', err);
+            }
+        }
+    };
+
+    // ── Enter key handlers ──────────────────────────────────
+    document.getElementById('login-password').addEventListener('keypress', e => { if (e.key === 'Enter') doLogin(); });
+    document.getElementById('login-email').addEventListener('keypress', e => { if (e.key === 'Enter') document.getElementById('login-password').focus(); });
+    document.getElementById('login-name').addEventListener('keypress', e => { if (e.key === 'Enter') document.getElementById('login-email').focus(); });
+    document.getElementById('passkey-email').addEventListener('keypress', e => { if (e.key === 'Enter') loginWithPasskey(); });
+
+    window.logout = function() {
+        TrainingEngine.User.logout();
+        location.reload();
+    };
+
+    function showPlatform() {
+        document.getElementById('login-screen').classList.add('hidden');
+        document.getElementById('top-bar').style.display = 'flex';
+        document.getElementById('tab-nav').style.display = 'flex';
+        document.getElementById('main-content').style.display = 'block';
+
+        const state = TrainingEngine.getState();
+
+        // Update top bar
+        document.getElementById('top-xp').textContent = `${state.xp.toLocaleString()} XP`;
+        document.getElementById('streak-pill').textContent = `🔥 ${state.streak.current}`;
+        document.getElementById('user-pill').textContent = state.user.name;
+
+        // Admin link
+        if (TrainingEngine.User.isAdmin()) {
+            document.getElementById('admin-link').style.display = 'inline';
+        }
+
+        renderDashboard();
+        renderModules();
+        renderBadges();
+        renderLeaderboard();
+    }
+
+    // ── Tabs ──────────────────────────────────────────────────
+    window.switchTab = function(tab) {
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            btn.classList.toggle('active', btn.textContent.toLowerCase().includes(tab.toLowerCase()));
+        });
+        document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+        const panel = document.getElementById(`panel-${tab}`);
+        if (panel) panel.classList.add('active');
+    };
+
+    // ── Dashboard ─────────────────────────────────────────────
+    function renderDashboard() {
+        const state = TrainingEngine.getState();
+        const level = TrainingEngine.XP.currentLevel();
+        const next = TrainingEngine.XP.nextLevel();
+        const progress = TrainingEngine.XP.progressToNext();
+        const completed = TrainingEngine.Modules.completionCount();
+        const total = TrainingEngine.Modules.totalModules();
+
+        document.getElementById('profile-card').innerHTML = `
+            <div class="profile-info">
+                <h2>${state.user.name}</h2>
+                <div class="level-name">${level.icon} ${level.name}</div>
+                <div class="xp-bar-track">
+                    <div class="xp-bar-fill" style="width:${Math.round(progress*100)}%"></div>
+                </div>
+                <div class="xp-numbers">
+                    <span>${state.xp.toLocaleString()} XP</span>
+                    <span>${next ? next.threshold.toLocaleString() + ' XP' : 'MAX'}</span>
+                </div>
+            </div>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-value">${completed}</div>
+                    <div class="stat-label">Modules Done</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">${state.badges.length}</div>
+                    <div class="stat-label">Badges</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-value">${total - completed}</div>
+                    <div class="stat-label">Remaining</div>
+                </div>
+            </div>
+            <div style="text-align:center;">
+                <div style="font-size:4rem; margin-bottom:0.3rem;">${level.icon}</div>
+                <div style="font-size:0.9rem; color:rgba(255,255,255,0.5);">Level ${state.level + 1} of ${TrainingEngine.LEVELS.length}</div>
+            </div>
+        `;
+
+        // Streak
+        TrainingEngine.UI.renderStreakCalendar(document.getElementById('streak-calendar'));
+
+        // Continue learning — show incomplete or not-started modules (max 3)
+        const registry = TrainingEngine.Modules.registry();
+        const continueModules = Object.entries(registry)
+            .filter(([id]) => READY_MODULES.includes(id) && !TrainingEngine.Modules.isCompleted(id))
+            .slice(0, 3);
+
+        document.getElementById('continue-grid').innerHTML = continueModules.length > 0
+            ? continueModules.map(([id, mod]) => renderModuleCard(id, mod)).join('')
+            : '<p style="color:rgba(255,255,255,0.5); text-align:center;">All available modules completed! Check back for new content.</p>';
+    }
+
+    // ── Modules ───────────────────────────────────────────────
+    function renderModules() {
+        const levels = [
+            { key: 'entry', name: 'Entry Level', badge: 'badge-entry', desc: 'Foundation knowledge for all team members' },
+            { key: 'senior', name: 'Senior Level', badge: 'badge-senior', desc: 'Advanced technical depth' },
+            { key: 'lead', name: 'Lead Level', badge: 'badge-lead', desc: 'Leadership and cross-functional skills' },
+            { key: 'principal', name: 'Principal Level', badge: 'badge-principal', desc: 'Strategic and organizational impact' }
+        ];
+
+        const registry = TrainingEngine.Modules.registry();
+        let html = '';
+
+        levels.forEach(lvl => {
+            const moduleIds = TrainingEngine.LEVEL_MODULES[lvl.key];
+            html += `
+            <div class="category-section">
+                <div class="category-header">
+                    <span class="category-badge ${lvl.badge}">${lvl.key}</span>
+                    <h3>${lvl.name}</h3>
+                    <span style="color:rgba(255,255,255,0.4); font-size:0.85rem; margin-left:auto;">${lvl.desc}</span>
+                </div>
+                <div class="modules-grid">
+                    ${moduleIds.map(id => renderModuleCard(id, registry[id])).join('')}
+                </div>
+            </div>`;
+        });
+
+        document.getElementById('modules-list').innerHTML = html;
+    }
+
+    function renderModuleCard(id, mod) {
+        const ready = READY_MODULES.includes(id);
+        const progress = TrainingEngine.Modules.getProgress(id);
+        const icon = MODULE_ICONS[id] || '📄';
+
+        let statusHTML, cardClass;
+        if (progress.completed) {
+            statusHTML = `<span class="module-status status-done">✓ ${progress.bestScore}%</span>`;
+            cardClass = 'completed-card';
+        } else if (progress.attempts > 0 || progress.sectionsCompleted.length > 0) {
+            statusHTML = `<span class="module-status status-progress">In Progress</span>`;
+            cardClass = '';
+        } else if (ready) {
+            statusHTML = `<span class="module-status status-ready">Ready</span>`;
+            cardClass = '';
+        } else {
+            statusHTML = `<span class="module-status status-coming">Coming Soon</span>`;
+            cardClass = 'coming-soon';
+        }
+
+        const href = ready ? `onclick="window.location.href='${mod.file}'"` : '';
+
+        return `
+        <div class="module-card ${cardClass}" ${href}>
+            <div class="module-card-header">
+                <div class="module-icon">${icon}</div>
+                ${statusHTML}
+            </div>
+            <h4>${mod.name}</h4>
+            <div class="module-xp">⚡ ${mod.xp} XP</div>
+            ${progress.completed ? `<div class="module-score">Best: ${progress.bestScore}% · Attempts: ${progress.attempts}</div>` : ''}
+        </div>`;
+    }
+
+    // ── Badges ────────────────────────────────────────────────
+    function renderBadges() {
+        const earned = TrainingEngine.Badges.earned();
+        const all = TrainingEngine.Badges.all();
+
+        document.getElementById('earned-badges').innerHTML = earned.length > 0
+            ? earned.map(b => `<div class="badge-item earned"><span class="badge-icon">${b.icon}</span><div><div class="badge-name">${b.name}</div><div class="badge-desc">${b.desc}</div></div></div>`).join('')
+            : '<p style="color:rgba(255,255,255,0.4);">No badges earned yet. Complete modules to earn your first!</p>';
+
+        document.getElementById('all-badges').innerHTML = all.map(b => `
+            <div class="badge-item ${b.earned ? 'earned' : 'locked'}">
+                <span class="badge-icon">${b.icon}</span>
+                <div><div class="badge-name">${b.name}</div><div class="badge-desc">${b.desc}</div></div>
+            </div>
+        `).join('');
+    }
+
+    // ── Leaderboard ───────────────────────────────────────────
+    async function renderLeaderboard() {
+        const entries = await TrainingEngine.Leaderboard.getEntries();
+
+        if (entries.length === 0) {
+            document.getElementById('leaderboard-content').innerHTML = '<p style="color:rgba(255,255,255,0.4);">No entries yet.</p>';
+            return;
+        }
+
+        let html = `<table class="lb-table">
+            <thead><tr>
+                <th>Rank</th><th>Name</th><th>Level</th><th>XP</th><th>Modules</th><th>Badges</th><th>Streak</th>
+            </tr></thead><tbody>`;
+
+        entries.forEach((e, i) => {
+            const rankClass = i === 0 ? 'rank-1' : i === 1 ? 'rank-2' : i === 2 ? 'rank-3' : 'rank-default';
+            html += `<tr>
+                <td><span class="lb-rank ${rankClass}">${i + 1}</span></td>
+                <td><span class="lb-name">${e.name}</span></td>
+                <td><span class="lb-level">${e.level.icon} ${e.level.name}</span></td>
+                <td style="font-weight:700; color:var(--stockholm-neon);">${e.xp.toLocaleString()}</td>
+                <td>${e.completedModules}</td>
+                <td>${e.badges}</td>
+                <td>🔥 ${e.streak}</td>
+            </tr>`;
+        });
+
+        html += '</tbody></table>';
+        document.getElementById('leaderboard-content').innerHTML = html;
+    }
+
+    // ── Boot ──────────────────────────────────────────────────
+    checkLogin();
+})();
+</script>
+</body>
+</html>

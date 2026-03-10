@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="page-title">GPS Requirements Training | Grid Engineering Training</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+    <link rel="stylesheet" href="../../module-styles.css">
+</head>
+<body>
+    <div class="bg-container" id="bg-container"></div>
+    <div class="top-bar">
+        <div class="top-bar-left">
+            <a href='/'>← Portal</a>
+            <span class="module-title-bar" id="module-title-bar">Loading...</span>
+        </div>
+        <div class="top-bar-right">
+            <span class="timer-pill" id="timer-display">0m 00s</span>
+            <span class="xp-pill" id="xp-display">0 XP</span>
+        </div>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+    <div class="section-nav" id="section-nav"></div>
+    <div class="content-wrap" id="content-wrap"></div>
+
+    <script>
+    window.MODULE_DATA = {
+        id: 'gps-requirements',
+        title: 'GPS Requirements Training',
+        level: 'senior',
+        xp: 900,
+        backgroundImage: 'https://images.unsplash.com/photo-1497440001374-f26997328c1b?w=1920&q=90',
+        sections: [
+            {
+                title: 'The GPS Requirements Landscape',
+                subtitle: 'Understanding what AEMO and NSPs actually need from your GPS submission',
+                content: [
+                    { type: 'card', html: '<h2>Scenario: Your First GPS From Scratch</h2><p>You have been assigned as the lead technical engineer for a <strong>250MW solar farm with a 100MW/200MWh BESS</strong> connecting to ElectraNet\'s 275kV network in South Australia. The connection enquiry response has been received, and your project manager has asked you to prepare the GPS document. The client needs it submitted within 8 weeks.</p><p>This module takes you through every technical requirement in the GPS, clause by clause, so you know exactly what to include and what evidence AEMO expects.</p>' },
+                    { type: 'info', title: 'What Makes GPS Requirements Different From Access Standards', text: 'Access standards define the three levels (AAS/NAS/MAS). GPS requirements define what specific technical data, simulation results, and compliance evidence you must provide to demonstrate you meet those standards. Think of access standards as "what you must achieve" and GPS requirements as "how you prove you achieve it."' },
+                    { type: 'card', html: '<h3>The GPS Template Structure</h3><p>AEMO publishes a standardised GPS template that all connection applicants must use. The template is structured around the Schedule 5.2 clauses and includes:</p><ul><li><strong>Project information</strong> — plant layout, equipment specifications, single line diagram</li><li><strong>Plant configuration</strong> — inverter types, transformer ratings, cable impedances</li><li><strong>Performance standard proposals</strong> — your proposed level (AAS/NAS/MAS) for each clause</li><li><strong>Supporting evidence</strong> — simulation results, OEM datasheets, design calculations</li><li><strong>System model details</strong> — PSCAD/PSSE model descriptions and validation</li></ul>' },
+                    { type: 'success', title: 'Key Principle', text: 'Every claim in your GPS must be supported by evidence. AEMO will question any performance claim that lacks simulation results, OEM confirmation, or design calculation backup. The more thorough your initial submission, the fewer rounds of questions you will face.' }
+                ],
+                checks: [
+                    {
+                        question: 'What is the primary difference between access standards and GPS requirements?',
+                        options: [
+                            'Access standards are for solar farms, GPS requirements are for wind farms',
+                            'Access standards define performance levels to achieve; GPS requirements define how you prove compliance',
+                            'Access standards are set by AEMO; GPS requirements are set by the TNSP',
+                            'There is no difference — they are the same thing'
+                        ],
+                        correct: 1,
+                        correctFeedback: 'Correct! Access standards define the "what" (AAS/NAS/MAS levels), while GPS requirements define the "how" (evidence, data, simulations needed to prove compliance).',
+                        incorrectFeedback: 'Not quite. Access standards define the performance levels (AAS/NAS/MAS) you must achieve. GPS requirements specify what technical data and evidence you need to provide to demonstrate compliance with those standards.'
+                    },
+                    {
+                        question: 'Which organisation publishes the standard GPS template that connection applicants must use?',
+                        options: ['The connecting TNSP', 'AEMO', 'AEMC', 'The connection applicant creates their own format'],
+                        correct: 1,
+                        correctFeedback: 'Correct! AEMO publishes the standardised GPS template. All connection applicants must use this template for consistency.',
+                        incorrectFeedback: 'AEMO publishes the standard GPS template. While TNSPs review the GPS, the template format comes from AEMO to ensure consistency across all NEM connections.'
+                    }
+                ]
+            },
+            {
+                title: 'Clause-by-Clause Technical Requirements',
+                subtitle: 'Detailed breakdown of what each S5.2.5 clause demands',
+                content: [
+                    { type: 'card', html: '<h2>S5.2.5.1 — Reactive Power Capability</h2><p>This clause requires generators to provide reactive power support to the network. The GPS must specify the reactive power capability at the <strong>connection point</strong> (not the inverter terminals).</p><h4>What You Must Provide:</h4><ul><li>Reactive power capability curve (P-Q diagram) at the connection point</li><li>Capability under different ambient temperature conditions</li><li>Voltage-reactive power (V-Q) droop settings</li><li>Response time for reactive power changes</li></ul><h4>AAS Requirement:</h4><p>The generating system must be capable of supplying and absorbing reactive power of at least <strong>0.395 × rated MW</strong> at the connection point (equivalent to a power factor range of approximately 0.93 leading to 0.93 lagging).</p>' },
+                    { type: 'tech', title: 'Connection Point vs Inverter Terminals', text: 'A common mistake is specifying reactive power at the inverter terminals. Network losses (transformers, cables) consume reactive power, so the capability at the connection point is always less than at the inverter. You must model the entire plant including transformer impedances and cable losses to determine the true capability at the connection point.' },
+                    { type: 'card', html: '<h2>S5.2.5.3 — Generating System Response to Frequency Disturbances</h2><p>The generating system must remain connected during frequency disturbances within specified ranges.</p><h4>Key Frequency Bands:</h4><table class="data-table"><thead><tr><th>Frequency Range</th><th>Required Duration</th><th>Notes</th></tr></thead><tbody><tr><td>47.0 - 47.5 Hz</td><td>10 seconds</td><td>Extreme under-frequency</td></tr><tr><td>47.5 - 49.0 Hz</td><td>10 minutes</td><td>Under-frequency</td></tr><tr><td>49.0 - 51.0 Hz</td><td>Continuous</td><td>Normal operating band</td></tr><tr><td>51.0 - 52.0 Hz</td><td>10 minutes</td><td>Over-frequency</td></tr><tr><td>52.0 - 52.5 Hz</td><td>10 seconds</td><td>Extreme over-frequency</td></tr></tbody></table>' },
+                    { type: 'card', html: '<h2>S5.2.5.5 — Generating System Response to Disturbances Following Contingency Events (FRT)</h2><p>Fault Ride-Through is one of the most critical and complex requirements. The generating system must remain connected and recover power output after network faults.</p><h4>Key FRT Requirements:</h4><ul><li><strong>Voltage ride-through profile</strong> — system must stay connected during voltage dips down to 0% (for balanced faults) for up to 450ms</li><li><strong>Reactive current injection</strong> — during voltage dips, inject at least 4% reactive current per 1% voltage deviation</li><li><strong>Active power recovery</strong> — return to at least 95% of pre-fault power within a specified time after fault clearance</li><li><strong>Multiple fault ride-through</strong> — withstand a sequence of 15 faults over 5 minutes</li></ul>' },
+                    { type: 'warning', title: 'FRT is Where Most GPS Negotiations Happen', text: 'Approximately 60% of AEMO queries on GPS documents relate to S5.2.5.5. Common issues include: insufficient simulation evidence, unrealistic active power recovery claims, and inverter anti-islanding protection conflicts with FRT requirements. Budget extra time for this clause.' }
+                ],
+                checks: [
+                    {
+                        question: 'What is the AAS requirement for reactive power capability at the connection point under S5.2.5.1?',
+                        options: [
+                            '0.5 × rated MW supply and absorb',
+                            '0.395 × rated MW supply and absorb',
+                            'Power factor of 0.85 leading to 0.85 lagging',
+                            'No specific numerical requirement — it depends on the network'
+                        ],
+                        correct: 1,
+                        correctFeedback: 'Correct! The AAS requires at least 0.395 × rated MW reactive power capability at the connection point, equivalent to approximately 0.93 power factor range.',
+                        incorrectFeedback: 'The AAS for S5.2.5.1 requires the generating system to supply and absorb reactive power of at least 0.395 × rated MW at the connection point.'
+                    },
+                    {
+                        question: 'During a voltage dip, what is the minimum reactive current injection rate required under S5.2.5.5?',
+                        options: [
+                            '2% reactive current per 1% voltage deviation',
+                            '4% reactive current per 1% voltage deviation',
+                            '6% reactive current per 1% voltage deviation',
+                            '10% reactive current per 1% voltage deviation'
+                        ],
+                        correct: 1,
+                        correctFeedback: 'Correct! The AAS requires at least 4% additional reactive current for each 1% voltage deviation below the normal range.',
+                        incorrectFeedback: 'The standard requires at least 4% reactive current injection per 1% voltage deviation. This is a key parameter in FRT compliance.'
+                    }
+                ],
+                contentAfterCheck1: [
+                    { type: 'card', html: '<h2>S5.2.5.11 — Frequency Control (MPFR)</h2><p>Mandatory Primary Frequency Response (MPFR) was introduced in 2023 and requires all registered generators above 5MW to provide active power response to frequency deviations.</p><h4>Key Parameters:</h4><ul><li><strong>Deadband</strong> — ±0.015 Hz from 50 Hz (response required outside this band)</li><li><strong>Droop</strong> — typically 5% for both over- and under-frequency</li><li><strong>Response time</strong> — must begin responding within 2 seconds</li><li><strong>Sustained response</strong> — maintain for at least 30 seconds or until frequency returns to deadband</li></ul>' },
+                    { type: 'card', html: '<h2>S5.2.5.13 — Voltage and Reactive Power Control</h2><p>The generating system must have an automatic voltage control system capable of regulating voltage at the connection point.</p><h4>Requirements:</h4><ul><li>Voltage setpoint control with ±5% adjustment range</li><li>Voltage-reactive power droop with adjustable droop coefficient</li><li>Settling time within 5 seconds for small disturbances (AAS)</li><li>Measurement and control bandwidth sufficient for power quality</li></ul>' },
+                    { type: 'card', html: '<h2>S5.2.5.14 — Active Power Control</h2><p>Requirements for controlling the active power output of the generating system.</p><h4>Key Requirements:</h4><ul><li>Ramp rate control — ability to limit power increase/decrease rates</li><li>Remote setpoint control — AEMO dispatch capability</li><li>Maximum ramp rate: typically 10 MW/min or as agreed with NSP</li><li>Response to curtailment signals within 5 seconds</li></ul>' }
+                ]
+            },
+            {
+                title: 'Building Your GPS Submission',
+                subtitle: 'Practical workflow from enquiry response to lodgement',
+                content: [
+                    { type: 'card', html: '<h2>Step-by-Step GPS Preparation</h2><p>Preparing a complete GPS submission typically takes <strong>6-12 weeks</strong> depending on project complexity and OEM responsiveness.</p>' },
+                    { type: 'html', html: '<div class="glass"><div class="process-flow"><div class="process-step"><div class="step-number">1</div><div class="step-title">Gather Data</div><div class="step-desc">OEM datasheets, plant design, network data from enquiry response</div></div><div class="process-step"><div class="step-number">2</div><div class="step-title">Run Models</div><div class="step-desc">PSCAD/PSSE simulations for FRT, frequency response, voltage control</div></div><div class="process-step"><div class="step-number">3</div><div class="step-title">Draft GPS</div><div class="step-desc">Fill template clause-by-clause with proposed standards and evidence</div></div><div class="process-step"><div class="step-number">4</div><div class="step-title">Internal QA</div><div class="step-desc">Peer review, completeness check, consistency verification</div></div><div class="process-step"><div class="step-number">5</div><div class="step-title">Submit</div><div class="step-desc">Lodge with AEMO and connecting NSP simultaneously</div></div></div></div>' },
+                    { type: 'card', html: '<h3>Step 1: Gathering OEM Data</h3><p>The GPS is fundamentally about proving your equipment can meet the required performance standards. You need detailed data from equipment manufacturers:</p><ul><li><strong>Inverter datasheets</strong> — efficiency curves, reactive power capability charts, FRT capability, frequency response settings</li><li><strong>Transformer specifications</strong> — impedance, tap range, losses, rating curves</li><li><strong>Control system documentation</strong> — plant controller architecture, voltage/frequency control algorithms, response time specifications</li><li><strong>Protection system details</strong> — protection relay settings, anti-islanding detection methods, coordination philosophy</li></ul>' },
+                    { type: 'mentor', title: 'OEM Communication', text: '"Start requesting OEM data the day you get the enquiry response. OEMs often take 4-6 weeks to provide detailed GPS-support packages, and incomplete OEM data is the number one cause of GPS submission delays. Send them the specific AEMO requirements for each clause — do not assume they know the Australian standards."' },
+                    { type: 'card', html: '<h3>Step 2: System Modelling</h3><p>AEMO requires simulation evidence for most GPS claims. You need:</p><ul><li><strong>PSCAD model</strong> — detailed EMT model of the generating system for FRT, voltage control, and power quality studies</li><li><strong>PSS/E model</strong> — positive-sequence model for system-wide stability studies</li><li><strong>Model validation</strong> — comparison against OEM factory test results or commissioning data</li></ul><h4>Common Simulation Cases:</h4><table class="data-table"><thead><tr><th>Study Type</th><th>Clause</th><th>Key Outputs</th></tr></thead><tbody><tr><td>Fault Ride-Through</td><td>S5.2.5.5</td><td>Voltage, current, active power recovery profiles</td></tr><tr><td>Frequency Response</td><td>S5.2.5.11</td><td>Droop response, deadband verification, response timing</td></tr><tr><td>Voltage Step</td><td>S5.2.5.13</td><td>Settling time, overshoot, steady-state accuracy</td></tr><tr><td>Reactive Power Range</td><td>S5.2.5.1</td><td>P-Q capability at connection point under various conditions</td></tr></tbody></table>' },
+                    { type: 'card', html: '<h3>Step 3: GPS Quality Assurance Checklist</h3><p>Before submission, verify every item:</p><ul><li>All S5.2.5 clauses addressed — no blank sections</li><li>Proposed access standard level stated for each clause (AAS, NAS, or MAS)</li><li>NAS proposals include justification and evidence of why AAS cannot be met</li><li>Simulation results attached for S5.2.5.1, S5.2.5.5, S5.2.5.11, S5.2.5.13 at minimum</li><li>Single line diagram is current and matches equipment described in GPS</li><li>Connection point impedance matches enquiry response data</li><li>OEM datasheets attached and referenced correctly</li><li>Protection coordination philosophy documented</li></ul>' }
+                ],
+                checks: [
+                    {
+                        question: 'How long does GPS preparation typically take from enquiry response to submission?',
+                        options: ['1-2 weeks', '6-12 weeks', '6-12 months', 'It depends entirely on AEMO'],
+                        correct: 1,
+                        correctFeedback: 'Correct! GPS preparation typically takes 6-12 weeks, with OEM data gathering being the most time-consuming component.',
+                        incorrectFeedback: 'GPS preparation typically takes 6-12 weeks. OEM data gathering alone often takes 4-6 weeks, plus time for modelling, drafting, and internal QA.'
+                    },
+                    {
+                        question: 'What is the recommended first action after receiving a connection enquiry response?',
+                        options: [
+                            'Start drafting the GPS template immediately',
+                            'Request OEM data packages from equipment manufacturers',
+                            'Submit a preliminary GPS to AEMO for early feedback',
+                            'Wait for the TNSP to provide network model data'
+                        ],
+                        correct: 1,
+                        correctFeedback: 'Correct! Requesting OEM data early is critical because manufacturers often take 4-6 weeks to provide GPS-support packages. This is the longest lead-time item.',
+                        incorrectFeedback: 'The recommended first action is requesting OEM data. OEMs typically take 4-6 weeks to provide detailed data packages, making it the longest lead-time item in GPS preparation.'
+                    }
+                ]
+            },
+            {
+                title: 'Complex GPS Scenarios',
+                subtitle: 'Hybrid projects, weak grids, and negotiation strategies',
+                content: [
+                    { type: 'card', html: '<h2>Hybrid Project GPS Challenges</h2><p>Hybrid projects combining multiple generation/storage technologies (e.g., solar + BESS, wind + BESS + synchronous condenser) present unique GPS challenges:</p><h3>The "Combined Response" Problem</h3><p>AEMO assesses performance at the <strong>connection point</strong>, which sees the combined response of all generating units. Your GPS must demonstrate how the different technologies work together to meet each requirement.</p><h4>Example: 250MW Solar + 100MW/200MWh BESS</h4><ul><li><strong>FRT (S5.2.5.5)</strong> — BESS provides fast reactive current injection during faults while solar inverters ride through. The combined response must meet the 4% injection rate.</li><li><strong>Frequency response (S5.2.5.11)</strong> — BESS handles under-frequency (can increase output). Solar handles over-frequency (can curtail). Coordination logic needed.</li><li><strong>Reactive power (S5.2.5.1)</strong> — Combined P-Q capability must be demonstrated. At night (solar off), BESS must meet reactive requirements alone.</li></ul>' },
+                    { type: 'warning', title: 'Night-Time Operation', text: 'For solar-BESS hybrids, AEMO will require you to demonstrate GPS compliance during night-time when only the BESS is operating. This includes reactive power capability, frequency response, and voltage control. Many projects underestimate this requirement.' },
+                    { type: 'card', html: '<h3>Weak Grid Connections (Low SCR)</h3><p>System strength, measured by Short Circuit Ratio (SCR), significantly affects GPS compliance. Low SCR connections (SCR &lt; 3) face:</p><ul><li><strong>Voltage control instability</strong> — inverter voltage controllers may oscillate in weak grids, making S5.2.5.13 settling time requirements hard to meet</li><li><strong>FRT challenges</strong> — active power recovery may be slower in weak grids due to limited voltage support</li><li><strong>Harmonic amplification</strong> — network resonances can amplify inverter harmonics, causing power quality issues</li><li><strong>Control interaction</strong> — multiple IBR plants at nearby connection points can interact through the weak network</li></ul><h4>SCR Categories:</h4><table class="data-table"><thead><tr><th>SCR Range</th><th>Classification</th><th>GPS Impact</th></tr></thead><tbody><tr><td>&gt; 5</td><td>Strong</td><td>Standard GPS approach, AAS typically achievable</td></tr><tr><td>3 - 5</td><td>Moderate</td><td>Some NAS may be needed, detailed modelling required</td></tr><tr><td>&lt; 3</td><td>Weak</td><td>Multiple NAS likely, extensive PSCAD studies, system strength remediation may be needed</td></tr></tbody></table>' },
+                    { type: 'card', html: '<h3>GPS Negotiation Strategies</h3><p>When you need to propose a Negotiated Access Standard (NAS), your strategy matters:</p><ol><li><strong>Front-load evidence</strong> — provide simulation results showing exactly why AAS cannot be met, and what the achievable performance is</li><li><strong>Show the cost</strong> — NER requires the cost of meeting AAS to be "reasonably proportionate" to the benefit. Quantify the cost of additional equipment needed for AAS.</li><li><strong>Propose mitigation</strong> — if FRT recovery is slower than AAS, propose enhanced reactive power support or faster ramp rates as compensating measures</li><li><strong>Reference precedent</strong> — cite similar projects that received NAS approval for comparable conditions</li><li><strong>Engage early</strong> — have preliminary discussions with AEMO before formal submission if you expect significant NAS proposals</li></ol>' },
+                    { type: 'mentor', title: 'Negotiation Reality', text: '"AEMO staff are engineers too. They understand that not every plant can meet AAS in every condition. What they need is confidence that you have thoroughly analysed the situation and that your proposed NAS does not compromise system security. A well-evidenced NAS proposal with clear mitigation is almost always accepted. A poorly-evidenced one creates months of back-and-forth."' }
+                ],
+                checks: [
+                    {
+                        question: 'For a solar-BESS hybrid, what critical operating condition must the GPS address that is often underestimated?',
+                        options: [
+                            'Maximum daytime solar output',
+                            'Night-time operation when only the BESS is running',
+                            'The transition between charging and discharging',
+                            'Cloud intermittency during the day'
+                        ],
+                        correct: 1,
+                        correctFeedback: 'Correct! Night-time BESS-only operation is often underestimated. AEMO requires GPS compliance at all times, including when solar generation is zero.',
+                        incorrectFeedback: 'Night-time operation is the most commonly underestimated condition. When only the BESS is running, it must meet all GPS requirements (reactive power, frequency response, voltage control) on its own.'
+                    },
+                    {
+                        question: 'What SCR value generally indicates a "weak grid" connection that will likely require Negotiated Access Standards?',
+                        options: ['SCR < 10', 'SCR < 5', 'SCR < 3', 'SCR < 1'],
+                        correct: 2,
+                        correctFeedback: 'Correct! An SCR below 3 is generally classified as a weak grid, where multiple NAS proposals and extensive PSCAD modelling are typically required.',
+                        incorrectFeedback: 'An SCR below 3 is the generally accepted threshold for a "weak grid" classification. At this level, inverter-based resources face significant challenges meeting AAS requirements.'
+                    }
+                ]
+            }
+        ],
+        assessment: [
+            {
+                question: 'What is the primary purpose of the GPS document?',
+                options: [
+                    'To calculate the project budget for grid connection equipment',
+                    'To formally propose and evidence the generating system\'s compliance with NER technical requirements',
+                    'To register the project with the AER for regulatory compliance',
+                    'To design the protection system for the generating system'
+                ],
+                correct: 1
+            },
+            {
+                question: 'Under S5.2.5.1, the AAS requires reactive power capability of at least what fraction of rated MW at the connection point?',
+                options: ['0.25 x rated MW', '0.33 x rated MW', '0.395 x rated MW', '0.50 x rated MW'],
+                correct: 2
+            },
+            {
+                question: 'Which S5.2.5 clause covers Fault Ride-Through (FRT) requirements?',
+                options: ['S5.2.5.1', 'S5.2.5.3', 'S5.2.5.5', 'S5.2.5.11'],
+                correct: 2
+            },
+            {
+                question: 'What is the required reactive current injection rate during voltage dips under the AAS?',
+                options: [
+                    '2% per 1% voltage deviation',
+                    '4% per 1% voltage deviation',
+                    '6% per 1% voltage deviation',
+                    '8% per 1% voltage deviation'
+                ],
+                correct: 1
+            },
+            {
+                question: 'Mandatory Primary Frequency Response (MPFR) under S5.2.5.11 requires response to begin within what timeframe?',
+                options: ['500 milliseconds', '1 second', '2 seconds', '5 seconds'],
+                correct: 2
+            },
+            {
+                question: 'What is the typical GPS preparation timeframe from enquiry response to submission?',
+                options: ['1-2 weeks', '3-4 weeks', '6-12 weeks', '6-12 months'],
+                correct: 2
+            },
+            {
+                question: 'Why is it critical to specify reactive power capability at the connection point rather than at inverter terminals?',
+                options: [
+                    'AEMO only accepts measurements at the connection point due to NER requirements',
+                    'Inverter terminal ratings are confidential OEM information',
+                    'Network losses (transformers, cables) reduce capability, so connection point values are lower',
+                    'Connection point measurements are more accurate than terminal measurements'
+                ],
+                correct: 2
+            },
+            {
+                question: 'Which percentage of AEMO GPS queries typically relate to S5.2.5.5 (FRT)?',
+                options: ['About 20%', 'About 40%', 'About 60%', 'About 80%'],
+                correct: 2
+            },
+            {
+                question: 'For a solar-BESS hybrid project, what must the GPS demonstrate about night-time operation?',
+                options: [
+                    'The plant can be safely shut down at night',
+                    'The BESS alone must meet all GPS requirements when solar is not generating',
+                    'Night-time operation is exempt from GPS requirements',
+                    'Only reactive power compliance is required at night'
+                ],
+                correct: 1
+            },
+            {
+                question: 'When proposing a Negotiated Access Standard (NAS), which of the following is most important for AEMO acceptance?',
+                options: [
+                    'Citing that other projects have been granted NAS',
+                    'Requesting the lowest possible performance level',
+                    'Providing thorough simulation evidence showing why AAS cannot be met, with proposed mitigation',
+                    'Having the TNSP endorse the NAS proposal before submitting to AEMO'
+                ],
+                correct: 2
+            }
+        ]
+    };
+    </script>
+    <script src="../../training-engine.js"></script>
+    <script src="../../module-renderer.js"></script>
+</body>
+</html>
