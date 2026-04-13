@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="page-title">Data Request | Grid Engineering Training</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>⚡</text></svg>">
+    <link rel="stylesheet" href="../../module-styles.css">
+</head>
+<body>
+    <div class="bg-container" id="bg-container"></div>
+    <div class="top-bar">
+        <div class="top-bar-left">
+            <a href='/'>&larr; Portal</a>
+            <span class="module-title-bar" id="module-title-bar">Loading...</span>
+        </div>
+        <div class="top-bar-right">
+            <span class="timer-pill" id="timer-display">0m 00s</span>
+            <span class="xp-pill" id="xp-display">0 XP</span>
+        </div>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+    <div class="section-nav" id="section-nav"></div>
+    <div class="content-wrap" id="content-wrap"></div>
+
+    <script>
+    window.MODULE_DATA = {
+        id: "data-request",
+        title: "AEMO Data Request Process",
+        level: "entry",
+        xp: 250,
+        backgroundImage: "https://images.unsplash.com/photo-1509395176047-4a66953fd231?w=1920&q=90",
+        sections: [
+            {
+                title: "Overview",
+                subtitle: "Context, objectives, and why process compliance matters",
+                content: [
+                    {
+                        type: "card",
+                        html: "<h2>Learning Objectives</h2><ol><li>Understand AEMO's role and why data governance matters.</li><li>Identify who is eligible to request data and what information is required.</li><li>Apply the correct request process to avoid delays, rework, and compliance risk.</li><li>Estimate fee impacts and choose the right data products.</li></ol>"
+                    },
+                    {
+                        type: "card",
+                        html: "<h2>AEMO in Context (Why This Matters)</h2><ul><li>AEMO coordinates and operates the National Electricity Market (NEM) and provides critical system planning and operational data.</li><li>Data requests are governed under the National Electricity Rules (NER), which require AEMO to recover reasonable costs and ensure data is released appropriately.</li><li>Data quality and authorization safeguards are essential because models and snapshots influence system planning, network studies, and project approvals.</li></ul>"
+                    },
+                    {
+                        type: "card",
+                        html: "<h2>Who Can Request Data</h2><ul><li>Only a Registered Participant or a Project Developer may submit a request.</li><li>Requests must include proper authorization; the requestor declares they are acting with delegated authority.</li></ul><p><strong>Why it is important:</strong> Unauthorized or incomplete requests can be rejected or delayed, and compliance protects both the requester and the organization from regulatory and contractual risk.</p>"
+                    }
+                ],
+                checks: [
+                    {
+                        question: "Who is eligible to submit a data request to AEMO?",
+                        options: [
+                            "Any engineering consultant",
+                            "A Registered Participant or Project Developer",
+                            "Only network service providers",
+                            "Only the market operator"
+                        ],
+                        correct: 1,
+                        correctFeedback: "Correct. Only a Registered Participant or Project Developer may submit a data request.",
+                        incorrectFeedback: "Not quite. Eligibility is limited to a Registered Participant or Project Developer."
+                    },
+                    {
+                        question: "Why is correct authorization important in the AEMO data request process?",
+                        options: [
+                            "It allows requests to skip validation",
+                            "It confirms delegated authority and reduces compliance risk",
+                            "It guarantees no service fee",
+                            "It replaces the need for a project name"
+                        ],
+                        correct: 1,
+                        correctFeedback: "Correct. Authorization confirms delegated authority and reduces compliance risk.",
+                        incorrectFeedback: "Not quite. Authorization confirms delegated authority and reduces compliance risk."
+                    }
+                ]
+            },
+            {
+                title: "Request Details",
+                subtitle: "Form fields and common pitfalls",
+                content: [
+                    {
+                        type: "card",
+                        html: "<h2>What You Must Provide (Core Form Fields)</h2><ul><li>Registered Participant / Project Developer full name and ACN/ABN.</li><li>Reason for request and project name.</li><li>Purpose selection per NER 3.13.3(k)(2); provide Other details when needed.</li><li>Data products required (Standard Snapshot Package, RUGs, or other snapshots).</li><li>Configuration choice (System Snapshot vs System Normal) for non-standard snapshots.</li><li>Billing details and company address.</li><li>Signed declaration, contact details, and date.</li></ul>"
+                    },
+                    {
+                        type: "card",
+                        html: "<h2>Common Pitfalls</h2><ul><li>Missing purpose selection or unclear Other justification.</li><li>Incomplete snapshot details (no timestamp or operating condition).</li><li>Incorrect or missing authorization statement.</li></ul>"
+                    }
+                ]
+                ,
+                checks: [
+                    {
+                        question: "Which item is required on the form for compliance with NER 3.13.3(k)(2)?",
+                        options: [
+                            "AEMO market notice reference",
+                            "Purpose selection (with details if Other)",
+                            "Network support agreement",
+                            "Commissioning certificate"
+                        ],
+                        correct: 1,
+                        correctFeedback: "Correct. The form requires a Purpose selection per NER 3.13.3(k)(2).",
+                        incorrectFeedback: "Not quite. The Purpose selection per NER 3.13.3(k)(2) is required."
+                    },
+                    {
+                        question: "What is the most common cause of delays in non-standard snapshot requests?",
+                        options: [
+                            "Missing invoice address",
+                            "No list of RUG regions",
+                            "Insufficient snapshot identification details",
+                            "No requestor phone number"
+                        ],
+                        correct: 2,
+                        correctFeedback: "Correct. Incomplete identification details (timestamps or operating conditions) commonly delay non-standard snapshots.",
+                        incorrectFeedback: "Not quite. Non-standard snapshots must include enough detail to identify the exact snapshot(s)."
+                    }
+                ]
+            },
+            {
+                title: "Data Products",
+                subtitle: "What you can request and how to choose",
+                content: [
+                    {
+                        type: "card",
+                        html: "<h2>Data Products Overview</h2><ul><li>Standard Snapshot Package: eight NEM load-flow snapshots in PSS-E v34, System Normal configuration, seasonal max/min demand.</li><li>Releasable User Guides (RUGs): region-specific (QLD/NSW/VIC/SA/TAS), defaults exclude those already integrated into the latest Standard Snapshot Package.</li><li>Other snapshots: must provide enough detail to identify the exact snapshot(s).</li></ul>"
+                    },
+                    {
+                        type: "card",
+                        html: "<h2>Choosing the Right Product</h2><ul><li>Start with Standard Snapshot Package if your study is seasonal or broad.</li><li>Use partial updates for minor changes.</li><li>Use ad-hoc snapshots for specific conditions or project scenarios.</li></ul>"
+                    }
+                ],
+                checks: [
+                    {
+                        question: "When should you prefer a Standard Snapshot Package?",
+                        options: [
+                            "When you need a single time-specific event only",
+                            "When your study is seasonal or broad in scope",
+                            "When you need custom outputs only",
+                            "When you cannot define any operating conditions"
+                        ],
+                        correct: 1,
+                        correctFeedback: "Correct. Standard Snapshot Package is best for seasonal or broad studies.",
+                        incorrectFeedback: "Not quite. The Standard Snapshot Package is intended for seasonal or broad studies."
+                    },
+                    {
+                        question: "What must you provide for 'Other snapshots' that are not part of the Standard Snapshot Package?",
+                        options: [
+                            "Only the project name",
+                            "A list of preferred regions",
+                            "Sufficient detail to identify the snapshot(s), such as timestamps or operating conditions",
+                            "Only the invoice email"
+                        ],
+                        correct: 2,
+                        correctFeedback: "Correct. Non-standard snapshots must include enough identifying detail like timestamps or operating conditions.",
+                        incorrectFeedback: "Not quite. You must provide sufficient detail to identify the requested snapshot(s)."
+                    }
+                ]
+            },
+            {
+                title: "Fees and Governance",
+                subtitle: "Cost awareness, compliance, and tips",
+                content: [
+                    {
+                        type: "card",
+                        html: "<h2>Fees and Cost Awareness</h2><ul><li>Service fee applies to all requests (processing, validation, delivery).</li><li>Data item fees are based on level of effort; non-standard items can be materially higher.</li><li>Bespoke requests may not be possible in some cases; AEMO will advise.</li></ul><p><strong>Process insight:</strong> Clear scoping reduces iteration and cost. The more precise your snapshot definition, the faster AEMO can validate and deliver.</p>"
+                    },
+                    {
+                        type: "card",
+                        html: "<h2>Governance and Compliance</h2><p>The declaration confirms authorization from the Registered Participant/Project Developer, that data will only be used for the stated project and purpose, and that evidence of authority may be required.</p><p><strong>Why this is critical:</strong> Demonstrates chain of accountability, supports AEMO's obligation to protect market data integrity, and helps your project withstand audits or regulatory scrutiny.</p>"
+                    },
+                    {
+                        type: "card",
+                        html: "<h2>Practical Tips for Submitting a Clean Request</h2><ul><li>Confirm eligibility and internal authorization first.</li><li>Use specific operating conditions or timestamps for custom snapshots.</li><li>Align your Purpose to NER references; avoid vague justifications.</li><li>Double-check invoice email and address to prevent billing delays.</li><li>Attach any internal approvals if your organization requires it.</li></ul><h3>Quick Checklist (One-Minute Review)</h3><ul><li>Eligibility confirmed.</li><li>Purpose selected and justified.</li><li>Data scope clearly defined.</li><li>Configuration chosen.</li><li>Invoice details complete.</li><li>Declaration signed and dated.</li></ul><p>Sample Form - Snapshot (Always refer AEMO website for latest form)</p>"
+                    }
+                ],
+                checks: [
+                    {
+                        question: "Which statement best describes the purpose of the declaration?",
+                        options: [
+                            "It waives AEMO's right to charge fees",
+                            "It confirms authorization and limits data use to the stated project and purpose",
+                            "It replaces the need for invoice details",
+                            "It ensures data is delivered within 24 hours"
+                        ],
+                        correct: 1,
+                        correctFeedback: "Correct. The declaration confirms authorization and limits data use to the stated project and purpose.",
+                        incorrectFeedback: "Not quite. The declaration confirms authorization and limits use to the stated project and purpose."
+                    },
+                    {
+                        question: "Which action most directly reduces turnaround time for AEMO?",
+                        options: [
+                            "Leaving purpose as Other without details",
+                            "Providing precise snapshot definitions",
+                            "Requesting all regions by default",
+                            "Omitting invoice email to avoid billing"
+                        ],
+                        correct: 1,
+                        correctFeedback: "Correct. Clear, precise snapshot definitions reduce iteration and turnaround time.",
+                        incorrectFeedback: "Not quite. Precise snapshot definitions reduce iteration and turnaround time."
+                    }
+                ]
+            }
+        ],
+        assessment: [
+            {
+                question: "Who is eligible to submit a data request to AEMO?",
+                options: [
+                    "Any consulting engineer",
+                    "A Registered Participant or Project Developer",
+                    "Only network service providers",
+                    "Only AEMO staff"
+                ],
+                correct: 1
+            },
+            {
+                question: "Which form field ties the request to NER 3.13.3(k)(2)?",
+                options: [
+                    "Invoice email",
+                    "Purpose selection",
+                    "Company address",
+                    "Contact phone number"
+                ],
+                correct: 1
+            },
+            {
+                question: "What is the Standard Snapshot Package?",
+                options: [
+                    "Eight NEM load-flow snapshots in PSS-E v34, System Normal configuration",
+                    "Four NEM snapshots in PSS-E v33, System Snapshot configuration",
+                    "A single real-time operational snapshot only",
+                    "A regional RUG bundle only"
+                ],
+                correct: 0
+            },
+            {
+                question: "Which configuration restores the system topology to normal by switching outages into service?",
+                options: [
+                    "System Snapshot",
+                    "System Normal",
+                    "Dynamic Snapshot",
+                    "RUG Configuration"
+                ],
+                correct: 1
+            },
+            {
+                question: "What is required for non-standard (other) snapshots?",
+                options: [
+                    "Only project name",
+                    "Sufficient detail to identify the snapshot(s)",
+                    "AEMO approval letter",
+                    "No details are needed"
+                ],
+                correct: 1
+            },
+            {
+                question: "Which item is always included in the fee structure?",
+                options: [
+                    "Waived service fee",
+                    "Data Request service fee",
+                    "Free bespoke analysis",
+                    "Automatic discount for repeat users"
+                ],
+                correct: 1
+            },
+            {
+                question: "Why is the declaration required?",
+                options: [
+                    "To reduce the number of snapshots",
+                    "To confirm authorization and restrict data use to the stated project and purpose",
+                    "To avoid providing billing details",
+                    "To remove the need for a project name"
+                ],
+                correct: 1
+            },
+            {
+                question: "Which choice best reduces delays in processing a request?",
+                options: [
+                    "Leaving purpose as Other without details",
+                    "Providing precise snapshot definitions and clear scope",
+                    "Requesting all RUG regions by default",
+                    "Omitting the ACN/ABN"
+                ],
+                correct: 1
+            },
+            {
+                question: "Which item must be included for billing?",
+                options: [
+                    "AEMO registration number",
+                    "Email address for invoice",
+                    "Generator performance standards",
+                    "Operational forecast"
+                ],
+                correct: 1
+            },
+            {
+                question: "Which statement best captures AEMO's role in this process?",
+                options: [
+                    "AEMO provides market price forecasts only",
+                    "AEMO coordinates the NEM and releases data under governed rules",
+                    "AEMO is only involved after commissioning",
+                    "AEMO sets retail tariffs"
+                ],
+                correct: 1
+            }
+        ]
+    };
+    </script>
+    <script src="../../training-engine.js"></script>
+    <script src="../../module-renderer.js"></script>
+</body>
+</html>
