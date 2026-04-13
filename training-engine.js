@@ -98,6 +98,7 @@ const TrainingEngine = (() => {
         'team-governance':    { name: 'Team Structure & Governance',        level: 'lead',      xp: 900,  order: 17, file: 'modules/team-governance/index.html' },
         'peace-framework':    { name: 'PEACE Framework',                    level: 'principal',  xp: 1200, order: 18, file: 'modules/peace-framework/index.html' },
         'talent-pipeline':    { name: 'Talent Pipeline / Intern Program',   level: 'principal',  xp: 1100, order: 19, file: 'modules/talent-pipeline/index.html' }
+         '5.3.4A':            { name: '5.3.4A Letter',                      level: 'entry',     xp: 500,  order: 20,  file: 'modules/5.3.4A Letter/index.html' },
     };
 
     const LEVEL_MODULES = {
