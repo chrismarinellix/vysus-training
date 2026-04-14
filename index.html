@@ -580,10 +580,14 @@
     function setPasskeyUIAvailability() {
         const passkeyTab = Array.from(document.querySelectorAll('.login-tab'))
             .find(t => t.textContent.toLowerCase().includes('passkey'));
-        if (!passkeyTab) return;
+        const passkeyMode = document.getElementById('mode-passkey');
+        if (!passkeyTab || !passkeyMode) return;
 
         if (!isPasskeyAvailable()) {
+            passkeyTab.style.opacity = '0.5';
+            passkeyTab.style.cursor = 'not-allowed';
             passkeyTab.title = 'Passkeys require HTTPS (or localhost) and a supported browser.';
+            passkeyMode.querySelectorAll('button').forEach(btn => { btn.disabled = true; });
         }
     }
 
