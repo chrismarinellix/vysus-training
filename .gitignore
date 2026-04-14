@@ -1,1 +1,4 @@
 .netlify/
+modules/*.zip
+modules/*.docx
+modules/~$*.docx
