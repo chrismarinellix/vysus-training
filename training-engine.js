@@ -100,7 +100,7 @@ const TrainingEngine = (() => {
         'talent-pipeline':    { name: 'Talent Pipeline / Intern Program',   level: 'principal',  xp: 1100, order: 19, file: 'modules/talent-pipeline/index.html' },
         '5.3.4A':             { name: '5.3.4A Letter',                      level: 'entry',     xp: 500,  order: 20, file: 'modules/5.3.4A Letter/index.html' },
         'data-request':       { name: 'Data Request',                       level: 'entry',     xp: 500,  order: 21, file: 'modules/Data Request/index.html' },
-        'base-calculation':   { name: 'Base Calculation',                   level: 'entry',     xp: 500,  order: 22, file: 'modules/base-calculation/index.html' }
+        'base-calculation':   { name: 'Base calculation',                   level: 'entry',     xp: 500,  order: 22, file: 'modules/Base calculation/index.html' }
     };
 
     const LEVEL_MODULES = {
